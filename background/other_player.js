@@ -59,6 +59,13 @@ otherPlayer = {
         if (clanPowerMax.value > 0) {
           console.log('clan power', clanPowerMax);
         }
+        chrome.runtime.sendMessage({ 'revenue': {
+          spMax: spMax,
+          goods: goods,
+          moneyMax: moneyMax,
+          suppliesMax: suppliesMax,
+          clanPowerMax: clanPowerMax
+        }});
         break;
       default:
         if (trace || debug) {

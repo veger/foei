@@ -1,4 +1,5 @@
 let updateCodeButton = document.getElementById('update_code');
+let openUIButton = document.getElementById('open-ui');
 
 updateCodeButton.onclick = function (element) {
   chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -6,4 +7,8 @@ updateCodeButton.onclick = function (element) {
          tabs[0].id,
          {file: 'inject.js'});
   });
+};
+
+openUIButton.onclick = function (element) {
+  chrome.tabs.create({ url: chrome.runtime.getURL('ui/ui.html') });
 };
