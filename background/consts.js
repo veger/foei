@@ -11,7 +11,14 @@ consts = {
     ColonialAge: 7,
     ProgressiveEra: 8,
     IndustrialAge: 9,
-    ModernEra: 10
+    ModernEra: 10,
+    PostModernEra: 11,
+    Today: 12,
+    Tomorrow: 13,
+    FutureEra: 14,
+    ArcticFuture: 15,
+    OceanicFuture: 16,
+    VirtualFuture: 17
   },
 
   goods: {
@@ -43,7 +50,46 @@ consts = {
     gunpowder: 'LateMiddleAge',
     brass: 'LateMiddleAge',
     basalt: 'LateMiddleAge',
-    talc: 'LateMiddleAge'
+    talc: 'LateMiddleAge',
+
+    coffee: 'ColonialAge',
+    wire: 'ColonialAge',
+
+    tinplate: 'ProgressiveEra',
+    asbestos: 'ProgressiveEra',
+
+    coke: 'IndustrialAge',
+
+    ferroconcrete: 'ModernEra',
+    convenience_food: 'ModernEra',
+    luxury_materials: 'ModernEra',
+
+    renewable_resources: 'PostModernEra',
+    steel: 'PostModernEra',
+    semiconductors: 'PostModernEra',
+    filters: 'PostModernEra',
+    dna_data: 'PostModernEra',
+
+    biogeochemical_data: 'FutureEra',
+    purified_water: 'FutureEra',
+    algae: 'FutureEra',
+    superconductors: 'FutureEra',
+    nanoparticles: 'FutureEra',
+
+    paper_batteries: 'ArcticFuture',
+    ai_data: 'ArcticFuture',
+
+    pearls: 'OceanicFuture',
+    artificial_scales: 'OceanicFuture',
+    corals: 'OceanicFuture',
+    biolight: 'OceanicFuture',
+    plankton: 'OceanicFuture',
+
+    tea_silk: 'VirtualFuture',
+    data_crystals: 'VirtualFuture',
+    golden_rice: 'VirtualFuture',
+    nanites: 'VirtualFuture',
+    cryptocash: 'VirtualFuture'
   },
 
   getGoodsAge: function (goodName) {
@@ -91,9 +137,18 @@ consts = {
 // "L_AllAge_SpringBonusSet17" -> ? Gong of Wisdom ?
 // "R_MultiAge_SpringBonusSet17a" -> Zen Zone
 // "R_MultiAge_SpringBonusSet17b -> "Emperor's Entrance
+// "R_MultiAge_SpringBonusSet18a" -> Zen Zone (lvl2)
+// "R_MultiAge_SpringBonusSet18b -> "Emperor's Entrance (lvl2)
 // "R_MultiAge_RoyalBonusSet17a" -> King Statue
 // "R_MultiAge_RoyalBonusSet17b" -> Queens Statue
+// "P_MultiAge_FallBonus17a" -> Blooming Cider Mill
 // "P_MultiAge_FallBonus17b" -> Fruitful Cider Mill
 // "P_MultiAge_FallBonus17c" -> Bountiful Cider Mill
+// "P_MultiAge_SummerBonus15" -> Bazaar
 // "P_MultiAge_SummerBonus16" -> Luau
+// "P_MultiAge_SummerBonus18" -> Sunken Treasure
+// "P_MultiAge_HalloweenBonus15" -> Mad Scientist's Lab
+// "P_MultiAge_ChristmasBonus16" -> Santa's Workshop
+// "R_MultiAge_NapoleonBonus18" -> Royal Marble Gateway
+// "P_MultiAge_Aviary" -> Aviary
 };
