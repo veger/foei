@@ -8,6 +8,8 @@
       "background/consts.js",
       "background/utils.js",
       "background/main.js",
+      "background/city_map.js",
+      "background/great_building.js",
       "background/other_player.js",
       "background/rewards.js"
     ],

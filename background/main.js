@@ -47,11 +47,17 @@ chrome.runtime.onInstalled.addListener(function () {
       for (var i = 0; i < request.jsonResponse.length; i++) {
         response = request.jsonResponse[i];
         switch (response.requestClass) {
+          case 'CityMapService':
+            cityMap.process(response.requestMethod, response.responseData, response.requestId);
+            break;
+          case 'GreatBuildingsService':
+            greatBuilding.process(response.requestMethod, response.responseData, response.requestId);
+            break;
           case 'HiddenRewardService':
-            rewards.process(response.requestMethod, response.responseData);
+            rewards.process(response.requestMethod, response.responseData, response.requestId);
             break;
           case 'OtherPlayerService':
-            otherPlayer.process(response.requestMethod, response.responseData);
+            otherPlayer.process(response.requestMethod, response.responseData, response.requestId);
             break;
           case 'TimeService':
             // Extremely not interesting

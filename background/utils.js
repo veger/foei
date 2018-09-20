@@ -44,3 +44,16 @@ function copyRevenue (result) {
 
   return undefined;
 }
+
+var createRingBuffer = function (length) {
+  var pointer = 0, buffer = [];
+
+  return {
+    get: function (key) { return buffer[key]; },
+    push: function (item) {
+      buffer[pointer] = item;
+      pointer = (length + pointer + 1) % length;
+    },
+    length: length
+  };
+};
