@@ -47,6 +47,9 @@ chrome.runtime.onInstalled.addListener(function () {
       for (var i = 0; i < request.jsonResponse.length; i++) {
         response = request.jsonResponse[i];
         switch (response.requestClass) {
+          case 'BattlefieldService':
+            battleField.process(response.requestMethod, response.responseData, response.requestId);
+            break;
           case 'CityMapService':
             cityMap.process(response.requestMethod, response.responseData, response.requestId);
             break;
