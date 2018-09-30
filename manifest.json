@@ -23,6 +23,7 @@
     "matches": ["https://*.forgeofempires.com/game/*"],
     "js": ["inject.js"]
   }],
+  "content_security_policy": "script-src 'self' https://code.jquery.com/ https://cdnjs.cloudflare.com/ajax/libs/popper.js/ https://stackpath.bootstrapcdn.com/; object-src 'self'",
   "web_accessible_resources": ["ajax_inspect.js"],
   "options_page": "options.html",
   "page_action": {
