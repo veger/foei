@@ -114,7 +114,7 @@ consts = {
   valueGoods: function (goodsArray) {
     amount = 0;
     for (var i = 0; i < goodsArray.length; i++) {
-      amount += goodsArray[i].value * consts.getGoodsAge(goodsArray[i].good_id);
+      amount += goodsArray[i].value * Math.pow(2, consts.getGoodsAge(goodsArray[i].good_id) - 1);
     }
     return amount;
   },
