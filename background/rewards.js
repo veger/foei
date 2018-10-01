@@ -20,7 +20,9 @@ rewards = {
             position: reward.position.context
           });
         }
+        parsedReward = sortByKey(parsedReward, 'active');
         console.warn('Hidden rewards', parsedReward);
+        chrome.runtime.sendMessage({ 'rewards': parsedReward });
         break;
       default:
         if (trace || debug) {

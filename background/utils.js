@@ -7,10 +7,10 @@ function humanReadableTime (seconds) {
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
-function sortValue (array) {
+function sortByKey (array, key) {
   for (var i = 0; i < array.length; i++) {
     for (var j = i + 1; j < array.length; j++) {
-      if (array[i].value < array[j].value) {
+      if (array[i][key] < array[j][key]) {
         [ array[i], array[j] ] = [ array[j], array[i] ];
       }
     }
