@@ -12,6 +12,7 @@ otherPlayer = {
         suppliesMax = { value: 0};
         moneyMax = { value: 0};
         spMax = { value: 0};
+        medalsMax = { value: 0};
         clanPowerMax = { value: 0};
         goods = [];
         for (var i = 0; i < results.length; i++) {
@@ -32,6 +33,9 @@ otherPlayer = {
             if (result.revenue.supplies > suppliesMax.value) {
               suppliesMax = { value: result.revenue.supplies, name: result.id, all: copyRevenue(result)};
             }
+            if (result.revenue.medals > medalsMax.value) {
+              medalsMax = { value: result.revenue.medals, name: result.id, all: copyRevenue(result)};
+            }
             if (result.revenue.strategy_points && result.revenue.strategy_points.currentSP > spMax.value) {
               spMax = { value: result.revenue.strategy_points.currentSP, name: result.id, all: copyRevenue(result)};
             }
@@ -48,13 +52,16 @@ otherPlayer = {
           console.log('sp', spMax);
         }
         if (goods.length > 0) {
-          console.log(sortValue(goods));
+          console.log('goods', sortValue(goods));
         }
         if (moneyMax.value > 0) {
           console.log('money', moneyMax);
         }
         if (suppliesMax.value > 0) {
           console.log('supplies', suppliesMax);
+        }
+        if (medalsMax.value > 0) {
+          console.log('medals', medalsMax);
         }
         if (clanPowerMax.value > 0) {
           console.log('clan power', clanPowerMax);
@@ -64,6 +71,7 @@ otherPlayer = {
           goods: goods,
           moneyMax: moneyMax,
           suppliesMax: suppliesMax,
+          medalsMax: medalsMax,
           clanPowerMax: clanPowerMax
         }});
         break;

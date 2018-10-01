@@ -20,6 +20,9 @@ function updateRevenue (revenue) {
   if (revenue.moneyMax.value > 0) {
     plunderRows += addPlunderRow('money', revenue.moneyMax);
   }
+  if (revenue.medalsMax.value > 0) {
+    plunderRows += addPlunderRow('medal', revenue.medalsMax);
+  }
   if (revenue.clanPowerMax.value > 0) {
     plunderRows += addPlunderRow('clan_power', revenue.clanPowerMax);
   }
@@ -42,6 +45,9 @@ function createAllRows (all) {
   }
   if (all.money) {
     allRows += addPlunderRow('money', {value: all.money });
+  }
+  if (all.medals) {
+    allRows += addPlunderRow('medal', {value: all.medals});
   }
   if (all.clanPower) {
     allRows += addPlunderRow('clan_power', {value: all.clanPower});

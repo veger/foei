@@ -34,6 +34,9 @@ function copyRevenue (result) {
     if (result.revenue.strategy_points && result.revenue.strategy_points.currentSP) {
       revenue['sp'] = result.revenue.strategy_points.currentSP;
     }
+    if (result.revenue.medals) {
+      revenue['medals'] = result.revenue.medals;
+    }
   }
   if (entity.state.current_product && result.current_product.clan_power) {
     revenue['clan_power'] = entity.state.current_product.clan_power;
