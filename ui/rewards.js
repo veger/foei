@@ -1,7 +1,6 @@
 var rewardUpdateInterval;
 
 function updateRewards (rewards) {
-  console.log(JSON.stringify(rewards));
   clearInterval(rewardUpdateInterval);
   var start = new Date().getTime();
 
@@ -51,7 +50,7 @@ function addRewardRow (timePassed, reward) {
     activeInfo = humanReadableTime(secondsTime(reward.active) - timePassed);
   }
 
-  row = '<tr><td>' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + reward.type + '</td><td>' + reward.position + '</td></tr>';
+  row = '<tr><td>' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.position + '</td></tr>';
 
   return row;
 }
@@ -62,3 +61,22 @@ function hasRowTime (active, timePassed) {
   }
   return secondsTime(active) - timePassed > 1;
 }
+
+function rewardType (type) {
+  if (incidents.hasOwnProperty(type)) {
+    return '<img style="height:50px;" title="' + type + '" src="/ui/icons/hr/' + type + '.png"></td><td>' + incidents[type];
+  }
+  return '</td><td>' + type;
+}
+
+var incidents = {
+  'incident_beehive': 'beehive',
+  'incident_broken_cart': 'broken cart',
+  'incident_crates': 'crates'
+  'incident_blocked_road_2x2': 'blocked road',
+  'incident_clothesline': 'clothesline',
+  'incident_fallen_tree_2x2': 'fallen tree',
+  'incident_flotsam': 'flotsam',
+  'incident_kite': 'kite in tree',
+  'incident_pothole_2x2': 'pothole',
+};
