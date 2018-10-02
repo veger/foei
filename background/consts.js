@@ -26,7 +26,7 @@ consts = {
     wine: 'BronzeAge',
     dye: 'BronzeAge',
     sandstone: 'BronzeAge',
-    marble: 'BronzeAge',
+    alabaster: 'BronzeAge', // bug in game?
 
     gems: 'IronAge',
     lead: 'IronAge',
@@ -38,7 +38,7 @@ consts = {
     gold: 'EarlyMiddleAge',
     bronze: 'EarlyMiddleAge',
     granite: 'EarlyMiddleAge',
-    alabaster: 'EarlyMiddleAge',
+    marble: 'EarlyMiddleAge', // bug in game?
 
     glass: 'HighMiddleAge',
     salt: 'HighMiddleAge',

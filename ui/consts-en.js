@@ -14,6 +14,7 @@ var i18n = {
   'R_MultiAge_RoyalBonusSet17a': 'King Statue',
   'R_MultiAge_RoyalBonusSet17b': 'Queens Statue',
   'P_MultiAge_SportBonus17': 'Arena of Victors',
+  'R_MultiAge_SportBonus17c': 'Pillar of Heroes',
   'L_AllAge_SpringBonusSet17': '? Gong of Wisdom ?',
   'R_MultiAge_SpringBonusSet17a': 'Zen Zone',
   'R_MultiAge_SpringBonusSet17b': "Emperor's Entrance",
