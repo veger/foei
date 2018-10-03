@@ -70,13 +70,14 @@ function rewardType (type) {
 }
 
 var incidents = {
+  'ge_relic_rare': 'rare relic',
   'incident_beehive': 'beehive',
   'incident_broken_cart': 'broken cart',
-  'incident_crates': 'crates'
+  'incident_crates': 'crates',
   'incident_blocked_road_2x2': 'blocked road',
   'incident_clothesline': 'clothesline',
   'incident_fallen_tree_2x2': 'fallen tree',
   'incident_flotsam': 'flotsam',
   'incident_kite': 'kite in tree',
-  'incident_pothole_2x2': 'pothole',
+  'incident_pothole_2x2': 'pothole'
 };
