@@ -22,7 +22,7 @@ rewards = {
         }
         parsedReward = sortByKey(parsedReward, 'active');
         console.warn('Hidden rewards', parsedReward);
-        chrome.runtime.sendMessage({ 'rewards': parsedReward });
+        sendMessageCache({ 'rewards': parsedReward });
         break;
       default:
         if (trace || debug) {

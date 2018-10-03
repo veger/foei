@@ -1,13 +1,15 @@
 chrome.extension.onMessage.addListener(
-    function (request, sender, sendResponse) {
-      if (request.revenue) {
-        updatePlunder(request.revenue);
-      }
-      if (request.rewards) {
-        updateRewards(request.rewards);
-      }
+  function (request, sender, sendResponse) {
+    console.log(request);
+    if (request.revenue) {
+      updatePlunder(request.revenue);
     }
-  );
+    if (request.rewards) {
+      updateRewards(request.rewards);
+    }
+  }
+);
+chrome.extension.sendMessage({ 'resend_messages': true });
 
 function humanReadableTime (seconds) {
   var hours = Math.floor(seconds / 3600);

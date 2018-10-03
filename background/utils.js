@@ -60,3 +60,11 @@ var createRingBuffer = function (length) {
     length: length
   };
 };
+
+var msgCache = {};
+
+function sendMessageCache (msg) {
+  chrome.runtime.sendMessage(msg);
+
+  msgCache = { ...msgCache, ...msg};
+}

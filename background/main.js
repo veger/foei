@@ -29,6 +29,9 @@ chrome.runtime.onInstalled.addListener(function () {
         if (request.hasOwnProperty('trace')) {
           setTrace(request.trace);
         }
+        if (request.hasOwnProperty('resend_messages')) {
+          chrome.runtime.sendMessage(msgCache);
+        }
       });
 
   chrome.runtime.onMessageExternal.addListener(

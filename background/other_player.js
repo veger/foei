@@ -66,7 +66,7 @@ otherPlayer = {
         if (clanPowerMax.value > 0) {
           console.log('clan power', clanPowerMax);
         }
-        chrome.runtime.sendMessage({ 'revenue': {
+        sendMessageCache({ 'revenue': {
           spMax: spMax,
           goods: goods,
           moneyMax: moneyMax,
