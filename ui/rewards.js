@@ -71,13 +71,22 @@ function rewardType (type) {
 
 var incidents = {
   'ge_relic_rare': 'rare relic',
+  'ge_relic_common': 'common relic',
+  'ge_relic_uncommon': 'uncommon relic',
   'incident_beehive': 'beehive',
   'incident_broken_cart': 'broken cart',
   'incident_crates': 'crates',
   'incident_blocked_road_2x2': 'blocked road',
+  'incident_castaway': 'castaway',
   'incident_clothesline': 'clothesline',
+  'incident_dinosaur_bones': 'dinosaur bones',
+  'incident_fallen_tree_1x1': 'fallen tree',
   'incident_fallen_tree_2x2': 'fallen tree',
+  'incident_fruit_vendor': 'fruit vendor',
   'incident_flotsam': 'flotsam',
   'incident_kite': 'kite in tree',
-  'incident_pothole_2x2': 'pothole'
+  'incident_overgrowth': 'overgrowth',
+  'incident_pothole_2x2': 'pothole',
+  'incident_statue': 'statue',
+  'incident_treasure_chest': 'treasure chest'
 };
