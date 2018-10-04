@@ -20,21 +20,22 @@ chrome.runtime.onInstalled.addListener(function () {
       actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
   });
+});
 
-  chrome.extension.onMessage.addListener(
-      function (request, sender, sendResponse) {
-        if (request.hasOwnProperty('debug')) {
-          setDebug(request.debug);
-        }
-        if (request.hasOwnProperty('trace')) {
-          setTrace(request.trace);
-        }
-        if (request.hasOwnProperty('resend_messages')) {
-          chrome.runtime.sendMessage(msgCache);
-        }
-      });
+chrome.extension.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.hasOwnProperty('debug')) {
+      setDebug(request.debug);
+    }
+    if (request.hasOwnProperty('trace')) {
+      setTrace(request.trace);
+    }
+    if (request.hasOwnProperty('resend_messages')) {
+      chrome.runtime.sendMessage(msgCache);
+    }
+  });
 
-  chrome.runtime.onMessageExternal.addListener(
+chrome.runtime.onMessageExternal.addListener(
   function (request, sender, sendResponse) {
     if (request.jsonRequest) {
       if (trace) {
@@ -78,7 +79,6 @@ chrome.runtime.onInstalled.addListener(function () {
       // sendResponse({farewell: "goodbye"});
     }
   });
-});
 
 function setDebug (value) {
   debug = value;
