@@ -87,6 +87,7 @@ var incidents = {
   'incident_kite': 'kite in tree',
   'incident_overgrowth': 'overgrowth',
   'incident_pothole_2x2': 'pothole',
+  'incident_sos': 'SOS',
   'incident_statue': 'statue',
   'incident_treasure_chest': 'treasure chest'
 };

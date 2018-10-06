@@ -54,6 +54,7 @@ consts = {
 
     coffee: 'ColonialAge',
     wire: 'ColonialAge',
+    tar: 'ColonialAge',
 
     tinplate: 'ProgressiveEra',
     asbestos: 'ProgressiveEra',
@@ -138,11 +139,12 @@ consts = {
 
     catapult: { name: 'Katapult', type: 'kata'},
     cataphract: { name: 'Zware calvalerie', type: 'snel' },
+    spearman: { name: 'Huurling', type: 'licht'},
 
     trebuchet: { name: 'Trebuchet', type: 'treb' },
     feudal_knight: { name: 'Ridder', type: 'snel' },
     crossbowman: { name: 'Kruisboogschutter', type: 'range' },
-    legionnaire: { name: 'Legionair', type: '' },
+    legionnaire: { name: 'Legionair', type: 'zwaar' },
     dismounted_knight: { name: 'Zware infanterie', type: 'zwaar' },
     axe_hammer_warrior: { name: 'Berserker', type: 'licht' },
 
@@ -156,6 +158,7 @@ consts = {
     grenadier: { name: 'Grenadier', type: 'gren' },
     cannoniers: { name: 'Veldkanon', type: 'vkanon' },
 
+    IronAge_champion: { name: 'Kampioen', type: 'champ' },
     EarlyMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
     HighMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
     LateMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
