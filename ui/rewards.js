@@ -14,6 +14,7 @@ function updateRewards (rewards) {
 
 function updateRewardsDetails (timePassed, rewards) {
   rewardsRows = '';
+  hasActiveUncommon = false;
   hasActive = false;
   hasInactive = false;
   for (var i = 0; i < rewards.length; i++) {
@@ -21,11 +22,13 @@ function updateRewardsDetails (timePassed, rewards) {
     if (rewards[i].active !== true) {
       if (secondsTime(rewards[i].active) - timePassed < 1) {
         hasActive = true;
+        hasActiveUncommon |= isUncommon(rewards[i]);
       } else {
         hasInactive = true;
       }
     } else {
       hasActive = true;
+      hasActiveUncommon |= isUncommon(rewards[i]);
     }
   }
   if (rewardsRows == '') {
@@ -33,15 +36,15 @@ function updateRewardsDetails (timePassed, rewards) {
   }
   $('#rewards-body').html(rewardsRows);
 
-  updateRewardsTab(hasActive);
+  updateRewardsTab(hasActive, hasActiveUncommon);
   if (!hasInactive) {
     clearInterval(rewardUpdateInterval);
     rewardUpdateInterval = undefined;
   }
 }
 
-function updateRewardsTab (active) {
-  $('#rewards-tab').html((active ? '<i style="color: orange" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards');
+function updateRewardsTab (active, uncommon) {
+  $('#rewards-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards');
 }
 
 function addRewardRow (timePassed, reward) {
@@ -53,6 +56,10 @@ function addRewardRow (timePassed, reward) {
   row = '<tr><td>' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.position + '</td></tr>';
 
   return row;
+}
+
+function isUncommon (reward) {
+  return reward.rarity == 'uncommon' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
 }
 
 function hasRowTime (active, timePassed) {
