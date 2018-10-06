@@ -24,20 +24,28 @@ battleField = {
         }
         break;
       case 'submitMove':
-        if (data.ranking_data) {
+      case 'surrender':
+        if (data.surrenderBit || data.winnerBit) {
           battleWon = data.ranking_data.winner == 1;
+          unitsDied = {};
 
           var lostHP = 0;
           for (var i = 0; i < data.unitsOrder.length; i++) {
             unitInfo = data.unitsOrder[i];
             if (unitInfo.teamFlag == 1) {
-              lostHP += unitInfo.startHitpoints - unitInfo.currentHitpoints;
+              if (unitInfo.currentHitpoints === undefined) {
+                // Unit died
+                lostHP += unitInfo.startHitpoints;
+                unitsDied[unitInfo.unitTypeId] = (unitsDied[unitInfo.unitTypeId] | 0) + 1;
+              } else {
+                lostHP += unitInfo.startHitpoints - unitInfo.currentHitpoints;
+              }
             }
           }
           if (debug) {
-            console.log('Battle ' + (battleWon ? 'won' : 'lost') + ' lost HP: ' + lostHP);
+            console.log('Battle ' + (battleWon ? 'won' : 'lost') + ' lost HP: ' + lostHP + ' died: ', unitsDied);
           }
-          battleField.storeBattleResults(battleWon, lostHP);
+          battleField.storeBattleResults(battleWon, data.surrenderBit == 1, lostHP, unitsDied);
         }
         break;
       default:
@@ -115,13 +123,22 @@ battleField = {
     });
   },
 
-  storeBattleResults: function (battleWon, lostHP) {
+  storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied) {
     chrome.storage.sync.get({'playerArmies': {}}, function (result) {
+      console.log(battleWon, surrendered, lostHP, unitsDied);
+
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[battleField.lastPlayerAttacked] || {};
 
-      armyDetails.battles.details[armyDetails.battles.details.length - 1].lostHp = lostHP;
-      armyDetails.battles.details[armyDetails.battles.details.length - 1].won = battleWon;
+      details = armyDetails.battles.details[armyDetails.battles.details.length - 1];
+      details.lostHp = lostHP;
+      if (Object.keys(unitsDied).length > 0) {
+        details.unitsDied = unitsDied;
+      }
+      details.won = battleWon;
+      details.surrendered = surrendered;
+      armyDetails.battles.details[armyDetails.battles.details.length - 1] = details;
+
       armyDetails.battles[battleWon ? 'wins' : 'loses']++;
 
       armyDetails.lastAccess = Date.now();

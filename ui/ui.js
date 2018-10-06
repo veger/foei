@@ -1,11 +1,13 @@
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
-    console.log(request);
     if (request.revenue) {
       updatePlunder(request.revenue);
     }
     if (request.rewards) {
       updateRewards(request.rewards);
+    }
+    if (request.battleStats) {
+      updateBattleStats(request.battleStats);
     }
   }
 );
