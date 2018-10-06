@@ -18,6 +18,23 @@ function sortByKey (array, key) {
   return array;
 }
 
+function mapEqual (map1, map2, reversedOrder) {
+  for (propName in map1) {
+    if (!map1.hasOwnProperty(propName)) {
+      continue;
+    }
+
+    if (!map2.hasOwnProperty(propName)) {
+      return false;
+    }
+    if (map1[propName] != map2[propName]) {
+      return false;
+    }
+  }
+  // Make sure that all key/values of map2 are also present in map1
+  return (reversedOrder ? true : mapEqual(map2, map1, true));
+}
+
 function copyRevenue (result) {
   revenue = {};
 
