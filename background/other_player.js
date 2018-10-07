@@ -76,12 +76,7 @@ otherPlayer = {
         }});
 
         // Provide battle information of this player
-        chrome.storage.sync.get({'playerArmies': {}}, function (result) {
-          playerArmies = result.playerArmies;
-          var armyDetails = playerArmies[data.other_player.player_id] || {};
-
-          chrome.runtime.sendMessage({'battleStats': armyDetails});
-        });
+        sendPlayerArmies(data.other_player.player_id);
         break;
       default:
         if (trace || debug) {

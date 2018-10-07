@@ -85,3 +85,12 @@ function sendMessageCache (msg) {
 
   msgCache = { ...msgCache, ...msg};
 }
+
+function sendPlayerArmies (playerId) {
+  chrome.storage.sync.get({'playerArmies': {}}, function (result) {
+    playerArmies = result.playerArmies;
+    var armyDetails = playerArmies[playerId] || {};
+
+    chrome.runtime.sendMessage({'battleStats': armyDetails});
+  });
+}

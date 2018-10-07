@@ -120,6 +120,8 @@ battleField = {
       armyDetails.lastAccess = Date.now();
       playerArmies[playerId] = armyDetails;
       chrome.storage.sync.set({'playerArmies': playerArmies});
+
+      sendPlayerArmies(playerId);
     });
   },
 
@@ -136,6 +138,7 @@ battleField = {
         details.unitsDied = unitsDied;
       }
       details.won = battleWon;
+      details.lost = !battleWon;
       details.surrendered = surrendered;
       armyDetails.battles.details[armyDetails.battles.details.length - 1] = details;
 
@@ -144,6 +147,8 @@ battleField = {
       armyDetails.lastAccess = Date.now();
       playerArmies[battleField.lastPlayerAttacked] = armyDetails;
       chrome.storage.sync.set({'playerArmies': playerArmies});
+
+      sendPlayerArmies(battleField.lastPlayerAttacked);
 
       battleField.lastPlayerAttacked = -1;
     });

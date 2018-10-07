@@ -44,7 +44,9 @@ function battleReport (battle, showLabel) {
     reportHTML += '<div class="col-2">Last battle:</div>';
   }
   reportHTML += '<div class="col-' + (showLabel ? 10 : 12) + '">';
-  if (battle.won) {
+  if (!battle.won && !battle.lost) {
+    reportHTML += '<span>active';
+  } else if (battle.won) {
     reportHTML += '<span style="color: green;">won';
   } else {
     reportHTML += '<span style="color: red;">';
