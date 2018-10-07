@@ -1,5 +1,6 @@
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
+    console.log(request);
     if (request.revenue) {
       updatePlunder(request.revenue);
     }
@@ -8,6 +9,9 @@ chrome.extension.onMessage.addListener(
     }
     if (request.battleStats) {
       updateBattleStats(request.battleStats);
+    }
+    if (request.gbFpAnalysis) {
+      updateGreatBuildingAnalysis(request.gbFpAnalysis);
     }
   }
 );

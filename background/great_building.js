@@ -3,7 +3,7 @@ greatBuilding = {
   requiredFP: 0,
   process: function (method, data, id) {
     if (trace) {
-      console.log(data);
+      console.log(method, data);
     }
     switch (method) {
       case 'getConstruction':
@@ -25,14 +25,54 @@ greatBuilding = {
             }
           }
         }
+        freeFP = (greatBuilding.requiredFP - investedFP);
 
-        console.log('investedFP: ' + investedFP, 'user (#' + (userIndex + 1) + '): ' + userFP);
+        if (debug) {
+          console.log('free SP: ' + freeFP + ' (' + (freeFP / 2) + ')');
+          console.log('user (#' + (userIndex + 1) + '): ' + userFP);
+        }
 
-        var investAdvice = -1;
-        // TODO Calculate profit for all rankings (with `reward`)
-        // TODO Calculate risk
-        // TODO * safe profit on current ranks
-        // TODO * still safe profit when dropping ranks?
+        var fpAnalysis = [];
+        var rank = 0;
+        var i = -1;
+        while (rank <= 5 && i < data.rankings.length - 1) {
+          i++;
+          ranking = data.rankings[i];
+          if (ranking.reward === undefined) {
+            // Probably (hopefully) owner
+            j--;
+            continue;
+          }
+          rank = ranking.rank;
+
+          if (ranking.forge_points >= userFP + freeFP) {
+            fpAnalysis.push(false);
+            continue;
+          }
+
+          // Calculate profit for all rankings (with `reward`)
+          fpCurrent = (ranking.forge_points || 0);
+
+          requiredFP = fpCurrent - userFP + Math.ceil((freeFP - fpCurrent) / 2);
+          profit = (ranking.reward.strategy_point_amount || 0) - requiredFP - userFP;
+
+          fpAnalysis.push({
+            spotSafe: requiredFP,
+            profit: profit,
+            reward: {
+              // TODO Arc bonus missing
+              fp: ranking.reward.strategy_point_amount,
+              blueprints: ranking.reward.blueprints,
+              medals: ranking.reward.resources.medals
+            }
+          });
+        }
+
+        if (debug) {
+          console.log(fpAnalysis);
+        }
+
+        sendMessageCache({gbFpAnalysis: fpAnalysis});
         break;
       default:
         if (trace || debug) {
