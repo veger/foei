@@ -40,24 +40,41 @@ greatBuilding = {
           ranking = data.rankings[i];
           if (ranking.reward === undefined) {
             // Probably (hopefully) owner
-            j--;
             continue;
           }
           rank = ranking.rank;
 
-          if (ranking.forge_points >= userFP + freeFP) {
-            fpAnalysis.push(false);
-            continue;
+          var investedByOthers = 0;
+          var bestSpotFP = greatBuilding.requiredFP;
+          var rankj = 0;
+          var j = i + 1;
+          while (rankj <= 5 && j >= 1) {
+            j--;
+            if (data.rankings[j].reward === undefined) {
+              // Probably (hopefully) owner
+              continue;
+            }
+            rankj = data.rankings[j].rank;
+
+            // TODO Doesn't work properly with userFP != 0
+            investedByOthers += (data.rankings[j].forge_points || 0);
+            tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2));
+            if (tmp <= data.rankings[j].forge_points) {
+              tmp = data.rankings[j].forge_points + 1;
+            }
+            if (tmp < bestSpotFP) {
+              bestSpotFP = tmp;
+            }
           }
 
-          // Calculate profit for all rankings (with `reward`)
-          fpCurrent = (ranking.forge_points || 0);
+          if (bestSpotFP > freeFP) {
+            fpAnalysis.push(false);
+          }
 
-          requiredFP = fpCurrent - userFP + Math.ceil((freeFP - fpCurrent) / 2);
-          profit = (ranking.reward.strategy_point_amount || 0) - requiredFP - userFP;
+          profit = (ranking.reward.strategy_point_amount || 0) - bestSpotFP;
 
           fpAnalysis.push({
-            spotSafe: requiredFP,
+            spotSafe: bestSpotFP,
             profit: profit,
             reward: {
               // TODO Arc bonus missing
