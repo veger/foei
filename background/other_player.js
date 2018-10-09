@@ -80,7 +80,7 @@ otherPlayer = {
         break;
       default:
         if (trace || debug) {
-          console.log(method + ' is not used');
+          console.log('otherPlayer.' + method + ' is not used');
         }
     }
   },

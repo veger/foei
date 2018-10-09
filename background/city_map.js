@@ -9,7 +9,7 @@ cityMap = {
         break;
       default:
         if (trace || debug) {
-          console.log(method + ' is not used');
+          console.log('CitymapService.' + method + ' is not used');
         }
     }
   }

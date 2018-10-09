@@ -21,12 +21,14 @@ rewards = {
           });
         }
         parsedReward = sortByKey(parsedReward, 'active');
-        console.warn('Hidden rewards', parsedReward);
+        if (debug) {
+          console.log('Hidden rewards', parsedReward);
+        }
         sendMessageCache({ 'rewards': parsedReward });
         break;
       default:
         if (trace || debug) {
-          console.log(method + ' is not used');
+          console.log('rewardsService.' + method + ' is not used');
         }
     }
   }

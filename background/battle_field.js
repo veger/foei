@@ -50,7 +50,7 @@ battleField = {
         break;
       default:
         if (trace || debug) {
-          console.log(method + ' is not used');
+          console.log('battleFieldService.' + method + ' is not used');
         }
     }
   },

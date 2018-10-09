@@ -71,7 +71,7 @@ chrome.runtime.onMessageExternal.addListener(
             break;
           default:
             if (trace || debug) {
-              console.log(response.requestClass + ' is not used');
+              console.log(response.requestClass + '.' + response.requestMethod + ' is not used');
             }
         }
       }
