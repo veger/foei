@@ -25,6 +25,10 @@ battleField = {
         break;
       case 'submitMove':
       case 'surrender':
+        if (battleField.lastPlayerAttacked < 0) {
+        // Unknown player (Expedition, or error), no need to update battle statistics
+          break;
+        }
         if (data.surrenderBit || data.winnerBit) {
           battleWon = data.ranking_data.winner == 1;
           unitsDied = {};
