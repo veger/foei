@@ -22,12 +22,24 @@ function addGreatBuildingRow (spot, analysis) {
     row += iconImage('blueprint') + ' ' + analysis.reward.blueprints;
   }
   row += '</td><td>';
+  if (analysis.reward.blueprintsBonus) {
+    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.blueprintsBonus;
+  }
+  row += '</td><td>';
   if (analysis.reward.medals) {
     row += iconImage('medal') + ' ' + analysis.reward.medals;
   }
   row += '</td><td>';
+  if (analysis.reward.medalsBonus) {
+    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.medalsBonus;
+  }
+  row += '</td><td>';
   if (analysis.reward.fp) {
     row += iconImage('sp') + ' ' + analysis.reward.fp;
+  }
+  row += '</td><td>';
+  if (analysis.reward.fpBonus) {
+    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.fpBonus;
   }
   row += '</td>';
 

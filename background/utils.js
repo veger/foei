@@ -94,3 +94,7 @@ function sendPlayerArmies (playerId) {
     chrome.runtime.sendMessage({'battleStats': armyDetails});
   });
 }
+
+function fixFloat (number) {
+  return parseFloat(number).toPrecision(4);
+}

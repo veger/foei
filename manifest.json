@@ -12,7 +12,8 @@
       "background/city_map.js",
       "background/great_building.js",
       "background/other_player.js",
-      "background/rewards.js"
+      "background/rewards.js",
+      "background/startup.js"
     ],
     "persistent": false
   },

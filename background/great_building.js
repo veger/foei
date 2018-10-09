@@ -1,6 +1,7 @@
 greatBuilding = {
   requestId: -1,
   requiredFP: 0,
+  arcBonus: 0,
   process: function (method, data, id) {
     if (trace) {
       console.log(method, data);
@@ -69,18 +70,21 @@ greatBuilding = {
 
           if (bestSpotFP > freeFP) {
             fpAnalysis.push(false);
+            continue;
           }
 
-          profit = (ranking.reward.strategy_point_amount || 0) - bestSpotFP;
+          profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP));
 
           fpAnalysis.push({
             spotSafe: bestSpotFP,
             profit: profit,
             reward: {
-              // TODO Arc bonus missing
               fp: ranking.reward.strategy_point_amount,
+              fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
               blueprints: ranking.reward.blueprints,
-              medals: ranking.reward.resources.medals
+              blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
+              medals: ranking.reward.resources.medals,
+              medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
             }
           });
         }
@@ -100,5 +104,15 @@ greatBuilding = {
   storeBuildingInfo: function (requestId, requiredFP) {
     greatBuilding.requestId = requestId;
     greatBuilding.requiredFP = requiredFP;
+  },
+  setArcBonus: function (bonus) {
+    bonus = fixFloat(bonus / 100);
+    greatBuilding.arcBonus = bonus;
+    chrome.storage.sync.set({'arcBonus': bonus});
   }
 };
+
+chrome.storage.sync.get({'arcBonus': 0}, function (result) {
+  greatBuilding.arcBonus = parseFloat(result.arcBonus);
+  console.log(greatBuilding.arcBonus);
+});

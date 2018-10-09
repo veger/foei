@@ -66,6 +66,8 @@ chrome.runtime.onMessageExternal.addListener(
           case 'OtherPlayerService':
             otherPlayer.process(response.requestMethod, response.responseData, response.requestId);
             break;
+          case 'StartupService':
+            startup.process(response.requestMethod, response.responseData, response.requestId);
           case 'TimeService':
             // Extremely not interesting
             break;
