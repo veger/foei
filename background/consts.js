@@ -55,6 +55,7 @@ consts = {
     coffee: 'ColonialAge',
     wire: 'ColonialAge',
     tar: 'ColonialAge',
+    porcelain: 'ColonialAge',
 
     tinplate: 'ProgressiveEra',
     asbestos: 'ProgressiveEra',

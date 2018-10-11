@@ -15,8 +15,14 @@ startup = {
             greatBuilding.setArcBonus(entities[i].bonus.value);
           }
         }
+
+        var goods = {};
+        var goodsList = data.goodsList;
+        for (var i = 0; i < goodsList.length; i++) {
+          // good =
+          // goods[]
+        }
         break;
-        // TODO Process data.goodsList
       default:
         if (trace || debug) {
           console.log('startupService.' + method + ' is not used');

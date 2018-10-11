@@ -92,9 +92,14 @@ var incidents = {
   'incident_fruit_vendor': 'fruit vendor',
   'incident_flotsam': 'flotsam',
   'incident_kite': 'kite in tree',
+  'incident_mammoth_bones': 'mammoth bones',
   'incident_overgrowth': 'overgrowth',
   'incident_pothole_2x2': 'pothole',
+  'incident_rhino': 'rhino',
+  'incident_sculptor': 'sculptor',
   'incident_sos': 'SOS',
   'incident_statue': 'statue',
-  'incident_treasure_chest': 'treasure chest'
+  'incident_stick_hut': 'stick hut',
+  'incident_treasure_chest': 'treasure chest',
+  'incident_wine_cask': 'wine casks'
 };
