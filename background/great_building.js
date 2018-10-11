@@ -16,29 +16,46 @@ greatBuilding = {
         investedFP = 0;
         userFP = 0;
         userIndex = -1;
+
+        // Remove player from rankings as this messes the calculations
+        // (it is an investment that is already done on behalf of the player)
+        rankings = [];
         for (var i = 0; i < data.rankings.length; i++) {
           ranking = data.rankings[i];
+          rankings.push(ranking);
+          if (userIndex != -1) {
+            // Move all other investments one up, to remove the player investment
+            rankings[i - 1].forge_points = rankings[i].forge_points;
+            rankings[i].forge_points == undefined;
+          }
+
           if (ranking.forge_points) {
-            investedFP += ranking.forge_points;
             if (ranking.player.is_self) {
               userIndex = i;
               userFP = ranking.forge_points;
+            } else {
+              // Only count non-player investments
+              investedFP += ranking.forge_points;
             }
           }
+        }
+        if (userIndex != -1) {
+          // Remove last investment, as they all moved up by one
+          rankings[rankings.length - 1].forge_points = undefined;
         }
         freeFP = (greatBuilding.requiredFP - investedFP);
 
         if (debug) {
-          console.log('free SP: ' + freeFP + ' (' + (freeFP / 2) + ')');
+          console.log('free FP (excluding player): ' + freeFP + ' (' + (freeFP / 2) + ')');
           console.log('user (#' + (userIndex + 1) + '): ' + userFP);
         }
 
         var fpAnalysis = [];
         var rank = 0;
         var i = -1;
-        while (rank <= 5 && i < data.rankings.length - 1) {
+        while (rank <= 5 && i < rankings.length - 1) {
           i++;
-          ranking = data.rankings[i];
+          ranking = rankings[i];
           if (ranking.reward === undefined) {
             // Probably (hopefully) owner
             continue;
@@ -47,21 +64,18 @@ greatBuilding = {
 
           var investedByOthers = 0;
           var bestSpotFP = greatBuilding.requiredFP;
-          var rankj = 0;
           var j = i + 1;
-          while (rankj <= 5 && j >= 1) {
+          while (j >= 1) {
             j--;
-            if (data.rankings[j].reward === undefined) {
+            if (rankings[j].reward === undefined) {
               // Probably (hopefully) owner
               continue;
             }
-            rankj = data.rankings[j].rank;
 
-            // TODO Doesn't work properly with userFP != 0
-            investedByOthers += (data.rankings[j].forge_points || 0);
+            investedByOthers += (rankings[j].forge_points || 0);
             tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2));
-            if (tmp <= data.rankings[j].forge_points) {
-              tmp = data.rankings[j].forge_points + 1;
+            if (tmp <= rankings[j].forge_points) {
+              tmp = rankings[j].forge_points + 1;
             }
             if (tmp < bestSpotFP) {
               bestSpotFP = tmp;
@@ -70,6 +84,9 @@ greatBuilding = {
 
           if (bestSpotFP > freeFP) {
             fpAnalysis.push(false);
+            continue;
+          }
+          if (bestSpotFP < userFP) {
             continue;
           }
 
