@@ -96,5 +96,5 @@ function sendPlayerArmies (playerId) {
 }
 
 function fixFloat (number) {
-  return parseFloat(number).toPrecision(4);
+  return parseFloat(parseFloat(number).toPrecision(4));
 }

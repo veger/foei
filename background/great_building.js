@@ -109,10 +109,15 @@ greatBuilding = {
     bonus = fixFloat(bonus / 100);
     greatBuilding.arcBonus = bonus;
     chrome.storage.sync.set({'arcBonus': bonus});
+    if (debug) {
+      console.log('arc bonus: ', greatBuilding.arcBonus);
+    }
   }
 };
 
 chrome.storage.sync.get({'arcBonus': 0}, function (result) {
   greatBuilding.arcBonus = parseFloat(result.arcBonus);
-  console.log(greatBuilding.arcBonus);
+  if (debug) {
+    console.log('arc bonus: ', greatBuilding.arcBonus);
+  }
 });
