@@ -13,110 +13,114 @@ greatBuilding = {
           return;
         }
 
-        investedFP = 0;
-        userFP = 0;
-        userIndex = -1;
-
-        // Remove player from rankings as this messes the calculations
-        // (it is an investment that is already done on behalf of the player)
-        rankings = [];
-        for (var i = 0; i < data.rankings.length; i++) {
-          ranking = data.rankings[i];
-          rankings.push(ranking);
-          if (userIndex != -1) {
-            // Move all other investments one up, to remove the player investment
-            rankings[i - 1].forge_points = rankings[i].forge_points;
-            rankings[i].forge_points == undefined;
-          }
-
-          if (ranking.forge_points) {
-            if (ranking.player.is_self) {
-              userIndex = i;
-              userFP = ranking.forge_points;
-            } else {
-              // Only count non-player investments
-              investedFP += ranking.forge_points;
-            }
-          }
-        }
-        if (userIndex != -1) {
-          // Remove last investment, as they all moved up by one
-          rankings[rankings.length - 1].forge_points = undefined;
-        }
-        freeFP = (greatBuilding.requiredFP - investedFP);
+        gbFpAnalysis = greatBuilding.performAnalysis(data.rankings);
 
         if (debug) {
-          console.log('free FP (excluding player): ' + freeFP + ' (' + (freeFP / 2) + ')');
-          console.log('user (#' + (userIndex + 1) + '): ' + userFP);
+          console.log(gbFpAnalysis);
         }
 
-        var fpAnalysis = [];
-        var rank = 0;
-        var i = -1;
-        while (rank <= 5 && i < rankings.length - 1) {
-          i++;
-          ranking = rankings[i];
-          if (ranking.reward === undefined) {
-            // Probably (hopefully) owner
-            continue;
-          }
-          rank = ranking.rank;
-
-          var investedByOthers = 0;
-          var bestSpotFP = greatBuilding.requiredFP;
-          var j = i + 1;
-          while (j >= 1) {
-            j--;
-            if (rankings[j].reward === undefined) {
-              // Probably (hopefully) owner
-              continue;
-            }
-
-            investedByOthers += (rankings[j].forge_points || 0);
-            tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2));
-            if (tmp <= rankings[j].forge_points) {
-              tmp = rankings[j].forge_points + 1;
-            }
-            if (tmp < bestSpotFP) {
-              bestSpotFP = tmp;
-            }
-          }
-
-          if (bestSpotFP > freeFP) {
-            fpAnalysis.push(false);
-            continue;
-          }
-          if (bestSpotFP < userFP) {
-            continue;
-          }
-
-          profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP));
-
-          fpAnalysis.push({
-            spotSafe: bestSpotFP,
-            profit: profit,
-            reward: {
-              fp: ranking.reward.strategy_point_amount,
-              fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
-              blueprints: ranking.reward.blueprints,
-              blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
-              medals: ranking.reward.resources.medals,
-              medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
-            }
-          });
-        }
-
-        if (debug) {
-          console.log(fpAnalysis);
-        }
-
-        sendMessageCache({gbFpAnalysis: fpAnalysis});
+        sendMessageCache({gbFpAnalysis: gbFpAnalysis});
         break;
       default:
         if (trace || debug) {
           console.log(method + ' is not used');
         }
     }
+  },
+  performAnalysis: function (dataRankings) {
+    investedFP = 0;
+    userFP = 0;
+    userIndex = -1;
+
+    // Remove player from rankings as this messes the calculations
+    // (it is an investment that is already done on behalf of the player)
+    rankings = [];
+    for (var i = 0; i < dataRankings.length; i++) {
+      ranking = dataRankings[i];
+      rankings.push(ranking);
+      if (userIndex != -1) {
+        // Move all other investments one up, to remove the player investment
+        rankings[i - 1].forge_points = rankings[i].forge_points;
+        rankings[i].forge_points == undefined;
+      }
+
+      if (ranking.forge_points) {
+        if (ranking.player.is_self) {
+          userIndex = i;
+          userFP = ranking.forge_points;
+        } else {
+          // Only count non-player investments
+          investedFP += ranking.forge_points;
+        }
+      }
+    }
+    if (userIndex != -1) {
+      // Remove last investment, as they all moved up by one
+      rankings[rankings.length - 1].forge_points = undefined;
+    }
+    freeFP = (greatBuilding.requiredFP - investedFP);
+
+    if (debug) {
+      console.log('free FP (excluding player): ' + freeFP + ' (' + (freeFP / 2) + ')');
+      console.log('user (#' + (userIndex + 1) + '): ' + userFP);
+    }
+
+    var fpAnalysis = [];
+    var rank = 0;
+    var i = -1;
+    while (rank <= 5 && i < rankings.length - 1) {
+      i++;
+      ranking = rankings[i];
+      if (ranking.reward === undefined) {
+        // Probably (hopefully) owner
+        continue;
+      }
+      rank = ranking.rank;
+
+      var investedByOthers = 0;
+      var bestSpotFP = greatBuilding.requiredFP;
+      var j = i + 1;
+      while (j >= 1) {
+        j--;
+        if (rankings[j].reward === undefined) {
+          // Probably (hopefully) owner
+          continue;
+        }
+
+        investedByOthers += (rankings[j].forge_points || 0);
+        tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2));
+        if (tmp <= rankings[j].forge_points) {
+          tmp = rankings[j].forge_points + 1;
+        }
+        if (tmp < bestSpotFP) {
+          bestSpotFP = tmp;
+        }
+      }
+
+      if (bestSpotFP > freeFP) {
+        fpAnalysis.push(false);
+        continue;
+      }
+      if (bestSpotFP < userFP) {
+        continue;
+      }
+
+      profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP));
+
+      fpAnalysis.push({
+        spotSafe: bestSpotFP,
+        profit: profit,
+        reward: {
+          fp: ranking.reward.strategy_point_amount,
+          fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
+          blueprints: ranking.reward.blueprints,
+          blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
+          medals: ranking.reward.resources.medals,
+          medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
+        }
+      });
+    }
+    return fpAnalysis;
   },
   storeBuildingInfo: function (requestId, requiredFP) {
     greatBuilding.requestId = requestId;
