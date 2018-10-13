@@ -13,6 +13,9 @@ chrome.extension.onMessage.addListener(
     if (request.gbFpAnalysis) {
       updateGreatBuildingAnalysis(request.gbFpAnalysis);
     }
+    if (request.playerGBChanges) {
+      updateGreatBuildingChanges(request.playerGBChanges);
+    }
   }
 );
 chrome.extension.sendMessage({ 'resend_messages': true });

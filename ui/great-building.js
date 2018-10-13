@@ -15,6 +15,19 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
   $('#great-building-body').html(ggRows);
 }
 
+function updateGreatBuildingChanges (changes) {
+  ggRows = '';
+  if (changes.length > 0) {
+    for (var i = 0; i < changes.length; i++) {
+      ggRows += addGreatBuildingChangesRow(changes[i]);
+    }
+  } else {
+    ggRows = '<tr><td colspan="3">No recent changes</td></tr>';
+  }
+
+  $('#great-building-changes-body').html(ggRows);
+}
+
 function addGreatBuildingRow (spot, analysis) {
   row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('sp') + ' ' + analysis.profit : '>') + '</td>';
   row += '<td>';
@@ -44,4 +57,8 @@ function addGreatBuildingRow (spot, analysis) {
   row += '</td>';
 
   return row;
+}
+
+function addGreatBuildingChangesRow (change) {
+  return '<tr><td>' + change.name + '</td><td>' + moment.unix(change.last_spent).fromNow(true) + '</td><td>' + change.completePercentage + '%</td></tr>';
 }

@@ -21,6 +21,15 @@ greatBuilding = {
 
         sendMessageCache({gbFpAnalysis: gbFpAnalysis});
         break;
+      case 'getOtherPlayerOverview':
+        greatBuilding.checkGBChanges(data, function (changes) {
+          if (debug) {
+            console.log('playerGBChanges', changes);
+          }
+
+          sendMessageCache({playerGBChanges: changes});
+        });
+        break;
       default:
         if (trace || debug) {
           console.log(method + ' is not used');
@@ -121,6 +130,43 @@ greatBuilding = {
       });
     }
     return fpAnalysis;
+  },
+  checkGBChanges: function (data, resultCallback) {
+    if (data.length == 0) {
+      // Nothing to do
+      resultCallback([]);
+    }
+    var playerId = data[0].player.player_id;
+    chrome.storage.sync.get({'playerGBs': {}}, function (result) {
+      playerGB = (result.playerGBs[playerId]) || {};
+      changes = [];
+      now = Date.now() / 1000;
+      for (var i = 0; i < data.length; i++) {
+        if (playerGB[data[i].city_entity_id] === undefined || playerGB[data[i].city_entity_id].last_spent != data[i].last_spent || data[i].last_spent + 2 * 24 * 3600 > now) {
+          changes.push({
+            name: data[i].name,
+            last_spent: data[i].last_spent,
+            completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
+          });
+        }
+      }
+
+      newPlayerGB = {
+        lastAccess: Date.now()
+      };
+      for (var i = 0; i < data.length; i++) {
+        GBentry = playerGB[data[i].city_entity_id] || {};
+        GBentry.last_spent = data[i].last_spent,
+        GBentry.level = data[i].level,
+        GBentry.current_progress = data[i].current_progress;
+
+        newPlayerGB[data[i].city_entity_id] = GBentry;
+      }
+      result.playerGBs[playerId] = newPlayerGB;
+      chrome.storage.sync.set({'playerGBs': result.playerGBs});
+
+      resultCallback(changes);
+    });
   },
   storeBuildingInfo: function (requestId, requiredFP) {
     greatBuilding.requestId = requestId;
