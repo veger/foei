@@ -2,61 +2,76 @@ battleField = {
   lastPlayerAttacked: -1,
   process: function (method, data, id) {
     if (trace) {
-      console.log(data);
+      console.log('battleField.' + method, data);
     }
     switch (method) {
+      case 'autoFinish':
+        battleField.processStartBattle(data);
+        battleField.processBattleMove(data.state);
+        break;
       case 'startPvP':
-        armies = battleField.getArmies(data.state.unitsOrder);
-        bonuses = battleField.getBonuses(data.state.unitsOrder[0].bonuses);
-
-        battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'));
-
-        if (debug) {
-          console.log('attacker', armies[1]);
-          console.log('defender', armies[2]);
-
-          summary = [];
-          for (var [unitType, amount] of Object.entries(armies[3])) {
-            summary.push((amount > 1 ? amount + ' ' : '') + unitType);
-          }
-
-          console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join('/') + ')' : ''));
-        }
+        battleField.processStartBattle(data);
         break;
       case 'submitMove':
       case 'surrender':
-        if (battleField.lastPlayerAttacked < 0) {
-        // Unknown player (Expedition, or error), no need to update battle statistics
-          break;
-        }
-        if (data.surrenderBit || data.winnerBit) {
-          battleWon = data.ranking_data.winner == 1;
-          unitsDied = {};
-
-          var lostHP = 0;
-          for (var i = 0; i < data.unitsOrder.length; i++) {
-            unitInfo = data.unitsOrder[i];
-            if (unitInfo.teamFlag == 1) {
-              if (unitInfo.currentHitpoints === undefined) {
-                // Unit died
-                lostHP += unitInfo.startHitpoints;
-                unitsDied[unitInfo.unitTypeId] = (unitsDied[unitInfo.unitTypeId] | 0) + 1;
-              } else {
-                lostHP += unitInfo.startHitpoints - unitInfo.currentHitpoints;
-              }
-            }
-          }
-          if (debug) {
-            console.log('Battle ' + (battleWon ? 'won' : 'lost') + ' lost HP: ' + lostHP + ' died: ', unitsDied);
-          }
-          battleField.storeBattleResults(battleWon, data.surrenderBit == 1, lostHP, unitsDied);
-        }
+        battleField.processBattleMove(data);
         break;
       default:
         if (trace || debug) {
           console.log('battleFieldService.' + method + ' is not used');
         }
     }
+  },
+
+  processStartBattle: function (data) {
+    armies = battleField.getArmies(data.state.unitsOrder);
+    bonuses = battleField.getBonuses(data.state.unitsOrder[0].bonuses);
+
+    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'));
+
+    if (debug) {
+      console.log('attacker', armies[1]);
+      console.log('defender', armies[2]);
+
+      summary = [];
+      for (var [unitType, amount] of Object.entries(armies[3])) {
+        summary.push((amount > 1 ? amount + ' ' : '') + unitType);
+      }
+
+      console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join('/') + ')' : ''));
+    }
+  },
+
+  processBattleMove: function (data) {
+    if (battleField.lastPlayerAttacked < 0) {
+    // Unknown player (Expedition, or error), no need to update battle statistics
+      return;
+    }
+    if (!data.surrenderBit && !data.winnerBit) {
+      // Battle is not finished yet
+      return;
+    }
+
+    battleWon = data.ranking_data.winner == 1;
+    unitsDied = {};
+
+    var lostHP = 0;
+    for (var i = 0; i < data.unitsOrder.length; i++) {
+      unitInfo = data.unitsOrder[i];
+      if (unitInfo.teamFlag == 1) {
+        if (unitInfo.currentHitpoints === undefined) {
+            // Unit died
+          lostHP += unitInfo.startHitpoints;
+          unitsDied[unitInfo.unitTypeId] = (unitsDied[unitInfo.unitTypeId] | 0) + 1;
+        } else {
+          lostHP += unitInfo.startHitpoints - unitInfo.currentHitpoints;
+        }
+      }
+    }
+    if (debug) {
+      console.log('Battle ' + (battleWon ? 'won' : 'lost') + ', lost HP: ' + lostHP + ' died: ', unitsDied);
+    }
+    battleField.storeBattleResults(battleWon, data.surrenderBit == 1, lostHP, unitsDied);
   },
 
   getArmies: function (armiesData) {
@@ -131,8 +146,6 @@ battleField = {
 
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied) {
     chrome.storage.sync.get({'playerArmies': {}}, function (result) {
-      console.log(battleWon, surrendered, lostHP, unitsDied);
-
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[battleField.lastPlayerAttacked] || {};
 
