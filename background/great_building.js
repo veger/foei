@@ -151,6 +151,13 @@ greatBuilding = {
         }
       }
 
+      if (changes.length == 0) {
+        changes = [{
+          name: 'last change',
+          last_spent: data[0].last_spent
+        }];
+      }
+
       newPlayerGB = {
         lastAccess: Date.now()
       };

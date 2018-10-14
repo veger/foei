@@ -17,12 +17,16 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
 
 function updateGreatBuildingChanges (changes) {
   ggRows = '';
-  if (changes.length > 0) {
-    for (var i = 0; i < changes.length; i++) {
-      ggRows += addGreatBuildingChangesRow(changes[i]);
-    }
+  if (changes.length == 0) {
+    ggRows = '<tr><td colspan="3">No buildings</td></tr>';
   } else {
-    ggRows = '<tr><td colspan="3">No recent changes</td></tr>';
+    if (changes.length == 1 && changes[0].name === 'last change') {
+      ggRows = '<tr><td colspan="3">Last change ' + moment.unix(changes[0].last_spent).fromNow() + '</td></tr>';
+    } else {
+      for (var i = 0; i < changes.length; i++) {
+        ggRows += addGreatBuildingChangesRow(changes[i]);
+      }
+    }
   }
 
   $('#great-building-changes-body').html(ggRows);
