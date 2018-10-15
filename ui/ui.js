@@ -1,6 +1,9 @@
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
     console.log(request);
+    if (request.notifications) {
+      updateNotifications(request.notifications);
+    }
     if (request.revenue) {
       updatePlunder(request.revenue);
     }
@@ -32,4 +35,21 @@ function humanReadableTime (seconds) {
 function secondsTime (humanReadable) {
   segments = humanReadable.split(':');
   return segments[0] * 3600 + segments[1] * 60 + segments[2] * 1;
+}
+
+function getNotificationBootstrapClass (type) {
+  const notificationTypes2Bootstrap = {
+    'info': 'info',
+    'warning': 'warning',
+    'error': 'danger'
+  };
+  return notificationTypes2Bootstrap[type] || 'danger';
+}
+
+function updateNotifications (notifications) {
+  html = '';
+  for (id in notifications) {
+    html += '<div class="alert alert-' + getNotificationBootstrapClass(notifications[id].type) + '"">' + notifications[id].msg + '</div>';
+  }
+  $('#notifications').html(html);
 }

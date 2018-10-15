@@ -86,6 +86,35 @@ function sendMessageCache (msg) {
   msgCache = { ...msgCache, ...msg};
 }
 
+function sendNotification (id, type, message) {
+  notifications = msgCache.notifications || {};
+  if (message == '') {
+    // Clear message
+    delete notifications[id];
+  } else {
+    notifications[id] = {
+      type: type,
+      msg: message
+    };
+    if (debug) {
+      switch (type) {
+        case 'info':
+          console.log(message);
+          break;
+        case 'warning':
+          console.warn(message);
+          break;
+        default:
+          console.error(message);
+          break;
+      }
+    }
+  }
+
+  // Send and update
+  sendMessageCache({notifications: notifications});
+}
+
 function sendPlayerArmies (playerId) {
   chrome.storage.sync.get({'playerArmies': {}}, function (result) {
     playerArmies = result.playerArmies;

@@ -96,7 +96,7 @@ consts = {
 
   getGoodsAge: function (goodName) {
     if (!consts.goods.hasOwnProperty(goodName)) {
-      console.error(goodName + ' is missing in goods');
+      sendNotification('missingGood', 'error', goodName + ' is missing in goods');
       return 1;
     }
     goodAge = consts.goods[goodName];
@@ -104,11 +104,11 @@ consts = {
   },
 
   getAge: function (age) {
-    if (consts.ages.hasOwnProperty(age)) {
+    if (consts.ages[age] !== undefined) {
       return consts.ages[age];
     }
 
-    console.error(age + ' is missing in ages');
+    sendNotification('missingAge', 'warning', age + ' is missing in ages');
 
     return 1;
   },

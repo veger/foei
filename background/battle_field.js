@@ -85,15 +85,24 @@ battleField = {
     }
 
     summary = {};
+    unknownTypes = [];
     for (var [unitId, amount] of Object.entries(armies[2])) {
       unitInfo = consts.units[unitId];
       if (unitInfo === undefined) {
-        console.error('unknown type: ' + unitId);
+        if (!unknownTypes.includes(unitId)) {
+          unknownTypes.push(unitId);
+        }
       } else {
         summary[unitInfo.type] = (summary[unitInfo.type] | 0) + amount;
       }
     }
     armies[3] = summary;
+
+    if (unknownTypes.length === 0) {
+      sendNotification('unitUnknown', '', '');
+    } else {
+      sendNotification('unitUnknown', 'warning', 'unknown type(s): ' + unknownTypes.join(', '));
+    }
 
     return armies;
   },
