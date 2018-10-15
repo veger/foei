@@ -13,85 +13,12 @@ consts = {
     IndustrialAge: 9,
     ModernEra: 10,
     PostModernEra: 11,
-    Today: 12,
-    Tomorrow: 13,
+    ContemporaryEra: 12,
+    TomorrowEra: 13,
     FutureEra: 14,
     ArcticFuture: 15,
     OceanicFuture: 16,
     VirtualFuture: 17
-  },
-
-  goods: {
-    cypress: 'BronzeAge',
-    wine: 'BronzeAge',
-    dye: 'BronzeAge',
-    sandstone: 'BronzeAge',
-    alabaster: 'BronzeAge', // bug in game?
-
-    gems: 'IronAge',
-    lead: 'IronAge',
-    ebony: 'IronAge',
-    limestone: 'IronAge',
-    cloth: 'IronAge',
-
-    honey: 'EarlyMiddleAge',
-    gold: 'EarlyMiddleAge',
-    bronze: 'EarlyMiddleAge',
-    granite: 'EarlyMiddleAge',
-    marble: 'EarlyMiddleAge', // bug in game?
-
-    glass: 'HighMiddleAge',
-    salt: 'HighMiddleAge',
-    ropes: 'HighMiddleAge',
-    brick: 'HighMiddleAge',
-    herbs: 'HighMiddleAge',
-
-    silk: 'LateMiddleAge',
-    gunpowder: 'LateMiddleAge',
-    brass: 'LateMiddleAge',
-    basalt: 'LateMiddleAge',
-    talc: 'LateMiddleAge',
-
-    coffee: 'ColonialAge',
-    wire: 'ColonialAge',
-    tar: 'ColonialAge',
-    porcelain: 'ColonialAge',
-
-    tinplate: 'ProgressiveEra',
-    asbestos: 'ProgressiveEra',
-
-    coke: 'IndustrialAge',
-
-    ferroconcrete: 'ModernEra',
-    convenience_food: 'ModernEra',
-    luxury_materials: 'ModernEra',
-
-    renewable_resources: 'PostModernEra',
-    steel: 'PostModernEra',
-    semiconductors: 'PostModernEra',
-    filters: 'PostModernEra',
-    dna_data: 'PostModernEra',
-
-    biogeochemical_data: 'FutureEra',
-    purified_water: 'FutureEra',
-    algae: 'FutureEra',
-    superconductors: 'FutureEra',
-    nanoparticles: 'FutureEra',
-
-    paper_batteries: 'ArcticFuture',
-    ai_data: 'ArcticFuture',
-
-    pearls: 'OceanicFuture',
-    artificial_scales: 'OceanicFuture',
-    corals: 'OceanicFuture',
-    biolight: 'OceanicFuture',
-    plankton: 'OceanicFuture',
-
-    tea_silk: 'VirtualFuture',
-    data_crystals: 'VirtualFuture',
-    golden_rice: 'VirtualFuture',
-    nanites: 'VirtualFuture',
-    cryptocash: 'VirtualFuture'
   },
 
   getGoodsAge: function (goodName) {
