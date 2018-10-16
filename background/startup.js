@@ -21,17 +21,22 @@ startup = {
         for (var i = 0; i < goodsList.length; i++) {
           goods[goodsList[i].id] = goodsList[i].era;
         }
-        if (debug) {
-          console.log(Object.keys(goods).length + ' goods registered');
-        }
-        chrome.storage.local.set({'goods': goods});
-        consts.goods = goods;
+        startup.setGoods(goods);
+
         break;
       default:
         if (trace || debug) {
           console.log('startupService.' + method + ' is not used');
         }
     }
+  },
+  setGoods: function (goods) {
+    if (debug) {
+      console.log(Object.keys(goods).length + ' goods registered');
+    }
+    chrome.storage.local.set({'goods': goods});
+    consts.goods = goods;
+    sendNotification('goods', '', '');
   }
 };
 
@@ -39,10 +44,6 @@ chrome.storage.local.get({'goods': false}, function (result) {
   if (!result.goods) {
     sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
   } else {
-    consts.goods = result.goods;
-    sendNotification('goods', '', '');
-    if (debug) {
-      console.log(Object.keys(result.goods).length + ' goods registered');
-    }
+    startup.setGoods(result.goods);
   }
 });
