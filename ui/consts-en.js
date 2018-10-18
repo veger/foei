@@ -8,11 +8,13 @@ var i18n = {
   'R_MultiAge_ChristmasBonus1': 'Log Cabin',
   'P_MultiAge_ChristmasBonus16': "Santa's Workshop",
   'P_MultiAge_EasterBonus16': 'Foeberge Shop',
+  'R_MultiAge_EasterBonus16': 'Shrine of Inspiration',
   'P_MultiAge_Expedition16': 'Terrace Farm',
   'P_MultiAge_FallBonus16': 'Cider Mill',
   'P_MultiAge_FallBonus17a': 'Blooming Cider Mill',
   'P_MultiAge_FallBonus17b': 'Fruitful Cider Mill',
   'P_MultiAge_FallBonus17c': 'Bountiful Cider Mill',
+  'R_MultiAge_FallBonus18b': 'Mill of Fall',
   'P_MultiAge_HalloweenBonus15': "Mad Scientist's Lab",
   'P_MultiAge_MonroeBonus17': 'Rosarium',
   'R_MultiAge_NapoleonBonus18': 'Royal Marble Gateway',
@@ -34,11 +36,13 @@ var i18n = {
   'R_MultiAge_SummerBonusSetA17a': "Maharaja's Palace",
   'R_MultiAge_SummerBonusSetA17b': 'Western Palace Tower',
   'R_MultiAge_SummerBonusSetA17c': 'Eastern Palace Tower',
+  'R_MultiAge_SummerBonusSetB17a': 'Memorial Chhatri',
   'R_MultiAge_SummerBonusSetB17b': 'Elephant Fountain Gate',
   'P_MultiAge_SummerBonus15': 'Bazaar',
   'P_MultiAge_SummerBonus16': 'Luau',
   'P_MultiAge_SummerBonus18': 'Sunken Treasure',
   'P_MultiAge_VanGoghBonus18': 'Magnum Opus',
   'P_HighMiddleAge_Windmill': 'Windmill',
-  'R_MultiAge_WinterBonusSet17b': 'Moose Meadow'
+  'R_MultiAge_WinterBonusSet17b': 'Moose Meadow',
+  'R_MultiAge_WinterBonusSet17c': "Toymaker's Booth"
 };

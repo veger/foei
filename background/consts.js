@@ -82,14 +82,20 @@ consts = {
     pikeman: { name: 'Keizerlijke garde', type: 'zwaar' },
     longbowman: {name: 'Langboogshutter', type: 'range' },
 
-    marksman: {name: 'Musketier', type: 'musk'},
+    marksman: {name: 'Musketier', type: 'range'},
     grenadier: { name: 'Grenadier', type: 'gren' },
+    dragoon: { name: 'Dragonder', type: 'snel' },
     cannoniers: { name: 'Veldkanon', type: 'vkanon' },
+    ranger: { name: 'Militieman', type: 'militie' },
+
+    jaeger: { name: 'Jager', type: 'jager' },
+    rifleman: { name: 'Fuselier', type: 'range' },
 
     IronAge_champion: { name: 'Kampioen', type: 'champ' },
     EarlyMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
     HighMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
     LateMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
+    ColonialAge_champion: { name: 'Kampioen', type: 'champ' },
     color_guard: { name: 'Vaandeldrager', type: 'vaandel' },
     military_drummer: { name: 'Militaire drummer', type: 'drum' },
     rogue: { name: 'Schurk', type: 'schurk' }

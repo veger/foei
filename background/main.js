@@ -77,8 +77,6 @@ chrome.runtime.onMessageExternal.addListener(
             }
         }
       }
-
-      // sendResponse({farewell: "goodbye"});
     }
   });
 
