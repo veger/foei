@@ -6,6 +6,7 @@
   "background": {
     "scripts": [
       "background/consts.js",
+      "background/storage.js",
       "background/utils.js",
       "background/main.js",
       "background/battle_field.js",

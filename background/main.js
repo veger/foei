@@ -1,12 +1,12 @@
 var debug;
-chrome.storage.sync.get('debug', function (data) {
-  debug = data.debug === true;
+syncGet('_debug', function (data) {
+  debug = data._debug === true;
   console.log('debug', debug);
 });
 var trace;
-chrome.storage.sync.get('trace', function (data) {
-  trace = data.trace === true;
-  console.log('trace', debug);
+syncGet('_trace', function (data) {
+  trace = data._trace === true;
+  console.log('trace', trace);
 });
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -82,14 +82,14 @@ chrome.runtime.onMessageExternal.addListener(
 
 function setDebug (value) {
   debug = value;
-  chrome.storage.sync.set({debug: debug}, function () {
+  syncSet({_debug: debug}, function () {
     console.log('debug', debug);
   });
 }
 
 function setTrace (value) {
   trace = value;
-  chrome.storage.sync.set({trace: trace}, function () {
+  syncSet({_trace: trace}, function () {
     console.log('trace', trace);
   });
 }

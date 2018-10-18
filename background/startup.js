@@ -34,13 +34,13 @@ startup = {
     if (debug) {
       console.log(Object.keys(goods).length + ' goods registered');
     }
-    chrome.storage.local.set({'goods': goods});
+    localSet({'goods': goods});
     consts.goods = goods;
     sendNotification('goods', '', '');
   }
 };
 
-chrome.storage.local.get({'goods': false}, function (result) {
+localGet({'goods': false}, function (result) {
   if (!result.goods) {
     sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
   } else {

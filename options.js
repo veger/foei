@@ -1,11 +1,11 @@
 let debugButton = document.getElementById('debug');
 let traceButton = document.getElementById('trace');
 
-chrome.storage.sync.get('debug', function (data) {
-  debugButton.checked = data.debug;
+chrome.storage.sync.get('_debug', function (data) {
+  debugButton.checked = data._debug;
 });
-chrome.storage.sync.get('trace', function (data) {
-  traceButton.checked = data.trace;
+chrome.storage.sync.get('_trace', function (data) {
+  traceButton.checked = data._trace;
 });
 
 debugButton.onchange = function (element) {

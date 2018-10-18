@@ -137,7 +137,7 @@ greatBuilding = {
       resultCallback([]);
     }
     var playerId = data[0].player.player_id;
-    chrome.storage.sync.get({'playerGBs': {}}, function (result) {
+    syncGet({'playerGBs': {}}, function (result) {
       playerGB = (result.playerGBs[playerId]) || {};
       changes = [];
       now = Date.now() / 1000;
@@ -170,7 +170,7 @@ greatBuilding = {
         newPlayerGB[data[i].city_entity_id] = GBentry;
       }
       result.playerGBs[playerId] = newPlayerGB;
-      chrome.storage.sync.set({'playerGBs': result.playerGBs});
+      syncSet({'playerGBs': result.playerGBs});
 
       resultCallback(changes);
     });
@@ -182,14 +182,14 @@ greatBuilding = {
   setArcBonus: function (bonus) {
     bonus = fixFloat(bonus / 100);
     greatBuilding.arcBonus = bonus;
-    chrome.storage.sync.set({'arcBonus': bonus});
+    syncSet({'arcBonus': bonus});
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus);
     }
   }
 };
 
-chrome.storage.sync.get({'arcBonus': 0}, function (result) {
+syncGet({'arcBonus': 0}, function (result) {
   greatBuilding.arcBonus = parseFloat(result.arcBonus);
   if (debug) {
     console.log('arc bonus: ', greatBuilding.arcBonus);

@@ -131,7 +131,7 @@ battleField = {
   storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus) {
     battleField.lastPlayerAttacked = playerId;
 
-    chrome.storage.sync.get({'playerArmies': {}}, function (result) {
+    syncGet({'playerArmies': {}}, function (result) {
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[playerId] || {};
 
@@ -147,14 +147,14 @@ battleField = {
 
       armyDetails.lastAccess = Date.now();
       playerArmies[playerId] = armyDetails;
-      chrome.storage.sync.set({'playerArmies': playerArmies});
+      syncSet({'playerArmies': playerArmies});
 
       sendPlayerArmies(playerId);
     });
   },
 
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied) {
-    chrome.storage.sync.get({'playerArmies': {}}, function (result) {
+    syncGet({'playerArmies': {}}, function (result) {
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[battleField.lastPlayerAttacked] || {};
 
@@ -172,7 +172,7 @@ battleField = {
 
       armyDetails.lastAccess = Date.now();
       playerArmies[battleField.lastPlayerAttacked] = armyDetails;
-      chrome.storage.sync.set({'playerArmies': playerArmies});
+      syncSet({'playerArmies': playerArmies});
 
       sendPlayerArmies(battleField.lastPlayerAttacked);
 
