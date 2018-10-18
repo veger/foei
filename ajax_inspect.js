@@ -2,7 +2,10 @@ console.log('injected ajax_inspect!');
 
 (function () {
   var DEBUG = false;
-  var extensionID = 'flpkgapjggmomnolpcifmgnlmjcgijae';
+
+  var match = RegExp('extension:\\/\\/([^\\/]*)').exec(document.currentScript.src);
+  var extensionID = match[1];
+
   var XHR = XMLHttpRequest.prototype;
 
   if (XHR._open === undefined) {
@@ -78,7 +81,7 @@ console.log('injected ajax_inspect!');
           console.log(response);
         }
       }
-      if (formattedPostData || jsonResponse) {
+      if (jsonRequest || jsonResponse) {
         chrome.runtime.sendMessage(extensionID, {'jsonRequest': jsonRequest, 'jsonResponse': jsonResponse});
       }
     });
