@@ -14,8 +14,7 @@ console.log('injected ajax_inspect!');
     XHR._send = XHR.send;
   }
 
-    // Overwrite native methods
-    // Collect data:
+  // Collect data
   XHR.open = function (method, url) {
     this._method = method;
     this._url = url;
@@ -82,7 +81,13 @@ console.log('injected ajax_inspect!');
         }
       }
       if (jsonRequest || jsonResponse) {
-        chrome.runtime.sendMessage(extensionID, {'jsonRequest': jsonRequest, 'jsonResponse': jsonResponse});
+        payload = {'jsonRequest': jsonRequest, 'jsonResponse': jsonResponse};
+        if (this._url.includes('forgeofempires.com')) {
+          urlObj = new URL(this._url);
+          payload.hostname = urlObj.hostname;
+        }
+
+        chrome.runtime.sendMessage(extensionID, payload);
       }
     });
     return XHR._send.apply(this, arguments);

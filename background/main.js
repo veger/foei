@@ -8,6 +8,9 @@ syncGet('_trace', function (data) {
   trace = data._trace === true;
   console.log('trace', trace);
 });
+localGet('_lastWorldID', function (result) {
+  setWorldID(result._lastWorldID);
+});
 
 chrome.runtime.onInstalled.addListener(function () {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
@@ -37,6 +40,11 @@ chrome.extension.onMessage.addListener(
 
 chrome.runtime.onMessageExternal.addListener(
   function (request, sender, sendResponse) {
+    if (request.hostname) {
+      var match = RegExp('^[^\\.]*').exec(request.hostname);
+      setWorldID(match[0]);
+    }
+
     if (request.jsonRequest) {
       if (trace) {
         console.log('request', request.jsonRequest);

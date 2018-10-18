@@ -189,9 +189,11 @@ greatBuilding = {
   }
 };
 
-syncGet({'arcBonus': 0}, function (result) {
-  greatBuilding.arcBonus = parseFloat(result.arcBonus);
-  if (debug) {
-    console.log('arc bonus: ', greatBuilding.arcBonus);
-  }
+listenToWorldIDChanged(function () {
+  syncGet({'arcBonus': 0}, function (result) {
+    greatBuilding.arcBonus = parseFloat(result.arcBonus);
+    if (debug) {
+      console.log('arc bonus: ', greatBuilding.arcBonus);
+    }
+  });
 });

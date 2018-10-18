@@ -40,10 +40,12 @@ startup = {
   }
 };
 
-localGet({'goods': false}, function (result) {
-  if (!result.goods) {
-    sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
-  } else {
-    startup.setGoods(result.goods);
-  }
+listenToWorldIDChanged(function () {
+  localGet({'goods': false}, function (result) {
+    if (!result.goods) {
+      sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
+    } else {
+      startup.setGoods(result.goods);
+    }
+  });
 });

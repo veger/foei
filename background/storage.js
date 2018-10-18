@@ -11,6 +11,31 @@ var createRingBuffer = function (length) {
   };
 };
 
+var worldID;
+function setWorldID (newWorldID) {
+  if (worldID === newWorldID + '-') {
+    return;
+  }
+
+  localSet({_lastWorldID: newWorldID});
+  worldID = newWorldID + '-';
+
+  // dispatch() is an undocumented feature, used to force sending events on same page
+  chrome.runtime.onMessage.dispatch({worldIDChanged: newWorldID});
+  if (debug) {
+    console.log('Changed world to "' + newWorldID + '"');
+  }
+}
+
+function listenToWorldIDChanged (callback) {
+  chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+      if (request.hasOwnProperty('worldIDChanged')) {
+        callback(request.worldIDChanged);
+      }
+    });
+}
+
 function toWorldKeys (keys) {
   worldKeys = {};
   switch (typeof keys) {
@@ -18,11 +43,11 @@ function toWorldKeys (keys) {
       worldKeys = null;
       break;
     case 'string':
-      worldKeys = (isInternalKey(keys) ? '' : 'nl1-') + keys;
+      worldKeys = (isInternalKey(keys) ? '' : worldID) + keys;
       break;
     case 'object':
       for (key in keys) {
-        worldKeys[(isInternalKey(keys) ? '' : 'nl1-') + key] = keys[key];
+        worldKeys[(isInternalKey(keys) ? '' : worldID) + key] = keys[key];
       }
       break;
     default:
@@ -36,7 +61,7 @@ function fromWorldResult (worldResult) {
   var result = {};
   if (worldResult) {
     for (worldKey in worldResult) {
-      key = isInternalKey(worldKey) ? worldKey : worldKey.substring('nl1-'.length);
+      key = isInternalKey(worldKey) ? worldKey : worldKey.substring(worldID.length);
       result[key] = worldResult[worldKey];
     }
   }
@@ -51,7 +76,7 @@ function isInternalKey (key) {
 function syncSet (items, callback) {
   worldItems = {};
   for (item in items) {
-    worldItems[(isInternalKey(item) ? '' : 'nl1-') + item] = items[item];
+    worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
   }
   chrome.storage.sync.set(worldItems, callback);
 }
@@ -65,7 +90,7 @@ function syncGet (keys, callback) {
 function localSet (items, callback) {
   worldItems = {};
   for (item in items) {
-    worldItems[(isInternalKey(item) ? '' : 'nl1-') + item] = items[item];
+    worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
   }
   chrome.storage.local.set(worldItems, callback);
 }
