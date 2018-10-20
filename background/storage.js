@@ -20,6 +20,17 @@ function setWorldID (newWorldID) {
   localSet({_lastWorldID: newWorldID});
   worldID = newWorldID + '-';
 
+  syncGet({_worlds: []}, function (result) {
+    if (!result._worlds.includes(newWorldID)) {
+      if (debug) {
+        console.log('New world: ' + newWorldID);
+      }
+      result._worlds.push(newWorldID);
+      syncSet({_worlds: result._worlds});
+    }
+    sendMessageCache({worlds: result._worlds});
+  });
+
   // dispatch() is an undocumented feature, used to force sending events on same page
   chrome.runtime.onMessage.dispatch({worldIDChanged: newWorldID});
   if (debug) {
@@ -47,7 +58,7 @@ function toWorldKeys (keys) {
       break;
     case 'object':
       for (key in keys) {
-        worldKeys[(isInternalKey(keys) ? '' : worldID) + key] = keys[key];
+        worldKeys[(isInternalKey(key) ? '' : worldID) + key] = keys[key];
       }
       break;
     default:

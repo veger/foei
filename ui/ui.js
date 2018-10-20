@@ -4,6 +4,9 @@ chrome.extension.onMessage.addListener(
     if (request.notifications) {
       updateNotifications(request.notifications);
     }
+    if (request.worlds) {
+      updateSettingsWorlds(request.worlds);
+    }
     if (request.revenue) {
       updatePlunder(request.revenue);
     }
