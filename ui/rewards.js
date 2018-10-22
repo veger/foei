@@ -48,12 +48,13 @@ function updateRewardsTab (active, uncommon) {
 }
 
 function addRewardRow (timePassed, reward) {
-  activeInfo = '<i style="color: green" class="fas fa-check"></i>';
   if (hasRowTime(reward.active, timePassed)) {
     activeInfo = humanReadableTime(secondsTime(reward.active) - timePassed);
+  } else {
+    activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(secondsTime(reward.expire) - timePassed) + ')</small>';
   }
 
-  row = '<tr><td>' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.position + '</td></tr>';
+  row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.position + '</td></tr>';
 
   return row;
 }
