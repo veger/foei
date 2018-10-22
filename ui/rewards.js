@@ -54,7 +54,7 @@ function addRewardRow (timePassed, reward) {
     activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(secondsTime(reward.expire) - timePassed) + ')</small>';
   }
 
-  row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.position + '</td></tr>';
+  row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.worldID + '</td><td>' + reward.position + '</td></tr>';
 
   return row;
 }

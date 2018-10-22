@@ -1,11 +1,19 @@
 rewards = {
+  parsedReward: [],
   process: function (method, data) {
     if (trace) {
       console.log(data);
     }
     switch (method) {
       case 'getOverview':
-        parsedReward = [];
+
+        // Remove rewards of current world...
+        world = worldID.slice(0, -1); // remove '-'
+        rewards.parsedReward = rewards.parsedReward.filter(function (i) {
+          return i.worldID !== world;
+        });
+
+        // ... and add received ones back
         var now = Date.now() / 1000;
         for (var i = 0; i < data.hiddenRewards.length; i++) {
           reward = data.hiddenRewards[i];
@@ -16,6 +24,7 @@ rewards = {
           }
 
           reward = {
+            worldID: world,
             active: active,
             expire: humanReadableTime(reward.expireTime - now),
             rarity: reward.rarity,
@@ -23,16 +32,16 @@ rewards = {
             position: reward.position.context
           };
           if (active === true) {
-            parsedReward.unshift(reward);
+            rewards.parsedReward.unshift(reward);
           } else {
-            parsedReward.push(reward);
+            rewards.parsedReward.push(reward);
           }
         }
-        parsedReward = sortByKey(parsedReward, 'active', 'expired');
+        rewards.parsedReward = sortByKey(rewards.parsedReward, 'active', 'expired');
         if (debug) {
-          console.log('Hidden rewards', parsedReward);
+          console.log('Hidden rewards', rewards.parsedReward);
         }
-        sendMessageCache({ 'rewards': parsedReward });
+        sendMessageCache({ 'rewards': rewards.parsedReward });
         break;
       default:
         if (trace || debug) {
