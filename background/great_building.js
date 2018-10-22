@@ -172,7 +172,7 @@ greatBuilding = {
       result.playerGBs[playerId] = newPlayerGB;
       syncSet({'playerGBs': result.playerGBs});
 
-      resultCallback(changes);
+      resultCallback({ player: data[0].player.name, changes: changes });
     });
   },
   storeBuildingInfo: function (requestId, requiredFP) {

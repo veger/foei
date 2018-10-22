@@ -16,6 +16,8 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
 }
 
 function updateGreatBuildingChanges (changes) {
+  $('#great-building-changes-player').text(changes.player);
+  changes = changes.changes;
   ggRows = '';
   if (changes.length == 0) {
     ggRows = '<tr><td colspan="3">No buildings</td></tr>';
