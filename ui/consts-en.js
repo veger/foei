@@ -3,9 +3,11 @@ var i18n = {
   'P_MultiAge_CarnivalBonus17': 'Masquerade Ball',
   'R_MultiAge_CarnivalBonus17': 'Renaissance Mansion',
   'P_MultiAge_CarnivalBonus18': 'Gondola Dock Market',
-  'R_MultiAge_CarnivalBonus18b': 'Grand Bridge',
+  'R_MultiAge_CarnivalBonus18a': 'Grand Bridge',
+  'R_MultiAge_CarnivalBonus18b': '? Grand Bridge ?',
   'R_MultiAge_CarnivalBonus18c': '? Renaissance Villa ?',
   'R_MultiAge_ChristmasBonus1': 'Log Cabin',
+  'P_MultiAge_ChristmasBonus2': 'Large Confectionary',
   'P_MultiAge_ChristmasBonus16': "Santa's Workshop",
   'P_MultiAge_EasterBonus16': 'Foeberge Shop',
   'R_MultiAge_EasterBonus16': 'Shrine of Inspiration',
@@ -43,6 +45,7 @@ var i18n = {
   'P_MultiAge_SummerBonus18': 'Sunken Treasure',
   'P_MultiAge_VanGoghBonus18': 'Magnum Opus',
   'P_HighMiddleAge_Windmill': 'Windmill',
+  'R_MultiAge_WinterBonusSet17a': "Sugar Baker's Booth",
   'R_MultiAge_WinterBonusSet17b': 'Moose Meadow',
   'R_MultiAge_WinterBonusSet17c': "Toymaker's Booth"
 };
