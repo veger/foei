@@ -35,11 +35,6 @@ function humanReadableTime (seconds) {
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
-function secondsTime (humanReadable) {
-  segments = humanReadable.split(':');
-  return segments[0] * 3600 + segments[1] * 60 + segments[2] * 1;
-}
-
 function getNotificationBootstrapClass (type) {
   const notificationTypes2Bootstrap = {
     'info': 'info',

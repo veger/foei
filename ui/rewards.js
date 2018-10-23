@@ -19,16 +19,11 @@ function updateRewardsDetails (timePassed, rewards) {
   hasInactive = false;
   for (var i = 0; i < rewards.length; i++) {
     rewardsRows += addRewardRow(timePassed, rewards[i]);
-    if (rewards[i].active !== true) {
-      if (secondsTime(rewards[i].active) - timePassed < 1) {
-        hasActive = true;
-        hasActiveUncommon |= isUncommon(rewards[i]);
-      } else {
-        hasInactive = true;
-      }
-    } else {
+    if (rewards[i].startTime - timePassed < 1 && rewards[i].expireTime - timePassed > 0) {
       hasActive = true;
       hasActiveUncommon |= isUncommon(rewards[i]);
+    } else {
+      hasInactive = true;
     }
   }
   if (rewardsRows == '') {
@@ -37,7 +32,9 @@ function updateRewardsDetails (timePassed, rewards) {
   $('#rewards-body').html(rewardsRows);
 
   updateRewardsTab(hasActive, hasActiveUncommon);
-  if (!hasInactive) {
+
+  if (!hasInactive && !hasActive) {
+    // Nothing to update anymore, so stop timer
     clearInterval(rewardUpdateInterval);
     rewardUpdateInterval = undefined;
   }
@@ -48,10 +45,10 @@ function updateRewardsTab (active, uncommon) {
 }
 
 function addRewardRow (timePassed, reward) {
-  if (hasRowTime(reward.active, timePassed)) {
-    activeInfo = humanReadableTime(secondsTime(reward.active) - timePassed);
+  if (isActive(reward.startTime, timePassed)) {
+    activeInfo = humanReadableTime(reward.startTime - timePassed);
   } else {
-    activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(secondsTime(reward.expire) - timePassed) + ')</small>';
+    activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(reward.expireTime - timePassed) + ')</small>';
   }
 
   row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.worldID + '</td><td>' + reward.position + '</td></tr>';
@@ -63,11 +60,8 @@ function isUncommon (reward) {
   return reward.rarity == 'uncommon' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
 }
 
-function hasRowTime (active, timePassed) {
-  if (active === true) {
-    return false;
-  }
-  return secondsTime(active) - timePassed > 1;
+function isActive (startTime, timePassed) {
+  return startTime - timePassed > 1;
 }
 
 function rewardType (type) {
