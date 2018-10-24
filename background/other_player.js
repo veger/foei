@@ -9,11 +9,11 @@ otherPlayer = {
         console.log('rewards', results);
 
         // Show full rewards, not only max!
-        suppliesMax = { value: 0};
-        moneyMax = { value: 0};
-        spMax = { value: 0};
-        medalsMax = { value: 0};
-        clanPowerMax = { value: 0};
+        suppliesMax = { value: 0 };
+        moneyMax = { value: 0 };
+        spMax = { value: 0 };
+        medalsMax = { value: 0 };
+        clanPowerMax = { value: 0 };
         goods = [];
         for (var i = 0; i < results.length; i++) {
           result = results[i];
@@ -36,7 +36,7 @@ otherPlayer = {
             if (result.revenue.medals > medalsMax.value) {
               medalsMax = { value: result.revenue.medals, name: result.id, all: copyRevenue(result)};
             }
-            if (result.revenue.strategy_points && result.revenue.strategy_points.currentSP > spMax.value) {
+            if (result.revenue.strategy_points && otherPlayer.spMoreValuable(result.revenue, spMax)) {
               spMax = { value: result.revenue.strategy_points.currentSP, name: result.id, all: copyRevenue(result)};
             }
           } else {
@@ -118,5 +118,31 @@ otherPlayer = {
     }
 
     return result;
+  },
+  spMoreValuable: function (newRevenue, currentRevenue) {
+    if (newRevenue.strategy_points.currentSP != currentRevenue.value) {
+      return newRevenue.strategy_points.currentSP > currentRevenue.value;
+    }
+
+    // Compare goods value
+    if (newRevenue.goods !== undefined && (currentRevenue.all === undefined || currentRevenue.all.goods === undefined)) {
+      return true;
+    }
+    if (newRevenue.goods === undefined && currentRevenue.all !== undefined && currentRevenue.all.goods !== undefined) {
+      return false;
+    }
+    if (newRevenue.goods !== undefined) {
+      newGoodsValue = consts.valueGoods(newRevenue.goods);
+      currentGoodsValue = consts.valueGoods(currentRevenue.all.goods);
+      if (newGoodsValue != currentGoodsValue) {
+        return newGoodsValue > currentGoodsValue;
+      }
+    }
+
+    // Compare Money and Supplies
+    newMSValue = (newRevenue.money || 0) + (newRevenue.supplies || 0);
+    currentMSValue = (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0);
+
+    return newMSValue > currentMSValue;
   }
 };
