@@ -9,6 +9,7 @@ var i18n = {
   'R_MultiAge_ChristmasBonus1': 'Log Cabin',
   'P_MultiAge_ChristmasBonus2': 'Large Confectionary',
   'P_MultiAge_ChristmasBonus16': "Santa's Workshop",
+  'P_MultiAge_CupBonus16': 'Soccer Field',
   'P_MultiAge_EasterBonus16': 'Foeberge Shop',
   'R_MultiAge_EasterBonus16': 'Shrine of Inspiration',
   'P_MultiAge_Expedition16': 'Terrace Farm',

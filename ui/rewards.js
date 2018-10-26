@@ -90,6 +90,7 @@ var incidents = {
   'incident_flotsam': 'flotsam',
   'incident_kite': 'kite in tree',
   'incident_mammoth_bones': 'mammoth bones',
+  'incident_musician': 'musician',
   'incident_overgrowth': 'overgrowth',
   'incident_pothole_1x1': 'small pothole',
   'incident_pothole_2x2': 'big pothole',
