@@ -110,7 +110,7 @@ greatBuilding = {
         fpAnalysis.push(false);
         continue;
       }
-      if (bestSpotFP < userFP) {
+      if (bestSpotFP < userFP || bestSpotFP === 0) {
         continue;
       }
 
