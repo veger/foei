@@ -1,10 +1,13 @@
+// Clean up v0.0.3 (moved to local storage)
+chrome.storage.sync.remove(['_debug', '_trace']);
+
 var debug;
-syncGet('_debug', function (data) {
+localGet('_debug', function (data) {
   debug = data._debug === true;
   console.log('debug', debug);
 });
 var trace;
-syncGet('_trace', function (data) {
+localGet('_trace', function (data) {
   trace = data._trace === true;
   console.log('trace', trace);
 });
@@ -90,14 +93,14 @@ chrome.runtime.onMessageExternal.addListener(
 
 function setDebug (value) {
   debug = value;
-  syncSet({_debug: debug}, function () {
+  localSet({_debug: debug}, function () {
     console.log('debug', debug);
   });
 }
 
 function setTrace (value) {
   trace = value;
-  syncSet({_trace: trace}, function () {
+  localSet({_trace: trace}, function () {
     console.log('trace', trace);
   });
 }
