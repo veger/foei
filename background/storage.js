@@ -106,7 +106,14 @@ function syncSet (items, callback) {
   for (item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
   }
-  chrome.storage.sync.set(worldItems, callback);
+  chrome.storage.sync.set(worldItems, function (result) {
+    if (chrome.runtime.lastError) {
+      console.error(chrome.runtime.lastError.message);
+    }
+    if (callback !== undefined) {
+      callback(result);
+    }
+  });
 }
 
 function syncGet (keys, callback) {
@@ -120,7 +127,14 @@ function localSet (items, callback) {
   for (item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
   }
-  chrome.storage.local.set(worldItems, callback);
+  chrome.storage.local.set(worldItems, function (result) {
+    if (chrome.runtime.lastError) {
+      console.error(chrome.runtime.lastError.message);
+    }
+    if (callback !== undefined) {
+      callback(result);
+    }
+  });
 }
 
 function localGet (keys, callback) {
