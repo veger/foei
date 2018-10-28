@@ -51,3 +51,12 @@ function updateNotifications (notifications) {
   }
   $('#notifications').html(html);
 }
+
+function addTab (barParent, bodyParent, id, title, body) {
+  active = $('#' + barParent + ' li').length === 0;
+  barHTML = '<li class="nav-item"><a class="nav-link' + (active ? ' active show' : '') + '" id="' + id + '-tab" data-toggle="tab" href="#' + id + '" role="tab" aria-controls="' + id + '" aria-selected="false">' + title + '</a></li>';
+  bodyHTML = '<div class="tab-pane fade' + (active ? 'show active' : '') + '" id="' + id + '" role="tabpanel" aria-labelledby="' + id + '-tab">' + body + '</div>';
+
+  $('#' + barParent).append(barHTML);
+  $('#' + bodyParent).append(bodyHTML);
+}

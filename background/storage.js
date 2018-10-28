@@ -28,7 +28,7 @@ function setWorldID (newWorldID) {
       result._worlds.push(newWorldID);
       syncSet({_worlds: result._worlds});
     }
-    sendMessageCache({worlds: result._worlds});
+    sendWorldsWithDataSize(result._worlds);
   });
 
   // dispatch() is an undocumented feature, used to force sending events on same page
@@ -78,6 +78,23 @@ function fromWorldResult (worldResult) {
   }
 
   return result;
+}
+
+const usedDataStorages = ['playerArmies', 'playerGBs'];
+function sendWorldsWithDataSize (worlds) {
+  worldsSize = {};
+  for (var i = 0; i < worlds.length; i++) {
+    (function (world) {
+      storages = usedDataStorages.map(function (s) { return world + '-' + s; });
+      chrome.storage.sync.getBytesInUse(storages, function (result) {
+        worldsSize[world] = result;
+        if (Object.keys(worldsSize).length == worlds.length) {
+          console.log(worldsSize);
+          sendMessageCache({worlds: worldsSize});
+        }
+      });
+    })(worlds[i]);
+  }
 }
 
 function isInternalKey (key) {
