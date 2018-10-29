@@ -49,12 +49,22 @@ function listenToWorldIDChanged (callback) {
 
 function toWorldKeys (keys) {
   worldKeys = {};
-  switch (typeof keys) {
+  keysType = typeof keys;
+  if (Array.isArray(keys)) {
+    worldKeys = [];
+    keysType = 'array';
+  }
+  switch (keysType) {
     case null:
       worldKeys = null;
       break;
     case 'string':
       worldKeys = (isInternalKey(keys) ? '' : worldID) + keys;
+      break;
+    case 'array':
+      for (var i = 0; i < keys.length; i++) {
+        worldKeys.push((isInternalKey(keys[i]) ? '' : worldID) + keys[i]);
+      }
       break;
     case 'object':
       for (key in keys) {
@@ -89,7 +99,6 @@ function sendWorldsWithDataSize (worlds) {
       chrome.storage.sync.getBytesInUse(storages, function (result) {
         worldsSize[world] = result;
         if (Object.keys(worldsSize).length == worlds.length) {
-          console.log(worldsSize);
           sendMessageCache({worlds: worldsSize});
         }
       });
@@ -144,13 +153,45 @@ function localGet (keys, callback) {
 }
 
 function clearCache (request) {
-  for (world in request) {
-    switch (request[world]) {
+  for (worldID in request) {
+    switch (request[worldID]) {
+      case 'clean':
+        (function (worldID) {
+          chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (data) {
+            removedItems = 0;
+            timeOld = Date.now() - 3 * 7 * 24 * 3600 * 1000;
+            for (var i = 0; i < usedDataStorages.length; i++) {
+              ds = data[worldID + '-' + usedDataStorages[i]];
+              if (ds === undefined) {
+                continue;
+              }
+              for (key in ds) {
+                if (ds[key].lastAccess === undefined || ds[key].lastAccess < timeOld) {
+                  delete ds[key];
+                  removedItems++;
+                }
+              }
+              data[worldID + '-' + usedDataStorages[i]] = ds;
+            }
+
+            chrome.storage.sync.set(data, function (result) {
+              if (chrome.runtime.lastError) {
+                console.error(chrome.runtime.lastError.message);
+              }
+
+              if (debug) {
+                console.log('Cleaned ' + removedItems + ' items');
+              }
+              sendWorldsWithDataSize([worldID]);
+            });
+          });
+        })(worldID);
+        break;
       case 'delete':
-        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return world + '-' + ds; }));
+        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }));
         break;
       default:
-        console.error('unknown clearCache action "' + request[world] + '" for world ' + world);
+        console.error('unknown clearCache action "' + request[worldID] + '" for world ' + worldID);
     }
   }
 }
