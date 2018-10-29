@@ -142,3 +142,15 @@ function localGet (keys, callback) {
     callback(fromWorldResult(worldResult));
   });
 }
+
+function clearCache (request) {
+  for (world in request) {
+    switch (request[world]) {
+      case 'delete':
+        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return world + '-' + ds; }));
+        break;
+      default:
+        console.error('unknown clearCache action "' + request[world] + '" for world ' + world);
+    }
+  }
+}
