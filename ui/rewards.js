@@ -96,6 +96,7 @@ var incidents = {
   'incident_pothole_2x2': 'big pothole',
   'incident_rhino': 'rhino',
   'incident_sculptor': 'sculptor',
+  'incident_shipwreck': 'shipwreck',
   'incident_sos': 'SOS',
   'incident_statue': 'statue',
   'incident_stick_hut': 'stick hut',
