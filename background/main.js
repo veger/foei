@@ -12,7 +12,9 @@ localGet('_trace', function (data) {
   console.log('trace', trace);
 });
 localGet('_lastWorldID', function (result) {
-  setWorldID(result._lastWorldID);
+  if (result._lastWorldID) {
+    setWorldID(result._lastWorldID);
+  }
 });
 
 chrome.runtime.onInstalled.addListener(function () {
