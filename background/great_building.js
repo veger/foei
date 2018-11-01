@@ -134,7 +134,7 @@ greatBuilding = {
   checkGBChanges: function (data, resultCallback) {
     if (data.length == 0) {
       // Nothing to do
-      resultCallback([]);
+      return resultCallback({ player: '', changes: [] });
     }
     var playerId = data[0].player.player_id;
     syncGet({'playerGBs': {}}, function (result) {
