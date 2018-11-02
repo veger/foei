@@ -154,6 +154,9 @@ function localGet (keys, callback) {
 
 function cacheAction (request) {
   for (worldID in request) {
+    if (worldID === 'data') {
+      continue;
+    }
     switch (request[worldID]) {
       case 'clean':
         (function (worldID) {
@@ -189,6 +192,33 @@ function cacheAction (request) {
         break;
       case 'delete':
         chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }));
+        break;
+      case 'import':
+        (function (worldID) {
+          chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (data) {
+            for (var i = 0; i < usedDataStorages.length; i++) {
+              storageName = worldID + '-' + usedDataStorages[i];
+              if (request.data[storageName]) {
+                if (trace) {
+                  console.log(storageName, request.data[storageName]);
+                }
+                ds = {...data[storageName], ...request.data[storageName]};
+                data[storageName] = ds;
+              }
+            }
+
+            chrome.storage.sync.set(data, function (result) {
+              if (chrome.runtime.lastError) {
+                console.error(chrome.runtime.lastError.message);
+              }
+
+              if (debug) {
+                console.log('Imported ' + worldID + ' data');
+              }
+              sendWorldsWithDataSize([worldID]);
+            });
+          });
+        })(worldID);
         break;
       case 'export':
         chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (result) {
