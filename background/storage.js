@@ -152,7 +152,7 @@ function localGet (keys, callback) {
   });
 }
 
-function clearCache (request) {
+function cacheAction (request) {
   for (worldID in request) {
     switch (request[worldID]) {
       case 'clean':
@@ -190,8 +190,13 @@ function clearCache (request) {
       case 'delete':
         chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }));
         break;
+      case 'export':
+        chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (result) {
+          chrome.runtime.sendMessage({cacheData: { worldID: worldID, data: result}});
+        });
+        break;
       default:
-        console.error('unknown clearCache action "' + request[worldID] + '" for world ' + worldID);
+        console.error('unknown cache action "' + request[worldID] + '" for world ' + worldID);
     }
   }
 }

@@ -22,6 +22,10 @@ chrome.extension.onMessage.addListener(
     if (request.playerGBChanges) {
       updateGreatBuildingChanges(request.playerGBChanges);
     }
+    if (request.cacheData) {
+      var file = new File([JSON.stringify(request.cacheData.data)], 'foei-' + request.cacheData.worldID + '.json', {type: 'application/json;charset=utf-8'});
+      saveAs(file);
+    }
   }
 );
 chrome.extension.sendMessage({ 'resend_messages': true });

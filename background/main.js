@@ -41,8 +41,8 @@ chrome.extension.onMessage.addListener(
     if (request.hasOwnProperty('resend_messages')) {
       chrome.runtime.sendMessage(msgCache);
     }
-    if (request.hasOwnProperty('clear_cache')) {
-      clearCache(request.clear_cache);
+    if (request.hasOwnProperty('cache')) {
+      cacheAction(request.cache);
     }
   });
 
