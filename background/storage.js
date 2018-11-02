@@ -164,7 +164,8 @@ function cacheAction (request) {
             removedItems = 0;
             timeOld = Date.now() - 3 * 7 * 24 * 3600 * 1000;
             for (var i = 0; i < usedDataStorages.length; i++) {
-              ds = data[worldID + '-' + usedDataStorages[i]];
+              storageName = worldID + '-' + usedDataStorages[i];
+              ds = data[storageName];
               if (ds === undefined) {
                 continue;
               }
@@ -174,7 +175,7 @@ function cacheAction (request) {
                   removedItems++;
                 }
               }
-              data[worldID + '-' + usedDataStorages[i]] = ds;
+              data[storageName] = ds;
             }
 
             chrome.storage.sync.set(data, function (result) {
@@ -191,7 +192,12 @@ function cacheAction (request) {
         })(worldID);
         break;
       case 'delete':
-        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }));
+        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (result) {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError.message);
+          }
+          sendWorldsWithDataSize([worldID]);
+        });
         break;
       case 'import':
         (function (worldID) {
