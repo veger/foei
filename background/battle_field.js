@@ -59,7 +59,7 @@ battleField = {
     for (var i = 0; i < data.unitsOrder.length; i++) {
       unitInfo = data.unitsOrder[i];
       if (unitInfo.teamFlag == 1) {
-        if (unitInfo.currentHitpoints === undefined) {
+        if (unitInfo.currentHitpoints === undefined || unitInfo.currentHitpoints == 0) {
             // Unit died
           lostHP += unitInfo.startHitpoints;
           unitsDied[unitInfo.unitTypeId] = (unitsDied[unitInfo.unitTypeId] | 0) + 1;
