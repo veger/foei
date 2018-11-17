@@ -62,12 +62,18 @@ consts = {
 
   units: {
     javeliner: { name: 'Speerman', type: 'licht' },
+    hoplite: { name: 'Krijger', type: 'zwaar' },
+    slinger: { name: 'Slingeraar', type: 'range' },
 
     militiaman: { name: 'Soldaat', type: 'licht' },
     armoredswordsman: { name: 'Gepasterde infaterie', type: 'zwaar' },
     archer: { name: 'Boogschutter', type: 'range'},
+    palintona: { name: 'Steenwerper', type: 'kata' },
+    horseman: { name: 'Ruiter', type: 'snel' },
 
     mounted_bowman: { name: 'Bereden boogschutter', type: 'range'},
+    mounted_legionnaire: { name: 'Bereden krijger', type: 'snel' },
+    balista: { name: 'Balista', type: 'kata'},
 
     catapult: { name: 'Katapult', type: 'kata'},
     cataphract: { name: 'Zware calvalerie', type: 'snel' },
@@ -94,6 +100,7 @@ consts = {
 
     jaeger: { name: 'Jager', type: 'jager' },
     rifleman: { name: 'Fuselier', type: 'range' },
+    howitzer: { name: 'Houwitzer', type: 'hkanon' },
 
     IronAge_champion: { name: 'Kampioen', type: 'champ' },
     EarlyMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
