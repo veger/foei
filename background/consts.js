@@ -42,16 +42,20 @@ consts = {
 
   valueGoods: function (goodsArray) {
     amount = 0;
-    for (var i = 0; i < goodsArray.length; i++) {
-      amount += goodsArray[i].value * Math.pow(2, consts.getGoodsAge(goodsArray[i].good_id) - 1);
+    for (var goodName in goodsArray) {
+      if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
+        amount += goodsArray[goodName] * Math.pow(2, consts.getGoodsAge(goodName) - 1);
+      }
     }
     return amount;
   },
 
   amountGoods: function (goodsArray) {
     amount = 0;
-    for (var i = 0; i < goodsArray.length; i++) {
-      amount += goodsArray[i].value;
+    for (var goodName in goodsArray) {
+      if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
+        amount += goodsArray[goodName];
+      }
     }
     return amount;
   },

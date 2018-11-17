@@ -39,31 +39,28 @@ function mapEqual (map1, map2, reversedOrder) {
   return (reversedOrder ? true : mapEqual(map2, map1, true));
 }
 
-function copyRevenue (result) {
-  revenue = {};
+function copyProductResources (result) {
+  productResources = { goods: {}};
 
-  if (result.revenue) {
-    if (result.revenue.goods !== undefined && result.revenue.goods.length > 0) {
-      revenue['goods'] = result.revenue.goods;
-    }
-    if (result.revenue.money) {
-      revenue['money'] = result.revenue.money;
-    }
-    if (result.revenue.supplies) {
-      revenue['supplies'] = result.revenue.supplies;
-    }
-    if (result.revenue.strategy_points && result.revenue.strategy_points.currentSP) {
-      revenue['sp'] = result.revenue.strategy_points.currentSP;
-    }
-    if (result.revenue.medals) {
-      revenue['medals'] = result.revenue.medals;
+  if (result.product !== undefined && result.product.resources !== undefined) {
+    for (var resource in result.product.resources) {
+      if (result.product.resources.hasOwnProperty(resource)) {
+        if (consts.goods[resource] !== undefined) {
+          productResources.goods[resource] = result.product.resources[resource];
+        } else {
+          productResources[resource] = result.product.resources[resource];
+        }
+      }
     }
   }
   if (entity.state.current_product && result.current_product.clan_power) {
-    revenue['clan_power'] = entity.state.current_product.clan_power;
+    productResources['clan_power'] = entity.state.current_product.clan_power;
   }
-  if (Object.keys(revenue).length > 1) {
-    return revenue;
+  if (Object.keys(productResources.goods).length == 0) {
+    delete productResources.goods;
+  }
+  if (Object.keys(productResources).length > 1) {
+    return productResources;
   }
 
   return undefined;

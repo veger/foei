@@ -27,8 +27,8 @@ function updatePlunder (revenue) {
 
 function createAllRows (all) {
   allRows = '';
-  if (all.sp) {
-    allRows += addPlunderRow('sp', {value: all.sp});
+  if (all.strategy_points) {
+    allRows += addPlunderRow('sp', {value: all.strategy_points});
   }
   if (all.goods) {
     allRows += addPlunderRow('goods', { value: processRawGoodsPlunderData(all.goods)});
@@ -62,8 +62,10 @@ function addPlunderRow (resource, revenue) {
 
 function processRawGoodsPlunderData (raw) {
   list = [];
-  for (var i = 0; i < raw.length; i++) {
-    list.push((raw[i].value == 1 ? '' : raw[i].value + ' ') + raw[i].good_id);
+  for (var goodName in raw) {
+    if (raw.hasOwnProperty(goodName)) {
+      list.push((raw[goodName] == 1 ? '' : raw[goodName] + ' ') + goodName);
+    }
   }
   return list.join(', ');
 }

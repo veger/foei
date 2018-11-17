@@ -17,27 +17,28 @@ otherPlayer = {
         goods = [];
         for (var i = 0; i < results.length; i++) {
           result = results[i];
-          if (result.revenue !== undefined && result.type != 'random_production') {
-            if (result.revenue.goods !== undefined && result.revenue.goods.length > 0) {
+          if (result.product !== undefined && result.product.resources !== undefined && result.type != 'random_production') {
+            goodsValue = consts.valueGoods(result.product.resources);
+            if (goodsValue > 0) {
               goods.push({
-                amount: consts.amountGoods(result.revenue.goods),
+                amount: consts.amountGoods(result.product.resources),
                 name: result.id,
-                all: copyRevenue(result),
-                value: consts.valueGoods(result.revenue.goods),
-                raw: result.revenue.goods
+                all: copyProductResources(result),
+                value: goodsValue,
+                raw: result.product.resources
               });
             }
-            if (result.revenue.money > moneyMax.value) {
-              moneyMax = { value: result.revenue.money, name: result.id, all: copyRevenue(result)};
+            if (result.product.resources.money > moneyMax.value) {
+              moneyMax = { value: result.product.resources.money, name: result.id, all: copyProductResources(result)};
             }
-            if (result.revenue.supplies > suppliesMax.value) {
-              suppliesMax = { value: result.revenue.supplies, name: result.id, all: copyRevenue(result)};
+            if (result.product.resources.supplies > suppliesMax.value) {
+              suppliesMax = { value: result.product.resources.supplies, name: result.id, all: copyProductResources(result)};
             }
-            if (result.revenue.medals > medalsMax.value) {
-              medalsMax = { value: result.revenue.medals, name: result.id, all: copyRevenue(result)};
+            if (result.product.resources.medals > medalsMax.value) {
+              medalsMax = { value: result.product.resources.medals, name: result.id, all: copyProductResources(result)};
             }
-            if (result.revenue.strategy_points && otherPlayer.spMoreValuable(result.revenue, spMax)) {
-              spMax = { value: result.revenue.strategy_points.currentSP, name: result.id, all: copyRevenue(result)};
+            if (result.product.resources.strategy_points && otherPlayer.spMoreValuable(result.product.resources, spMax)) {
+              spMax = { value: result.product.resources.strategy_points, name: result.id, all: copyProductResources(result)};
             }
           } else {
             if (debug) {
@@ -45,7 +46,7 @@ otherPlayer = {
             }
           }
           if (result.clan_power && result.clan_power > clanPowerMax.value) {
-            clanPowerMax = { value: result.clan_power, name: result.id, all: copyRevenue(result)};
+            clanPowerMax = { value: result.clan_power, name: result.id, all: copyProductResources(result)};
           }
         }
         if (spMax.value > 0) {
@@ -104,7 +105,6 @@ otherPlayer = {
                 type: entity.type,
                 state: entity.state.__class__,
                 product: entity.state.current_product.product,
-                revenue: entity.state.current_product.revenue,
                 clan_power: entity.state.current_product.clan_power,
                 full_info: entity
               });
@@ -120,28 +120,20 @@ otherPlayer = {
     return result;
   },
   spMoreValuable: function (newRevenue, currentRevenue) {
-    if (newRevenue.strategy_points.currentSP != currentRevenue.value) {
-      return newRevenue.strategy_points.currentSP > currentRevenue.value;
+    if (newRevenue.strategy_points != currentRevenue.value) {
+      return newRevenue.strategy_points > currentRevenue.value;
     }
 
     // Compare goods value
-    if (newRevenue.goods !== undefined && (currentRevenue.all === undefined || currentRevenue.all.goods === undefined)) {
-      return true;
-    }
-    if (newRevenue.goods === undefined && currentRevenue.all !== undefined && currentRevenue.all.goods !== undefined) {
+    newGoodsValue = consts.valueGoods(newRevenue);
+    currentGoodsValue = consts.valueGoods(currentRevenue);
+    if (newGoodsValue < currentGoodsValue) {
       return false;
-    }
-    if (newRevenue.goods !== undefined) {
-      newGoodsValue = consts.valueGoods(newRevenue.goods);
-      currentGoodsValue = consts.valueGoods(currentRevenue.all.goods);
-      if (newGoodsValue != currentGoodsValue) {
-        return newGoodsValue > currentGoodsValue;
-      }
     }
 
     // Compare Money and Supplies
     newMSValue = (newRevenue.money || 0) + (newRevenue.supplies || 0);
-    currentMSValue = (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0);
+    currentMSValue = currentRevenue.all ? (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0) : 0;
 
     return newMSValue > currentMSValue;
   }
