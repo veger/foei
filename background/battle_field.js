@@ -6,11 +6,13 @@ battleField = {
     }
     switch (method) {
       case 'autoFinish':
-        battleField.processStartBattle(data);
-        battleField.processBattleMove(data.state);
+        battleField.processStartBattle(data, function () {
+          console.log(data.state);
+          battleField.processBattleMove(data.state);
+        });
         break;
       case 'startPvP':
-        battleField.processStartBattle(data);
+        battleField.processStartBattle(data, function () {});
         break;
       case 'submitMove':
       case 'surrender':
@@ -23,11 +25,11 @@ battleField = {
     }
   },
 
-  processStartBattle: function (data) {
+  processStartBattle: function (data, callback) {
     armies = battleField.getArmies(data.state.unitsOrder);
     bonuses = battleField.getBonuses(data.state.unitsOrder[0].bonuses);
 
-    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'));
+    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'), callback);
 
     if (debug) {
       console.log('attacker', armies[1]);
@@ -128,7 +130,7 @@ battleField = {
     return atkDef;
   },
 
-  storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus) {
+  storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus, callback) {
     battleField.lastPlayerAttacked = playerId;
 
     syncGet({'playerArmies': {}}, function (result) {
@@ -147,7 +149,7 @@ battleField = {
 
       armyDetails.lastAccess = Date.now();
       playerArmies[playerId] = armyDetails;
-      syncSet({'playerArmies': playerArmies});
+      syncSet({'playerArmies': playerArmies}, callback);
 
       sendPlayerArmies(playerId);
     });
