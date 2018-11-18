@@ -1,6 +1,6 @@
 {
   "name": "FoEI",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Forge of Empires Inspector",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "background": {
