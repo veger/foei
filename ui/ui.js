@@ -16,6 +16,9 @@ chrome.extension.onMessage.addListener(
     if (request.battleStats) {
       updateBattleStats(request.battleStats);
     }
+    if (request.playerProtected !== undefined) {
+      updatePlayerProtection(request.playerProtected);
+    }
     if (request.gbFpAnalysis) {
       updateGreatBuildingAnalysis(request.gbFpAnalysis);
     }

@@ -25,6 +25,14 @@ function updatePlunder (revenue) {
   $('#plunder-body').html(plunderRows);
 }
 
+function updatePlayerProtection(protected) {
+  if(protected) {
+    $('#player-protected').removeClass('d-none')
+  } else {
+  $('#player-protected').addClass('d-none')
+}
+}
+
 function createAllRows (all) {
   allRows = '';
   if (all.strategy_points) {

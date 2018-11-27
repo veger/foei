@@ -1,4 +1,5 @@
 otherPlayer = {
+  protectedPlayers: {},
   process: function (method, data) {
     if (trace) {
       console.log(data);
@@ -78,7 +79,18 @@ otherPlayer = {
         }});
 
         // Provide battle information of this player
+        otherPlayer.sendPlayerProtected(data.other_player.player_id);
         sendPlayerArmies(data.other_player.player_id);
+        break;
+      case 'getCityProtections':
+        protectedPlayers = [];
+        for (var i = 0; i < data.length; i++) {
+          protectedPlayers.push(data[i].playerId);
+        }
+        otherPlayer.protectedPlayers[worldID] = protectedPlayers;
+        if (debug) {
+          console.log(protectedPlayers.length + ' protected player(s)');
+        }
         break;
       default:
         if (trace || debug) {
@@ -136,5 +148,9 @@ otherPlayer = {
     currentMSValue = currentRevenue.all ? (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0) : 0;
 
     return newMSValue > currentMSValue;
+  },
+  sendPlayerProtected: function (playerId) {
+    chrome.runtime.sendMessage({'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId)});
   }
+
 };
