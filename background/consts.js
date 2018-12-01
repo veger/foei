@@ -102,6 +102,8 @@ consts = {
     rifleman: { name: 'Fuselier', type: 'range' },
     howitzer: { name: 'Houwitzer', type: 'hkanon' },
 
+    conscript: { name: 'Dienstplichtige', type: 'dlicht' },
+
     IronAge_champion: { name: 'Kampioen', type: 'champ' },
     EarlyMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
     HighMiddleAge_champion: { name: 'Kampioen', type: 'champ' },

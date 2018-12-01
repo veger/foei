@@ -1,5 +1,6 @@
 var i18n = {
   'P_MultiAge_Aviary': 'Aviary',
+  'R_MultiAge_BirthdayBonus1': 'The King',
   'P_MultiAge_CarnivalBonus17': 'Masquerade Ball',
   'R_MultiAge_CarnivalBonus17': 'Renaissance Mansion',
   'P_MultiAge_CarnivalBonus18': 'Gondola Dock Market',
@@ -20,6 +21,7 @@ var i18n = {
   'P_MultiAge_FallBonus17a': 'Blooming Cider Mill',
   'P_MultiAge_FallBonus17b': 'Fruitful Cider Mill',
   'P_MultiAge_FallBonus17c': 'Bountiful Cider Mill',
+  'P_MultiAge_FallBonus17d': 'Prosperous Cider Mill',
   'R_MultiAge_FallBonus18': 'Forest of Fall',
   'R_MultiAge_FallBonus18b': 'Mill of Fall',
   'R_MultiAge_HalloweenBonus4': 'Haunted House',
