@@ -1,3 +1,5 @@
+var currentGBRewards = { rewards: []};
+
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
     console.log(request);
@@ -18,6 +20,10 @@ chrome.extension.onMessage.addListener(
     }
     if (request.playerProtected !== undefined) {
       updatePlayerProtection(request.playerProtected);
+    }
+    if (request.gbRewards) {
+      updateGreatBuildingBoostInfo(request.gbRewards);
+      currentGBRewards = request.gbRewards;
     }
     if (request.gbFpAnalysis) {
       updateGreatBuildingAnalysis(request.gbFpAnalysis);
@@ -67,3 +73,10 @@ function addTab (barParent, bodyParent, id, title, body) {
   $('#' + barParent).append(barHTML);
   $('#' + bodyParent).append(bodyHTML);
 }
+
+$('#boost-factor').change(function () {
+  updateGreatBuildingBoostInfo(currentGBRewards);
+});
+$('#boost-factor').on('input', function () {
+  updateGreatBuildingBoostInfo(currentGBRewards);
+});

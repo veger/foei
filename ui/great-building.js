@@ -5,7 +5,7 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
   for (var i = 0; i < fpAnalysis.length; i++) {
     var analysis = fpAnalysis[i];
     if (analysis !== false) {
-      ggRows += addGreatBuildingRow(i + 1, fpAnalysis[i]);
+      ggRows += addGreatBuildingAnalysisRow(i + 1, fpAnalysis[i]);
       hasAdvice = true;
     }
   }
@@ -13,6 +13,15 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
     ggRows = '<tr><td colspan="6">No advice available</td></tr>';
   }
   $('#great-building-body').html(ggRows);
+}
+
+function updateGreatBuildingBoostInfo (rewards) {
+  var ggRows = '';
+  for (var i = 0; i < rewards.rewards.length; i++) {
+    ggRows += addGreatBuildingBoostRow(i + 1, rewards.rewards[i], rewards.totalFP);
+  }
+
+  $('#great-building-boost-body').html(ggRows);
 }
 
 function updateGreatBuildingChanges (changes) {
@@ -34,7 +43,7 @@ function updateGreatBuildingChanges (changes) {
   $('#great-building-changes-body').html(ggRows);
 }
 
-function addGreatBuildingRow (spot, analysis) {
+function addGreatBuildingAnalysisRow (spot, analysis) {
   row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('sp') + ' ' + analysis.profit : '>') + '</td>';
   row += '<td>';
   if (analysis.reward.blueprints) {
@@ -62,6 +71,33 @@ function addGreatBuildingRow (spot, analysis) {
   }
   row += '</td>';
 
+  return row;
+}
+
+function addGreatBuildingBoostRow (spot, reward, totalFP) {
+  if (reward.fp === undefined) {
+    return '';
+  }
+
+  boostFactor = $('#boost-factor').val();
+  row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + Math.ceil(reward.fp * boostFactor) + '</td><td>' + iconImage('sp') + ' ' + (totalFP - Math.ceil(reward.fp * boostFactor) * 2) + '</td>';
+  row += '<td>';
+  if (reward.blueprints) {
+    row += iconImage('blueprint') + ' ' + reward.blueprints;
+  }
+  row += '</td><td>';
+  if (reward.blueprints) {
+    row += '+ ' + iconImage('bonus') + ' ' + Math.round(reward.blueprints * (boostFactor - 1));
+  }
+  row += '</td><td>';
+  if (reward.medals) {
+    row += iconImage('medal') + ' ' + reward.medals;
+  }
+  row += '</td><td>';
+  if (reward.medals) {
+    row += '+ ' + iconImage('bonus') + ' ' + Math.round(reward.medals * (boostFactor - 1));
+  }
+  row += '</td>';
   return row;
 }
 

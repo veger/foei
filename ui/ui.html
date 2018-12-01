@@ -62,32 +62,59 @@
       </table>
     </div>
     <div class="tab-pane fade" id="great-building" role="tabpanel" aria-labelledby="great-building-tab">
-      <table id="great-building-table" class="table table-sm table-responsive" style="white-space:nowrap;">
-        <thead>
-          <tr>
-            <th scope="col">Spot</th>
-            <th scope="col">Required</th>
-            <th scope="col" width="150px">Profit</th>
-            <th scope="col" colspan="6">Rewards</th>
-          </tr>
-        </thead>
-        <tbody id="great-building-body">
-        </tbody>
-      </table>
-      <table id="great-building-changes-table" class="table table-sm table-responsive" style="white-space:nowrap;">
-        <thead>
-          <tr>
-            <td colspan="3" class="text-center"><strong><span id="great-building-changes-player"></span></strong></td>
-          </tr>
-          <tr>
-            <th scope="col">Changed</th>
-            <th scope="col">When</th>
-            <th scope="col">Progress</th>
-          </tr>
-        </thead>
-        <tbody id="great-building-changes-body">
-        </tbody>
-      </table>
+      <div class="card m-1">
+        <div class="card-body">
+          <table id="great-building-table" class="table table-sm table-responsive" style="white-space:nowrap;">
+            <thead>
+              <tr>
+                <th scope="col">Spot</th>
+                <th scope="col">Required</th>
+                <th scope="col" width="150px">Profit</th>
+                <th scope="col" colspan="6">Rewards</th>
+              </tr>
+            </thead>
+            <tbody id="great-building-body">
+            </tbody>
+          </table>
+          <div>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#boost-info" aria-expanded="false" aria-controls="boost-info">Boost information</button>
+          </div>
+          <div id="boost-info" class="collapse">
+            <table id="great-building-boost-table" class="table table-sm table-responsive" style="white-space:nowrap;">
+              <thead>
+                <tr>
+                  <th scope="col">Spot</th>
+                  <th scope="col">Required</th>
+                  <th scope="col">Fill for Safe</th>
+                  <th scope="col" colspan="4">Rewards</th>
+                </tr>
+              </thead>
+              <tbody id="great-building-boost-body">
+              </tbody>
+            </table>
+            <label for="boost-factor">Boost factor</label>
+            <input type="number" id="boost-factor" min="1" max="2" value="1.9" step="0.01">
+          </div>
+        </div>
+      </div>
+      <div class="card m-1">
+        <div class="card-body">
+          <table id="great-building-changes-table" class="table table-sm table-responsive" style="white-space:nowrap;">
+            <thead>
+              <tr>
+                <td colspan="3" class="text-center"><strong><span id="great-building-changes-player"></span></strong></td>
+              </tr>
+              <tr>
+                <th scope="col">Changed</th>
+                <th scope="col">When</th>
+                <th scope="col">Progress</th>
+              </tr>
+            </thead>
+            <tbody id="great-building-changes-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
       <ul class="nav nav-tabs" id="settingsTabs" role="tablist">

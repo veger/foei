@@ -13,13 +13,14 @@ greatBuilding = {
           return;
         }
 
+        gbRewards = greatBuilding.getRewards(data.rankings);
         gbFpAnalysis = greatBuilding.performAnalysis(data.rankings);
 
         if (debug) {
           console.log(gbFpAnalysis);
         }
 
-        sendMessageCache({gbFpAnalysis: gbFpAnalysis});
+        sendMessageCache({gbFpAnalysis: gbFpAnalysis, gbRewards: gbRewards});
         break;
       case 'getOtherPlayerOverview':
         greatBuilding.checkGBChanges(data, function (changes) {
@@ -35,6 +36,21 @@ greatBuilding = {
           console.log(method + ' is not used');
         }
     }
+  },
+  getRewards: function (dataRankings) {
+    userIndex = -1;
+    rewards = [];
+    for (var i = 0; i < dataRankings.length; i++) {
+      ranking = dataRankings[i];
+      if (ranking.reward && (ranking.reward.strategy_point_amount || ranking.reward.blueprints || ranking.reward.resources.medals)) {
+        rewards.push({
+          fp: ranking.reward.strategy_point_amount,
+          blueprints: ranking.reward.blueprints,
+          medals: ranking.reward.resources.medals
+        });
+      }
+    }
+    return {totalFP: greatBuilding.requiredFP, rewards: rewards};
   },
   performAnalysis: function (dataRankings) {
     investedFP = 0;
