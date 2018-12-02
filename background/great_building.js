@@ -39,7 +39,7 @@ greatBuilding = {
   },
   getRewards: function (dataRankings) {
     userIndex = -1;
-    rewards = [];
+    var rewards = [];
     for (var i = 0; i < dataRankings.length; i++) {
       ranking = dataRankings[i];
       if (ranking.reward && (ranking.reward.strategy_point_amount || ranking.reward.blueprints || ranking.reward.resources.medals)) {
