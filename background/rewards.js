@@ -2,7 +2,7 @@ rewards = {
   rawRewards: [],
   process: function (method, data) {
     if (trace) {
-      console.log(data);
+      console.log('rewards.' + method, data);
     }
     switch (method) {
       case 'getOverview':

@@ -1,7 +1,7 @@
 cityMap = {
   process: function (method, data, id) {
     if (trace) {
-      console.log(data);
+      console.log('cityMap.' + method, data);
     }
     switch (method) {
       case 'updateEntity':

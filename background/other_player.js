@@ -2,7 +2,7 @@ otherPlayer = {
   protectedPlayers: {},
   process: function (method, data) {
     if (trace) {
-      console.log(data);
+      console.log('otherPlayer.' + data);
     }
     switch (method) {
       case 'visitPlayer':
