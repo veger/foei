@@ -1,20 +1,13 @@
 startup = {
+  playerId: 0,
   process: function (method, data) {
     if (trace) {
       console.log(data);
     }
     switch (method) {
       case 'getData':
-        // Check for Arc bonus as we need it for our calculations
-        var entities = data.city_map.entities;
-        for (var i = 0; i < entities.length; i++) {
-          if (entities[i].cityentity_id === 'X_FutureEra_Landmark1') {
-            if (debug) {
-              console.log('Arc', entities[i]);
-            }
-            greatBuilding.setArcBonus(entities[i].bonus.value);
-          }
-        }
+        startup.setPlayerId(data.user_data.player_id);
+        greatBuilding.checkArcBonus(data.city_map.entities);
 
         var goods = {};
         var goodsList = data.goodsList;
@@ -30,6 +23,13 @@ startup = {
         }
     }
   },
+  setPlayerId: function (playerId) {
+    if (debug) {
+      console.log('playerId', playerId);
+    }
+    localSet({'playerId': playerId});
+    startup.playerId = playerId;
+  },
   setGoods: function (goods) {
     if (debug) {
       console.log(Object.keys(goods).length + ' goods registered');
@@ -41,11 +41,14 @@ startup = {
 };
 
 listenToWorldIDChanged(function () {
-  localGet({'goods': false}, function (result) {
+  localGet({'goods': false, playerId: false}, function (result) {
     if (!result.goods) {
       sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
     } else {
       startup.setGoods(result.goods);
+    }
+    if (result.playerId) {
+      startup.playerId = result.playerId;
     }
   });
 });

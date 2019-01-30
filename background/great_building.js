@@ -195,6 +195,17 @@ greatBuilding = {
     greatBuilding.requestId = requestId;
     greatBuilding.requiredFP = requiredFP;
   },
+  checkArcBonus: function (entities) {
+    // Check for Arc bonus as we need it for our calculations
+    for (var i = 0; i < entities.length; i++) {
+      if (entities[i].cityentity_id === 'X_FutureEra_Landmark1' && entities[i].player_id == startup.playerId) {
+        if (debug) {
+          console.log('Arc', entities[i]);
+        }
+        greatBuilding.setArcBonus(entities[i].bonus.value);
+      }
+    }
+  },
   setArcBonus: function (bonus) {
     bonus = fixFloat(bonus / 100);
     greatBuilding.arcBonus = bonus;
