@@ -26,6 +26,11 @@ battleField = {
   },
 
   processStartBattle: function (data, callback) {
+    if (data.battleType.type != 'pvp') {
+      // We only care about attacking neighbours
+      return;
+    }
+
     armies = battleField.getArmies(data.state.unitsOrder);
     bonuses = battleField.getBonuses(data.state.unitsOrder[0].bonuses);
 
@@ -46,7 +51,7 @@ battleField = {
 
   processBattleMove: function (data) {
     if (battleField.lastPlayerAttacked < 0) {
-    // Unknown player (Expedition, or error), no need to update battle statistics
+    // Unknown player (Expedition, other non-pvp battle, or error), no need to update battle statistics
       return;
     }
     if (!data.surrenderBit && !data.winnerBit) {
