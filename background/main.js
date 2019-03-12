@@ -30,10 +30,6 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
-chrome.pageAction.onClicked.addListener(function () {
-  chrome.tabs.create({ url: chrome.runtime.getURL('ui/ui.html') });
-});
-
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.hasOwnProperty('debug')) {

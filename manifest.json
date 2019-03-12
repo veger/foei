@@ -30,6 +30,7 @@
   "web_accessible_resources": ["ajax_inspect.js"],
   "options_page": "options.html",
   "page_action": {
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "images/get_started16.png",
       "32": "images/get_started32.png",

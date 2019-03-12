@@ -1,3 +1,5 @@
+console.log('injected ajax_inspect!');
+
 (function () {
   var DEBUG = false;
 
@@ -6,15 +8,17 @@
 
   var XHR = XMLHttpRequest.prototype;
 
-  // Remember references to original methods
-  var _open = XHR.open;
-  var _send = XHR.send;
+  if (XHR._open === undefined) {
+    // Remember references to original methods
+    XHR._open = XHR.open;
+    XHR._send = XHR.send;
+  }
 
   // Collect data
   XHR.open = function (method, url) {
     this._method = method;
     this._url = url;
-    return _open.apply(this, arguments);
+    return XHR._open.apply(this, arguments);
   };
 
   // Implement "ajaxSuccess" functionality
@@ -24,10 +28,16 @@
         // Ignore asset requests
         return;
       }
-
+      if (DEBUG) {
+        console.log('XHR.send', this._method, this._url, '->', this.responseType || '<no type>');
+      }
       var formattedPostData = postData;
       if (postData instanceof ArrayBuffer) {
         formattedPostData = String.fromCharCode.apply(null, new Uint8Array(postData));
+      }
+
+      if (formattedPostData && DEBUG) {
+        console.log(formattedPostData);
       }
 
       var response;
@@ -50,6 +60,9 @@
       if (formattedPostData) {
         try {
           jsonRequest = JSON.parse(formattedPostData);
+          if (DEBUG) {
+            console.log(jsonRequest);
+          }
         } catch (_error) {
           console.log('Cannot convert json:', _error);
           console.log(formattedPostData);
@@ -59,6 +72,9 @@
       if (response) {
         try {
           jsonResponse = JSON.parse(response);
+          if (DEBUG) {
+            console.log(jsonResponse);
+          }
         } catch (_error) {
           console.log('Cannot convert json:', _error);
           console.log(response);
@@ -74,6 +90,6 @@
         chrome.runtime.sendMessage(extensionID, payload);
       }
     });
-    return _send.apply(this, arguments);
+    return XHR._send.apply(this, arguments);
   };
 })();
