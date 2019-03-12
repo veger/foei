@@ -66,18 +66,18 @@ consts = {
     slinger: { name: 'Slingeraar', type: 'range' },
 
     militiaman: { name: 'Soldaat', type: 'licht' },
-    armoredswordsman: { name: 'Gepasterde infaterie', type: 'zwaar' },
-    archer: { name: 'Boogschutter', type: 'range'},
+    armoredswordsman: { name: 'Gepanserde infaterie', type: 'zwaar' },
+    archer: { name: 'Boogschutter', type: 'range' },
     palintona: { name: 'Steenwerper', type: 'kata' },
     horseman: { name: 'Ruiter', type: 'snel' },
 
-    mounted_bowman: { name: 'Bereden boogschutter', type: 'range'},
+    mounted_bowman: { name: 'Bereden boogschutter', type: 'range' },
     mounted_legionnaire: { name: 'Bereden krijger', type: 'snel' },
-    balista: { name: 'Balista', type: 'kata'},
+    balista: { name: 'Balista', type: 'kata' },
 
-    catapult: { name: 'Katapult', type: 'kata'},
+    catapult: { name: 'Katapult', type: 'kata' },
     cataphract: { name: 'Zware calvalerie', type: 'snel' },
-    spearman: { name: 'Huurling', type: 'licht'},
+    spearman: { name: 'Huurling', type: 'licht' },
 
     trebuchet: { name: 'Trebuchet', type: 'treb' },
     feudal_knight: { name: 'Ridder', type: 'snel' },
@@ -90,9 +90,9 @@ consts = {
     imperial_knight: { name: 'Zware ridder', type: 'snel' },
     biedenhaender_mercenary: { name: 'Langzwaardkrijger', type: 'licht' },
     pikeman: { name: 'Keizerlijke garde', type: 'zwaar' },
-    longbowman: {name: 'Langboogshutter', type: 'range' },
+    longbowman: { name: 'Langboogshutter', type: 'range' },
 
-    marksman: {name: 'Musketier', type: 'range'},
+    marksman: { name: 'Musketier', type: 'range' },
     grenadier: { name: 'Grenadier', type: 'gren' },
     dragoon: { name: 'Dragonder', type: 'snel' },
     cannoniers: { name: 'Veldkanon', type: 'vkanon' },
