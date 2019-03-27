@@ -2,6 +2,10 @@
 
 > Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.
 
+[![FoEI plunder screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-plunder.png?sha=b8c8ba4e86afb969)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl1d/foei-plunder.png?sha=320d240b8a0eb886)
+[![FoEI rewards screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvMjJnY2I1M2MxdF9mb2VpX3Jld2FyZHMucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-rewards.png?sha=5a15e0fe9be0b277)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvMjJnY2I1M2MxdF9mb2VpX3Jld2FyZHMucG5nIl1d/foei-rewards.png?sha=b7662d3d84db46b1)
+[![FoEI great buildings screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvNDYxaWVxdWxka19mb2VpX2diLnBuZyJdLFsicCIsInRodW1iIiwiMjI1eDI1NVx1MDAzZSJdXQ/foei-gb.png?sha=fbba6bedf69a3169)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvNDYxaWVxdWxka19mb2VpX2diLnBuZyJdXQ/foei-gb.png?sha=fbab799e483fada8)
+
 ## Safe
 
 I believe FoEI is safe enough to be (virtually) undetectable by the game servers.
@@ -25,12 +29,14 @@ Now it is time to present it to the public and polish it some more:
 * Try on more servers / languages
 * I made some quick & dirty UI...
 * Lacking much experience I also made a quick & dirty Javascript implementation
-* Fix MacOS support, for some reason intercepting the incoming traffic does not seem to work..??
+* **Fix MacOS support**, for some reason intercepting the incoming traffic does not seem to work..??
 * more...
 
 ## Installation
 
 As long as FoEI is in Beta, I won't put it in the Chrome webstore, you either need to download the extension file or build it yourself.
+
+Installation instructions can be found on the [FoEI website](https://www.vegerweb.nl/foei).
 
 ## Contributing
 
