@@ -1,3 +1,7 @@
+# 0.1.0
+* First public beta
+* Support spring cherry trees
+
 # 0.0.7
 * Fix rewards (got broken in 0.0.6)
 * Minor other fixes

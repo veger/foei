@@ -57,7 +57,7 @@ function addRewardRow (timePassed, reward) {
 }
 
 function isUncommon (reward) {
-  return reward.rarity == 'uncommon' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
+  return reward.rarity == 'uncommon' || reward.rarity == 'special' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
 }
 
 function isActive (startTime, timePassed) {
@@ -101,5 +101,6 @@ var incidents = {
   'incident_statue': 'statue',
   'incident_stick_hut': 'stick hut',
   'incident_treasure_chest': 'treasure chest',
-  'incident_wine_cask': 'wine casks'
+  'incident_wine_cask': 'wine casks',
+  'spring_cherry_tree': 'cherry tree'
 };
