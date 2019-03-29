@@ -1,6 +1,7 @@
 # 0.1.0
 * First public beta
 * Support spring cherry trees
+* More building IDs
 
 # 0.0.7
 * Fix rewards (got broken in 0.0.6)
