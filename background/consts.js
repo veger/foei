@@ -61,56 +61,67 @@ consts = {
   },
 
   units: {
-    javeliner: { name: 'Speerman', type: 'licht' },
-    hoplite: { name: 'Krijger', type: 'zwaar' },
-    slinger: { name: 'Slingeraar', type: 'range' },
+    // BronzeAge
+    javeliner: { name: 'Spearfighter', type: 'light' },
+    hoplite: { name: 'Warrior', type: 'heavy' },
+    slinger: { name: 'Slinger', type: 'ranged' },
+    horseman: { name: 'Horseman', type: 'fast' },
+    palintona: { name: 'Stone Thrower', type: 'artillery' },
 
-    militiaman: { name: 'Soldaat', type: 'licht' },
-    armoredswordsman: { name: 'Gepanserde infaterie', type: 'zwaar' },
-    archer: { name: 'Boogschutter', type: 'range' },
-    palintona: { name: 'Steenwerper', type: 'kata' },
-    horseman: { name: 'Ruiter', type: 'snel' },
+    // Iron Age
+    militiaman: { name: 'Soldier', type: 'light' },
+    legionnaire: { name: 'Legionnaire', type: 'heavy' },
+    archer: { name: 'Archer', type: 'ranged' },
+    mounted_legionnaire: { name: 'Mounted Warrior', type: 'fast' },
+    balista: { name: 'Ballista', type: 'artillery' },
 
-    mounted_bowman: { name: 'Bereden boogschutter', type: 'range' },
-    mounted_legionnaire: { name: 'Bereden krijger', type: 'snel' },
-    balista: { name: 'Balista', type: 'kata' },
+    // Early Middle Ages
+    mounted_bowman: { name: 'Mounted Archer', type: 'ranged' },
+    catapult: { name: 'Catapult', type: 'artillery' },
+    cataphract: { name: 'Heavy Cavalry', type: 'fast' },
+    spearman: { name: 'Mercenary', type: 'light' },
+    armoredswordsman: { name: 'Armored Infantry', type: 'heavy' },
 
-    catapult: { name: 'Katapult', type: 'kata' },
-    cataphract: { name: 'Zware calvalerie', type: 'snel' },
-    spearman: { name: 'Huurling', type: 'licht' },
+    // High Middle Ages
+    trebuchet: { name: 'Trebuchet', type: 'artillery' },
+    feudal_knight: { name: 'Knight', type: 'fast' },
+    crossbowman: { name: 'Crossbowman', type: 'ranged' },
+    dismounted_knight: { name: 'Heavy Infantry', type: 'heavy' },
+    axe_hammer_warrior: { name: 'Berserker', type: 'light' },
 
-    trebuchet: { name: 'Trebuchet', type: 'treb' },
-    feudal_knight: { name: 'Ridder', type: 'snel' },
-    crossbowman: { name: 'Kruisboogschutter', type: 'range' },
-    legionnaire: { name: 'Legionair', type: 'zwaar' },
-    dismounted_knight: { name: 'Zware infanterie', type: 'zwaar' },
-    axe_hammer_warrior: { name: 'Berserker', type: 'licht' },
+    // Late Middle Ages
+    bombarde: { name: 'Cannon', type: 'artillery' },
+    imperial_knight: { name: 'Heavy Knight', type: 'fast' },
+    biedenhaender_mercenary: { name: 'Great Sword Warrior', type: 'light' },
+    pikeman: { name: 'Imperial Guard', type: 'heavy' },
+    longbowman: { name: 'Longbow Archer', type: 'ranged' },
 
-    bombarde: { name: 'Kanon', type: 'kanon' },
-    imperial_knight: { name: 'Zware ridder', type: 'snel' },
-    biedenhaender_mercenary: { name: 'Langzwaardkrijger', type: 'licht' },
-    pikeman: { name: 'Keizerlijke garde', type: 'zwaar' },
-    longbowman: { name: 'Langboogshutter', type: 'range' },
+    // Colonial Age
+    marksman: { name: 'Musketeer', type: 'ranged' },
+    grenadier: { name: 'Grenadier', type: 'heavy' },
+    dragoon: { name: 'Dragoon', type: 'fast' },
+    cannoniers: { name: 'Field Gun', type: 'artillery' },
+    ranger: { name: 'Ranger', type: 'light' },
 
-    marksman: { name: 'Musketier', type: 'range' },
-    grenadier: { name: 'Grenadier', type: 'gren' },
-    dragoon: { name: 'Dragonder', type: 'snel' },
-    cannoniers: { name: 'Veldkanon', type: 'vkanon' },
-    ranger: { name: 'Militieman', type: 'militie' },
+    // Industrial Age
+    jaeger: { name: 'Jaeger Infantry', type: 'light' },
+    lancer: { name: 'Lancer', type: 'fast' },
+    rifleman: { name: 'Rifleman', type: 'ranged' },
+    howitzer: { name: 'Howitzer', type: 'heavy' },
 
-    jaeger: { name: 'Jager', type: 'jager' },
-    rifleman: { name: 'Fuselier', type: 'range' },
-    howitzer: { name: 'Houwitzer', type: 'hkanon' },
+    // Progressive Era
+    conscript: { name: 'Conscript', type: 'light' },
 
-    conscript: { name: 'Dienstplichtige', type: 'dlicht' },
+    // All Ages
+    military_drummer: { name: 'Military Drummer', type: 'drum' },
+    color_guard: { name: 'Color Guard', type: 'cguard' },
+    rogue: { name: 'Rogue', type: 'rogue' },
 
-    IronAge_champion: { name: 'Kampioen', type: 'champ' },
-    EarlyMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
-    HighMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
-    LateMiddleAge_champion: { name: 'Kampioen', type: 'champ' },
-    ColonialAge_champion: { name: 'Kampioen', type: 'champ' },
-    color_guard: { name: 'Vaandeldrager', type: 'vaandel' },
-    military_drummer: { name: 'Militaire drummer', type: 'drum' },
-    rogue: { name: 'Schurk', type: 'schurk' }
+    // Champions
+    IronAge_champion: { name: 'Champions', type: 'champ' },
+    EarlyMiddleAge_champion: { name: 'Champions', type: 'champ' },
+    HighMiddleAge_champion: { name: 'Champions', type: 'champ' },
+    LateMiddleAge_champion: { name: 'Champions', type: 'champ' },
+    ColonialAge_champion: { name: 'Champions', type: 'champ' }
   }
 };
