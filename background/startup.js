@@ -37,6 +37,17 @@ startup = {
     localSet({ 'goods': goods });
     consts.goods = goods;
     sendNotification('goods', '', '');
+  },
+  getGoods: function (cb) {
+    if (consts.goods !== undefined) {
+      cb(consts.goods)
+    }
+
+    // Handle goods not being available yet  (eg during startup)
+    localGet({ 'goods': false }, function (result) {
+      startup.setGoods(result.goods)
+      cb(result.goods)
+    });
   }
 };
 
@@ -52,3 +63,5 @@ listenToWorldIDChanged(function () {
     }
   });
 });
+
+startup.getGoods(function () { })
