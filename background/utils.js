@@ -19,6 +19,19 @@ function sortByKey(property) {
   }
 }
 
+function sortByKeyMultiple() {
+  // Save arguments as inner function will have its own
+  var props = arguments;
+  return function (a, b) {
+    var i = 0, result = 0, numberOfProperties = props.length;
+    while (result === 0 && i < numberOfProperties) {
+      result = sortByKey(props[i])(a, b);
+      i++;
+    }
+    return result;
+  }
+}
+
 function mapEqual(map1, map2, reversedOrder) {
   for (propName in map1) {
     if (!map1.hasOwnProperty(propName)) {

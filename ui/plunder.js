@@ -60,9 +60,14 @@ function addPlunderRow(resource, revenue) {
   row = '<tr><td>' + iconImage(resource) + '</td><td>' + revenue.value + '</td>' + (revenue.name ? '<td>' + l10n(revenue.name) + '</td>' : '');
   row += '<td>';
   if (revenue.all) {
-    row += '<table>' + createAllRows(revenue.all) + '</table>';
+    row += '<table>' + createAllRows(revenue.all) + '</table></td><td>';
   } else if (revenue.raw) {
-    row += processRawGoodsPlunderData(revenue.raw);
+    row += processRawGoodsPlunderData(revenue.raw) + '</td><td>';
+    if (Object.keys(revenue.raw).length == 1) {
+      row += revenue.stock;
+    }
+  } else {
+    row += '</td><td>';
   }
   row += '</td></tr>';
   return row;

@@ -26,6 +26,8 @@ otherPlayer = {
                 name: result.id,
                 all: copyProductResources(result),
                 value: goodsValue,
+                // TODO Get total stock (although it would be a huge coincidence that 2 'multi good' results have exactly the same value...)
+                stock: (resource.resources[worldID] || {})[Object.keys(result.product.resources)[0]] || 0,
                 raw: result.product.resources
               });
             }
@@ -54,7 +56,7 @@ otherPlayer = {
           console.log('sp', spMax);
         }
         if (goods.length > 0) {
-          goods = goods.sort(sortByKey("-value"))
+          goods = goods.sort(sortByKeyMultiple("-value", "stock"))
           console.log('goods', goods);
         }
         if (moneyMax.value > 0) {
