@@ -131,13 +131,13 @@ battleField = {
       }
     }
     atkDef = [];
-    def = Math.floor(bonusesMap.defense_boost / 30);
+    def = bonusesMap.defense_boost;
     if (def > 0) {
-      atkDef.push((def == 1 ? '' : def) + 'def');
+      atkDef.push((def == 1 ? '' : def) + '% def');
     }
-    atk = Math.floor(bonusesMap.attack_boost / 30);
+    atk = bonusesMap.attack_boost;
     if (atk > 0) {
-      atkDef.push((atk == 1 ? '' : atk) + 'atk');
+      atkDef.push((atk == 1 ? '' : atk) + '% atk');
     }
 
     return atkDef;
