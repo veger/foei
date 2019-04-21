@@ -1,4 +1,5 @@
 * Rewards screen - Order on goods in stock when value is the same (#2)
+* More unit and building IDs
 
 # 0.1.0
 * First public beta

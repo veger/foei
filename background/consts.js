@@ -108,6 +108,7 @@ consts = {
     lancer: { name: 'Lancer', type: 'fast' },
     rifleman: { name: 'Rifleman', type: 'ranged' },
     howitzer: { name: 'Howitzer', type: 'heavy' },
+    breech_loader: { name: 'Breech Loader', type: 'artillery' },
 
     // Progressive Era
     conscript: { name: 'Conscript', type: 'light' },
