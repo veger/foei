@@ -1,3 +1,4 @@
+# 0.2.0
 * Rewards screen - Order on goods in stock when value is the same ([#2](https://github.com/veger/foei/issues/2))
 * Show defense/attack in percentage ([#5](https://github.com/veger/foei/issues/5))
 * Fix defense boost value (get from enemy unit, instead of first unit)
