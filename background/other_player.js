@@ -54,7 +54,7 @@ otherPlayer = {
           console.log('sp', spMax);
         }
         if (goods.length > 0) {
-          goods = sortByKeyDesc(goods, 'value');
+          goods = goods.sort(sortByKey("-value"))
           console.log('goods', goods);
         }
         if (moneyMax.value > 0) {

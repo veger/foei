@@ -19,7 +19,7 @@ rewards = {
         }
 
         parsedRewards = rewards.parseRewards();
-        parsedRewards = sortByKey(parsedRewards, 'startTime');
+        parsedRewards = parsedRewards.sort(sortByKey('startTime'));
         if (debug) {
           console.log('Hidden rewards', parsedRewards);
         }

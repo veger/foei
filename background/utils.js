@@ -7,19 +7,18 @@ function humanReadableTime (seconds) {
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
-function sortByKey (array, key, ...keys) {
-  for (var i = 0; i < array.length; i++) {
-    for (var j = i + 1; j < array.length; j++) {
-      if (array[i][key] > array[j][key]) {
-        [ array[i], array[j] ] = [ array[j], array[i] ];
-      }
-    }
+function sortByKey(property) {
+  var sortOrder = 1;
+  if (property[0] === "-") {
+    sortOrder = -1;
+    property = property.substr(1);
   }
-  return keys.length > 0 ? sortByKey(array, keys) : array;
+  return function (a, b) {
+    var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+    return result * sortOrder;
+  }
 }
 
-function sortByKeyDesc (array, key, ...keys) {
-  return sortByKey(array, key, keys).reverse();
 }
 
 function mapEqual (map1, map2, reversedOrder) {
