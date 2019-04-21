@@ -4,7 +4,7 @@ greatBuilding = {
   arcBonus: 0,
   process: function (method, data, id) {
     if (trace) {
-      console.log(method, data);
+      console.log('GreatBuildingsService.' + method, data);
     }
     switch (method) {
       case 'getConstruction':
@@ -33,7 +33,7 @@ greatBuilding = {
         break;
       default:
         if (trace || debug) {
-          console.log(method + ' is not used');
+          console.log('GreatBuildingsService.' + method + ' is not used');
         }
     }
   },

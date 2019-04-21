@@ -15,10 +15,10 @@
       "background/main.js",
       "background/battle_field.js",
       "background/city_map.js",
-      "background/great_building.js",
+      "background/great_buildings.js",
+      "background/hidden_reward.js",
       "background/other_player.js",
       "background/resource.js",
-      "background/rewards.js",
       "background/startup.js"
     ],
     "persistent": false

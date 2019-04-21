@@ -1,24 +1,24 @@
-rewards = {
+hiddenReward = {
   rawRewards: [],
   process: function (method, data) {
     if (trace) {
-      console.log('rewards.' + method, data);
+      console.log('HiddenRewardService.' + method, data);
     }
     switch (method) {
       case 'getOverview':
         // Remove rewards of current world...
         world = worldID.slice(0, -1); // remove '-'
-        rewards.rawRewards = rewards.rawRewards.filter(function (i) {
+        hiddenReward.rawRewards = hiddenReward.rawRewards.filter(function (i) {
           return i.worldID !== world;
         });
         // ... and add received ones back
         for (var i = 0; i < data.hiddenRewards.length; i++) {
           rawReward = data.hiddenRewards[i];
           rawReward.worldID = world;
-          rewards.rawRewards.push(rawReward);
+          hiddenReward.rawRewards.push(rawReward);
         }
 
-        parsedRewards = rewards.parseRewards();
+        parsedRewards = hiddenReward.parseRewards();
         parsedRewards = parsedRewards.sort(sortByKey('startTime'));
         if (debug) {
           console.log('Hidden rewards', parsedRewards);
@@ -27,15 +27,15 @@ rewards = {
         break;
       default:
         if (trace || debug) {
-          console.log('rewardsService.' + method + ' is not used');
+          console.log('HiddenRewardService.' + method + ' is not used');
         }
     }
   },
   parseRewards: function () {
     parseRewards = [];
     var now = Date.now() / 1000;
-    for (var i = 0; i < rewards.rawRewards.length; i++) {
-      reward = rewards.rawRewards[i];
+    for (var i = 0; i < hiddenReward.rawRewards.length; i++) {
+      reward = hiddenReward.rawRewards[i];
       startDiff = reward.startTime - now;
       active = true;
       if (startDiff > 0) {

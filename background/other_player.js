@@ -2,7 +2,7 @@ otherPlayer = {
   protectedPlayers: {},
   process: function (method, data) {
     if (trace) {
-      console.log('otherPlayer.' + data);
+      console.log('OtherPlayerService.' + method, data);
     }
     switch (method) {
       case 'visitPlayer':
@@ -98,7 +98,7 @@ otherPlayer = {
         break;
       default:
         if (trace || debug) {
-          console.log('otherPlayer.' + method + ' is not used');
+          console.log('OtherPlayerService.' + method + ' is not used');
         }
     }
   },

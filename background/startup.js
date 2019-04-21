@@ -2,7 +2,7 @@ startup = {
   playerId: 0,
   process: function (method, data) {
     if (trace) {
-      console.log(data);
+      console.log('StartupService.' + method, data);
     }
     switch (method) {
       case 'getData':
@@ -19,7 +19,7 @@ startup = {
         break;
       default:
         if (trace || debug) {
-          console.log('startupService.' + method + ' is not used');
+          console.log('StartupService.' + method + ' is not used');
         }
     }
   },

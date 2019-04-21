@@ -1,7 +1,7 @@
 cityMap = {
   process: function (method, data, id) {
     if (trace) {
-      console.log('cityMap.' + method, data);
+      console.log('CityMapService.' + method, data);
     }
     switch (method) {
       case 'updateEntity':
@@ -13,7 +13,7 @@ cityMap = {
         break;
       default:
         if (trace || debug) {
-          console.log('CitymapService.' + method + ' is not used');
+          console.log('CityMapService.' + method + ' is not used');
         }
     }
   }

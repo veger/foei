@@ -2,7 +2,7 @@ battleField = {
   lastPlayerAttacked: -1,
   process: function (method, data, id) {
     if (trace) {
-      console.log('battleField.' + method, data);
+      console.log('BattlefieldService.' + method, data);
     }
     switch (method) {
       case 'autoFinish':
@@ -20,7 +20,7 @@ battleField = {
         break;
       default:
         if (trace || debug) {
-          console.log('battleFieldService.' + method + ' is not used');
+          console.log('BattlefieldService.' + method + ' is not used');
         }
     }
   },

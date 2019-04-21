@@ -81,7 +81,7 @@ chrome.runtime.onMessageExternal.addListener(
             greatBuilding.process(response.requestMethod, response.responseData, response.requestId);
             break;
           case 'HiddenRewardService':
-            rewards.process(response.requestMethod, response.responseData, response.requestId);
+            hiddenReward.process(response.requestMethod, response.responseData, response.requestId);
             break;
           case 'OtherPlayerService':
             otherPlayer.process(response.requestMethod, response.responseData, response.requestId);

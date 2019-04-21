@@ -2,7 +2,7 @@ resource = {
     resources: {},
     process: function (method, data) {
         if (trace) {
-            console.log('resourceService.' + method, data);
+            console.log('ResourceService.' + method, data);
         }
         switch (method) {
             case 'getPlayerResources':
