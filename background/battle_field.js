@@ -32,7 +32,15 @@ battleField = {
     }
 
     armies = battleField.getArmies(data.state.unitsOrder);
-    bonuses = battleField.getBonuses(data.state.unitsOrder[0].bonuses);
+
+    var enemyUnit = 0
+    for (; enemyUnit < data.state.unitsOrder.length; enemyUnit++) {
+      if (data.state.unitsOrder[enemyUnit].teamFlag == 2) {
+        // Found an enemy
+        break;
+      }
+    }
+    bonuses = battleField.getBonuses(data.state.unitsOrder[enemyUnit].bonuses);
 
     battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'), callback);
 

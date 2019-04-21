@@ -1,4 +1,5 @@
 * Rewards screen - Order on goods in stock when value is the same (#2)
+* Fix defense boost value (get from enemy unit, instead of first unit)
 * More unit and building IDs
 
 # 0.1.0
