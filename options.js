@@ -9,8 +9,8 @@ chrome.storage.local.get('_trace', function (data) {
 });
 
 debugButton.onchange = function (element) {
-  chrome.runtime.sendMessage({'debug': debugButton.checked});
+  chrome.runtime.sendMessage({ 'debug': debugButton.checked });
 };
 traceButton.onchange = function (element) {
-  chrome.runtime.sendMessage({'trace': traceButton.checked});
+  chrome.runtime.sendMessage({ 'trace': traceButton.checked });
 };

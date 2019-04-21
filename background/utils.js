@@ -1,4 +1,4 @@
-function humanReadableTime (seconds) {
+function humanReadableTime(seconds) {
   var hours = Math.floor(seconds / 3600);
   seconds -= hours * 3600;
   var minutes = '0' + Math.floor(seconds / 60);
@@ -19,9 +19,7 @@ function sortByKey(property) {
   }
 }
 
-}
-
-function mapEqual (map1, map2, reversedOrder) {
+function mapEqual(map1, map2, reversedOrder) {
   for (propName in map1) {
     if (!map1.hasOwnProperty(propName)) {
       continue;
@@ -38,8 +36,8 @@ function mapEqual (map1, map2, reversedOrder) {
   return (reversedOrder ? true : mapEqual(map2, map1, true));
 }
 
-function copyProductResources (result) {
-  productResources = { goods: {}};
+function copyProductResources(result) {
+  productResources = { goods: {} };
 
   if (result.product !== undefined && result.product.resources !== undefined) {
     for (var resource in result.product.resources) {
@@ -67,13 +65,13 @@ function copyProductResources (result) {
 
 var msgCache = {};
 
-function sendMessageCache (msg) {
+function sendMessageCache(msg) {
   chrome.runtime.sendMessage(msg);
 
-  msgCache = { ...msgCache, ...msg};
+  msgCache = { ...msgCache, ...msg };
 }
 
-function sendNotification (id, type, message) {
+function sendNotification(id, type, message) {
   notifications = msgCache.notifications || {};
   if (message == '') {
     // Clear message
@@ -99,18 +97,18 @@ function sendNotification (id, type, message) {
   }
 
   // Send and update
-  sendMessageCache({notifications: notifications});
+  sendMessageCache({ notifications: notifications });
 }
 
-function sendPlayerArmies (playerId) {
-  syncGet({'playerArmies': {}}, function (result) {
+function sendPlayerArmies(playerId) {
+  syncGet({ 'playerArmies': {} }, function (result) {
     playerArmies = result.playerArmies;
     var armyDetails = playerArmies[playerId] || {};
 
-    chrome.runtime.sendMessage({'battleStats': armyDetails});
+    chrome.runtime.sendMessage({ 'battleStats': armyDetails });
   });
 }
 
-function fixFloat (number) {
+function fixFloat(number) {
   return parseFloat(parseFloat(number).toPrecision(4));
 }

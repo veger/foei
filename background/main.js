@@ -22,7 +22,7 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.declarativeContent.onPageChanged.addRules([{
       conditions: [
         new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: {hostContains: 'forgeofempires.com', pathEquals: '/game/index'}
+          pageUrl: { hostContains: 'forgeofempires.com', pathEquals: '/game/index' }
         })
       ],
       actions: [new chrome.declarativeContent.ShowPageAction()]
@@ -100,16 +100,16 @@ chrome.runtime.onMessageExternal.addListener(
     }
   });
 
-function setDebug (value) {
+function setDebug(value) {
   debug = value;
-  localSet({_debug: debug}, function () {
+  localSet({ _debug: debug }, function () {
     console.log('debug', debug);
   });
 }
 
-function setTrace (value) {
+function setTrace(value) {
   trace = value;
-  localSet({_trace: trace}, function () {
+  localSet({ _trace: trace }, function () {
     console.log('trace', trace);
   });
 }

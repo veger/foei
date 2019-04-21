@@ -30,16 +30,16 @@ otherPlayer = {
               });
             }
             if (result.product.resources.money > moneyMax.value) {
-              moneyMax = { value: result.product.resources.money, name: result.id, all: copyProductResources(result)};
+              moneyMax = { value: result.product.resources.money, name: result.id, all: copyProductResources(result) };
             }
             if (result.product.resources.supplies > suppliesMax.value) {
-              suppliesMax = { value: result.product.resources.supplies, name: result.id, all: copyProductResources(result)};
+              suppliesMax = { value: result.product.resources.supplies, name: result.id, all: copyProductResources(result) };
             }
             if (result.product.resources.medals > medalsMax.value) {
-              medalsMax = { value: result.product.resources.medals, name: result.id, all: copyProductResources(result)};
+              medalsMax = { value: result.product.resources.medals, name: result.id, all: copyProductResources(result) };
             }
             if (result.product.resources.strategy_points && otherPlayer.spMoreValuable(result.product.resources, spMax)) {
-              spMax = { value: result.product.resources.strategy_points, name: result.id, all: copyProductResources(result)};
+              spMax = { value: result.product.resources.strategy_points, name: result.id, all: copyProductResources(result) };
             }
           } else {
             if (debug) {
@@ -47,7 +47,7 @@ otherPlayer = {
             }
           }
           if (result.clan_power && result.clan_power > clanPowerMax.value) {
-            clanPowerMax = { value: result.clan_power, name: result.id, all: copyProductResources(result)};
+            clanPowerMax = { value: result.clan_power, name: result.id, all: copyProductResources(result) };
           }
         }
         if (spMax.value > 0) {
@@ -69,14 +69,16 @@ otherPlayer = {
         if (clanPowerMax.value > 0) {
           console.log('clan power', clanPowerMax);
         }
-        sendMessageCache({ 'revenue': {
-          spMax: spMax,
-          goods: goods,
-          moneyMax: moneyMax,
-          suppliesMax: suppliesMax,
-          medalsMax: medalsMax,
-          clanPowerMax: clanPowerMax
-        }});
+        sendMessageCache({
+          'revenue': {
+            spMax: spMax,
+            goods: goods,
+            moneyMax: moneyMax,
+            suppliesMax: suppliesMax,
+            medalsMax: medalsMax,
+            clanPowerMax: clanPowerMax
+          }
+        });
 
         // Provide battle information of this player
         otherPlayer.sendPlayerProtected(data.other_player.player_id);
@@ -150,7 +152,7 @@ otherPlayer = {
     return newMSValue > currentMSValue;
   },
   sendPlayerProtected: function (playerId) {
-    chrome.runtime.sendMessage({'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId)});
+    chrome.runtime.sendMessage({ 'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId) });
   }
 
 };

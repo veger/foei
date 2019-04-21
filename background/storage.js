@@ -12,33 +12,33 @@ var createRingBuffer = function (length) {
 };
 
 var worldID;
-function setWorldID (newWorldID) {
+function setWorldID(newWorldID) {
   if (worldID === newWorldID + '-') {
     return;
   }
 
-  localSet({_lastWorldID: newWorldID});
+  localSet({ _lastWorldID: newWorldID });
   worldID = newWorldID + '-';
 
-  syncGet({_worlds: []}, function (result) {
+  syncGet({ _worlds: [] }, function (result) {
     if (!result._worlds.includes(newWorldID)) {
       if (debug) {
         console.log('New world: ' + newWorldID);
       }
       result._worlds.push(newWorldID);
-      syncSet({_worlds: result._worlds});
+      syncSet({ _worlds: result._worlds });
     }
     sendWorldsWithDataSize(result._worlds);
   });
 
   // dispatch() is an undocumented feature, used to force sending events on same page
-  chrome.runtime.onMessage.dispatch({worldIDChanged: newWorldID});
+  chrome.runtime.onMessage.dispatch({ worldIDChanged: newWorldID });
   if (debug) {
     console.log('Changed world to "' + newWorldID + '"');
   }
 }
 
-function listenToWorldIDChanged (callback) {
+function listenToWorldIDChanged(callback) {
   chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
       if (request.hasOwnProperty('worldIDChanged')) {
@@ -47,7 +47,7 @@ function listenToWorldIDChanged (callback) {
     });
 }
 
-function toWorldKeys (keys) {
+function toWorldKeys(keys) {
   worldKeys = {};
   keysType = typeof keys;
   if (Array.isArray(keys)) {
@@ -78,7 +78,7 @@ function toWorldKeys (keys) {
   return worldKeys;
 }
 
-function fromWorldResult (worldResult) {
+function fromWorldResult(worldResult) {
   var result = {};
   if (worldResult) {
     for (worldKey in worldResult) {
@@ -91,7 +91,7 @@ function fromWorldResult (worldResult) {
 }
 
 const usedDataStorages = ['playerArmies', 'playerGBs'];
-function sendWorldsWithDataSize (worlds) {
+function sendWorldsWithDataSize(worlds) {
   worldsSize = {};
   for (var i = 0; i < worlds.length; i++) {
     (function (world) {
@@ -99,18 +99,18 @@ function sendWorldsWithDataSize (worlds) {
       chrome.storage.sync.getBytesInUse(storages, function (result) {
         worldsSize[world] = result;
         if (Object.keys(worldsSize).length == worlds.length) {
-          sendMessageCache({worlds: worldsSize});
+          sendMessageCache({ worlds: worldsSize });
         }
       });
     })(worlds[i]);
   }
 }
 
-function isInternalKey (key) {
+function isInternalKey(key) {
   return key[0] == '_';
 }
 
-function syncSet (items, callback) {
+function syncSet(items, callback) {
   worldItems = {};
   for (item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
@@ -125,13 +125,13 @@ function syncSet (items, callback) {
   });
 }
 
-function syncGet (keys, callback) {
+function syncGet(keys, callback) {
   chrome.storage.sync.get(toWorldKeys(keys), function (worldResult) {
     callback(fromWorldResult(worldResult));
   });
 }
 
-function localSet (items, callback) {
+function localSet(items, callback) {
   worldItems = {};
   for (item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item];
@@ -146,13 +146,13 @@ function localSet (items, callback) {
   });
 }
 
-function localGet (keys, callback) {
+function localGet(keys, callback) {
   chrome.storage.local.get(toWorldKeys(keys), function (worldResult) {
     callback(fromWorldResult(worldResult));
   });
 }
 
-function cacheAction (request) {
+function cacheAction(request) {
   for (worldID in request) {
     if (worldID === 'data') {
       continue;
@@ -208,7 +208,7 @@ function cacheAction (request) {
                 if (trace) {
                   console.log(storageName, request.data[storageName]);
                 }
-                ds = {...data[storageName], ...request.data[storageName]};
+                ds = { ...data[storageName], ...request.data[storageName] };
                 data[storageName] = ds;
               }
             }
@@ -228,7 +228,7 @@ function cacheAction (request) {
         break;
       case 'export':
         chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds; }), function (result) {
-          chrome.runtime.sendMessage({cacheData: { worldID: worldID, data: result}});
+          chrome.runtime.sendMessage({ cacheData: { worldID: worldID, data: result } });
         });
         break;
       default:

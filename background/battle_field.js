@@ -12,7 +12,7 @@ battleField = {
         });
         break;
       case 'startPvP':
-        battleField.processStartBattle(data, function () {});
+        battleField.processStartBattle(data, function () { });
         break;
       case 'submitMove':
       case 'surrender':
@@ -51,7 +51,7 @@ battleField = {
 
   processBattleMove: function (data) {
     if (battleField.lastPlayerAttacked < 0) {
-    // Unknown player (Expedition, other non-pvp battle, or error), no need to update battle statistics
+      // Unknown player (Expedition, other non-pvp battle, or error), no need to update battle statistics
       return;
     }
     if (!data.surrenderBit && !data.winnerBit) {
@@ -67,7 +67,7 @@ battleField = {
       unitInfo = data.unitsOrder[i];
       if (unitInfo.teamFlag == 1) {
         if (unitInfo.currentHitpoints === undefined || unitInfo.currentHitpoints == 0) {
-            // Unit died
+          // Unit died
           lostHP += unitInfo.startHitpoints;
           unitsDied[unitInfo.unitTypeId] = (unitsDied[unitInfo.unitTypeId] | 0) + 1;
         } else {
@@ -138,30 +138,30 @@ battleField = {
   storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus, callback) {
     battleField.lastPlayerAttacked = playerId;
 
-    syncGet({'playerArmies': {}}, function (result) {
+    syncGet({ 'playerArmies': {} }, function (result) {
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[playerId] || {};
 
       if (armyDetails.battles == undefined || !mapEqual(armyDetails.defendUnits, defendUnits)) {
         // (re)set details of previous battles
-        armyDetails.battles = {wins: 0, loses: 0, details: []};
+        armyDetails.battles = { wins: 0, loses: 0, details: [] };
 
         armyDetails.defendUnits = defendUnits;
       }
       armyDetails.defendBonus = defendBonus;
 
-      armyDetails.battles.details.push({attackUnits: attackUnits});
+      armyDetails.battles.details.push({ attackUnits: attackUnits });
 
       armyDetails.lastAccess = Date.now();
       playerArmies[playerId] = armyDetails;
-      syncSet({'playerArmies': playerArmies}, callback);
+      syncSet({ 'playerArmies': playerArmies }, callback);
 
       sendPlayerArmies(playerId);
     });
   },
 
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied) {
-    syncGet({'playerArmies': {}}, function (result) {
+    syncGet({ 'playerArmies': {} }, function (result) {
       playerArmies = result.playerArmies;
       var armyDetails = playerArmies[battleField.lastPlayerAttacked] || {};
 
@@ -179,7 +179,7 @@ battleField = {
 
       armyDetails.lastAccess = Date.now();
       playerArmies[battleField.lastPlayerAttacked] = armyDetails;
-      syncSet({'playerArmies': playerArmies});
+      syncSet({ 'playerArmies': playerArmies });
 
       sendPlayerArmies(battleField.lastPlayerAttacked);
 

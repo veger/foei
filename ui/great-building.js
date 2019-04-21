@@ -1,5 +1,5 @@
 
-function updateGreatBuildingAnalysis (fpAnalysis) {
+function updateGreatBuildingAnalysis(fpAnalysis) {
   var ggRows = '';
   var hasAdvice = false;
   for (var i = 0; i < fpAnalysis.length; i++) {
@@ -15,7 +15,7 @@ function updateGreatBuildingAnalysis (fpAnalysis) {
   $('#great-building-body').html(ggRows);
 }
 
-function updateGreatBuildingBoostInfo (rewards) {
+function updateGreatBuildingBoostInfo(rewards) {
   var ggRows = '';
   for (var i = 0; i < rewards.rewards.length; i++) {
     ggRows += addGreatBuildingBoostRow(i + 1, rewards.rewards[i], rewards.totalFP);
@@ -24,7 +24,7 @@ function updateGreatBuildingBoostInfo (rewards) {
   $('#great-building-boost-body').html(ggRows);
 }
 
-function updateGreatBuildingChanges (changes) {
+function updateGreatBuildingChanges(changes) {
   $('#great-building-changes-player').text(changes.player);
   changes = changes.changes;
   ggRows = '';
@@ -43,7 +43,7 @@ function updateGreatBuildingChanges (changes) {
   $('#great-building-changes-body').html(ggRows);
 }
 
-function addGreatBuildingAnalysisRow (spot, analysis) {
+function addGreatBuildingAnalysisRow(spot, analysis) {
   row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('sp') + ' ' + analysis.profit : '>') + '</td>';
   row += '<td>';
   if (analysis.reward.blueprints) {
@@ -74,7 +74,7 @@ function addGreatBuildingAnalysisRow (spot, analysis) {
   return row;
 }
 
-function addGreatBuildingBoostRow (spot, reward, totalFP) {
+function addGreatBuildingBoostRow(spot, reward, totalFP) {
   if (reward.fp === undefined) {
     return '';
   }
@@ -101,6 +101,6 @@ function addGreatBuildingBoostRow (spot, reward, totalFP) {
   return row;
 }
 
-function addGreatBuildingChangesRow (change) {
+function addGreatBuildingChangesRow(change) {
   return '<tr><td>' + change.name + '</td><td>' + moment.unix(change.last_spent).fromNow(true) + '</td><td>' + change.completePercentage + '%</td></tr>';
 }

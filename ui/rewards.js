@@ -1,6 +1,6 @@
 var rewardUpdateInterval;
 
-function updateRewards (rewards) {
+function updateRewards(rewards) {
   clearInterval(rewardUpdateInterval);
   var start = new Date().getTime();
 
@@ -12,7 +12,7 @@ function updateRewards (rewards) {
   }
 }
 
-function updateRewardsDetails (timePassed, rewards) {
+function updateRewardsDetails(timePassed, rewards) {
   rewardsRows = '';
   hasActiveUncommon = false;
   hasActive = false;
@@ -40,11 +40,11 @@ function updateRewardsDetails (timePassed, rewards) {
   }
 }
 
-function updateRewardsTab (active, uncommon) {
+function updateRewardsTab(active, uncommon) {
   $('#rewards-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards');
 }
 
-function addRewardRow (timePassed, reward) {
+function addRewardRow(timePassed, reward) {
   if (isActive(reward.startTime, timePassed)) {
     activeInfo = humanReadableTime(reward.startTime - timePassed);
   } else {
@@ -56,15 +56,15 @@ function addRewardRow (timePassed, reward) {
   return row;
 }
 
-function isUncommon (reward) {
+function isUncommon(reward) {
   return reward.rarity == 'uncommon' || reward.rarity == 'special' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
 }
 
-function isActive (startTime, timePassed) {
+function isActive(startTime, timePassed) {
   return startTime - timePassed > 1;
 }
 
-function rewardType (type) {
+function rewardType(type) {
   if (incidents.hasOwnProperty(type)) {
     return '<img style="height:50px;" title="' + type + '" src="/ui/icons/hr/' + type + '.png"></td><td>' + incidents[type];
   }

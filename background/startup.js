@@ -27,21 +27,21 @@ startup = {
     if (debug) {
       console.log('playerId', playerId);
     }
-    localSet({'playerId': playerId});
+    localSet({ 'playerId': playerId });
     startup.playerId = playerId;
   },
   setGoods: function (goods) {
     if (debug) {
       console.log(Object.keys(goods).length + ' goods registered');
     }
-    localSet({'goods': goods});
+    localSet({ 'goods': goods });
     consts.goods = goods;
     sendNotification('goods', '', '');
   }
 };
 
 listenToWorldIDChanged(function () {
-  localGet({'goods': false, playerId: false}, function (result) {
+  localGet({ 'goods': false, playerId: false }, function (result) {
     if (!result.goods) {
       sendNotification('goods', 'error', 'Goods not available, restart/refresh game');
     } else {

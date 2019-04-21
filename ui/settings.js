@@ -1,4 +1,4 @@
-function updateSettingsWorlds (worlds) {
+function updateSettingsWorlds(worlds) {
   for (var worldID in worlds) {
     bodyHTML = '<div class="card m-1"><div class="card-body"><p class="card-title">Using ' + (worlds[worldID] / 1024).toFixed(2) + ' kB storage (out of ' + (chrome.storage.sync.QUOTA_BYTES / 1024) + ' kB)</p><p class="card-text">';
     bodyHTML += ' <button id="' + worldID + '-clean" class="btn btn-sm btn-warning" type="button">Clean</button>';
@@ -16,15 +16,15 @@ function updateSettingsWorlds (worlds) {
 
     (function (worldID) {
       $('#' + worldID + '-clean').click(function () {
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'clean' }});
+        chrome.extension.sendMessage({ 'cache': { [worldID]: 'clean' } });
       });
       $('#' + worldID + '-delete').click(function () {
         $('#' + worldID + '-collapse-delete').collapse('hide');
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'delete' }});
+        chrome.extension.sendMessage({ 'cache': { [worldID]: 'delete' } });
       });
 
       $('#' + worldID + '-export').click(function () {
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'export' }});
+        chrome.extension.sendMessage({ 'cache': { [worldID]: 'export' } });
       });
 
       $('#' + worldID + '-import').change(function (e) {
@@ -34,7 +34,7 @@ function updateSettingsWorlds (worlds) {
   }
 }
 
-function importFile (e, worldID) {
+function importFile(e, worldID) {
   if (!e.target.files[0]) {
     return;
   }
@@ -48,7 +48,7 @@ function importFile (e, worldID) {
       alert("Couldn't parse JSON: " + e);
     }
     console.log(data);
-    chrome.extension.sendMessage({ 'cache': { [worldID]: 'import', data: data }});
+    chrome.extension.sendMessage({ 'cache': { [worldID]: 'import', data: data } });
   };
   reader.readAsText(e.target.files[0]);
 }

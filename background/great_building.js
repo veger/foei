@@ -20,7 +20,7 @@ greatBuilding = {
           console.log(gbFpAnalysis);
         }
 
-        sendMessageCache({gbFpAnalysis: gbFpAnalysis, gbRewards: gbRewards});
+        sendMessageCache({ gbFpAnalysis: gbFpAnalysis, gbRewards: gbRewards });
         break;
       case 'getOtherPlayerOverview':
         greatBuilding.checkGBChanges(data, function (changes) {
@@ -28,7 +28,7 @@ greatBuilding = {
             console.log('playerGBChanges', changes);
           }
 
-          sendMessageCache({playerGBChanges: changes});
+          sendMessageCache({ playerGBChanges: changes });
         });
         break;
       default:
@@ -50,7 +50,7 @@ greatBuilding = {
         });
       }
     }
-    return {totalFP: greatBuilding.requiredFP, rewards: rewards};
+    return { totalFP: greatBuilding.requiredFP, rewards: rewards };
   },
   performAnalysis: function (dataRankings) {
     investedFP = 0;
@@ -153,7 +153,7 @@ greatBuilding = {
       return resultCallback({ player: '', changes: [] });
     }
     var playerId = data[0].player.player_id;
-    syncGet({'playerGBs': {}}, function (result) {
+    syncGet({ 'playerGBs': {} }, function (result) {
       playerGB = (result.playerGBs[playerId]) || {};
       changes = [];
       now = Date.now() / 1000;
@@ -180,13 +180,13 @@ greatBuilding = {
       for (var i = 0; i < data.length; i++) {
         GBentry = playerGB[data[i].city_entity_id] || {};
         GBentry.last_spent = data[i].last_spent,
-        GBentry.level = data[i].level,
-        GBentry.current_progress = data[i].current_progress;
+          GBentry.level = data[i].level,
+          GBentry.current_progress = data[i].current_progress;
 
         newPlayerGB[data[i].city_entity_id] = GBentry;
       }
       result.playerGBs[playerId] = newPlayerGB;
-      syncSet({'playerGBs': result.playerGBs});
+      syncSet({ 'playerGBs': result.playerGBs });
 
       resultCallback({ player: data[0].player.name, changes: changes });
     });
@@ -209,7 +209,7 @@ greatBuilding = {
   setArcBonus: function (bonus) {
     bonus = fixFloat(bonus / 100);
     greatBuilding.arcBonus = bonus;
-    syncSet({'arcBonus': bonus});
+    syncSet({ 'arcBonus': bonus });
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus);
     }
@@ -217,7 +217,7 @@ greatBuilding = {
 };
 
 listenToWorldIDChanged(function () {
-  syncGet({'arcBonus': 0}, function (result) {
+  syncGet({ 'arcBonus': 0 }, function (result) {
     greatBuilding.arcBonus = parseFloat(result.arcBonus);
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus);

@@ -1,4 +1,4 @@
-function updateBattleStats (battleStats) {
+function updateBattleStats(battleStats) {
   battleStatsHTML = '';
 
   if (battleStats.defendUnits) {
@@ -37,7 +37,7 @@ function updateBattleStats (battleStats) {
   $('#army-info').html(battleStatsHTML);
 }
 
-function battleReport (battle, showLabel) {
+function battleReport(battle, showLabel) {
   attackUnits = listUnits(battle.attackUnits);
   reportHTML = '<div class="row">';
   if (showLabel) {
@@ -71,7 +71,7 @@ function battleReport (battle, showLabel) {
   return reportHTML;
 }
 
-function listUnits (unitMap) {
+function listUnits(unitMap) {
   units = [];
   for (var [unitType, amount] of Object.entries(unitMap)) {
     units.push((amount > 1 ? amount + ' ' : '') + unitType);

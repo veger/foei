@@ -1,5 +1,5 @@
 
-function updatePlunder (revenue) {
+function updatePlunder(revenue) {
   plunderRows = '';
   if (revenue.spMax.value > 0) {
     plunderRows += addPlunderRow('sp', revenue.spMax);
@@ -20,43 +20,43 @@ function updatePlunder (revenue) {
     plunderRows += addPlunderRow('clan_power', revenue.clanPowerMax);
   }
   if (plunderRows == '') {
-    plunderRows = '<td colspan="4">Nothing to plunder</td>';
+    plunderRows = '<td colspan="5">Nothing to plunder</td>';
   }
   $('#plunder-body').html(plunderRows);
 }
 
 function updatePlayerProtection(protected) {
-  if(protected) {
+  if (protected) {
     $('#player-protected').removeClass('d-none')
   } else {
-  $('#player-protected').addClass('d-none')
-}
+    $('#player-protected').addClass('d-none')
+  }
 }
 
-function createAllRows (all) {
+function createAllRows(all) {
   allRows = '';
   if (all.strategy_points) {
-    allRows += addPlunderRow('sp', {value: all.strategy_points});
+    allRows += addPlunderRow('sp', { value: all.strategy_points });
   }
   if (all.goods) {
-    allRows += addPlunderRow('goods', { value: processRawGoodsPlunderData(all.goods)});
+    allRows += addPlunderRow('goods', { value: processRawGoodsPlunderData(all.goods) });
   }
   if (all.supplies) {
-    allRows += addPlunderRow('supplies', {value: all.supplies});
+    allRows += addPlunderRow('supplies', { value: all.supplies });
   }
   if (all.money) {
-    allRows += addPlunderRow('money', {value: all.money });
+    allRows += addPlunderRow('money', { value: all.money });
   }
   if (all.medals) {
-    allRows += addPlunderRow('medal', {value: all.medals});
+    allRows += addPlunderRow('medal', { value: all.medals });
   }
   if (all.clanPower) {
-    allRows += addPlunderRow('clan_power', {value: all.clanPower});
+    allRows += addPlunderRow('clan_power', { value: all.clanPower });
   }
   return allRows;
 }
 
-function addPlunderRow (resource, revenue) {
+function addPlunderRow(resource, revenue) {
   row = '<tr><td>' + iconImage(resource) + '</td><td>' + revenue.value + '</td>' + (revenue.name ? '<td>' + l10n(revenue.name) + '</td>' : '');
   row += '<td>';
   if (revenue.all) {
@@ -68,7 +68,7 @@ function addPlunderRow (resource, revenue) {
   return row;
 }
 
-function processRawGoodsPlunderData (raw) {
+function processRawGoodsPlunderData(raw) {
   list = [];
   for (var goodName in raw) {
     if (raw.hasOwnProperty(goodName)) {
@@ -78,14 +78,14 @@ function processRawGoodsPlunderData (raw) {
   return list.join(', ');
 }
 
-function iconImage (name) {
+function iconImage(name) {
   if (name === undefined || !name) {
     return '';
   }
   return '<img src="icons/' + name + '.png">';
 }
 
-function l10n (key) {
+function l10n(key) {
   value = i18n[key];
   return value ? value : key;
 }

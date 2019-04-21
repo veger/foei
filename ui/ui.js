@@ -1,4 +1,4 @@
-var currentGBRewards = { rewards: []};
+var currentGBRewards = { rewards: [] };
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
@@ -32,14 +32,14 @@ chrome.extension.onMessage.addListener(
       updateGreatBuildingChanges(request.playerGBChanges);
     }
     if (request.cacheData) {
-      var file = new File([JSON.stringify(request.cacheData.data)], 'foei-' + request.cacheData.worldID + '.json', {type: 'application/json;charset=utf-8'});
+      var file = new File([JSON.stringify(request.cacheData.data)], 'foei-' + request.cacheData.worldID + '.json', { type: 'application/json;charset=utf-8' });
       saveAs(file);
     }
   }
 );
 chrome.extension.sendMessage({ 'resend_messages': true });
 
-function humanReadableTime (seconds) {
+function humanReadableTime(seconds) {
   var hours = Math.floor(seconds / 3600);
   seconds -= hours * 3600;
   var minutes = '0' + Math.floor(seconds / 60);
@@ -48,7 +48,7 @@ function humanReadableTime (seconds) {
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
-function getNotificationBootstrapClass (type) {
+function getNotificationBootstrapClass(type) {
   const notificationTypes2Bootstrap = {
     'info': 'info',
     'warning': 'warning',
@@ -57,7 +57,7 @@ function getNotificationBootstrapClass (type) {
   return notificationTypes2Bootstrap[type] || 'danger';
 }
 
-function updateNotifications (notifications) {
+function updateNotifications(notifications) {
   html = '';
   for (id in notifications) {
     html += '<div class="alert alert-' + getNotificationBootstrapClass(notifications[id].type) + '"">' + notifications[id].msg + '</div>';
@@ -65,7 +65,7 @@ function updateNotifications (notifications) {
   $('#notifications').html(html);
 }
 
-function addTab (barParent, bodyParent, id, title, body) {
+function addTab(barParent, bodyParent, id, title, body) {
   active = $('#' + barParent + ' li').length === 0;
   barHTML = '<li class="nav-item"><a class="nav-link' + (active ? ' active show' : '') + '" id="' + id + '-tab" data-toggle="tab" href="#' + id + '" role="tab" aria-controls="' + id + '" aria-selected="false">' + title + '</a></li>';
   bodyHTML = '<div class="tab-pane fade' + (active ? 'show active' : '') + '" id="' + id + '" role="tabpanel" aria-labelledby="' + id + '-tab">' + body + '</div>';
