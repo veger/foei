@@ -16,12 +16,18 @@ function updateGreatBuildingAnalysis(fpAnalysis) {
 }
 
 function updateGreatBuildingBoostInfo(rewards) {
+  boostFactor = $('#boost-factor').val();
   var ggRows = '';
+  var boostRush = '';
   for (var i = 0; i < rewards.rewards.length; i++) {
-    ggRows += addGreatBuildingBoostRow(i + 1, rewards.rewards[i], rewards.totalFP);
+    ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, rewards.rewards[i], rewards.totalFP);
+    if (rewards.rewards[i].fp !== undefined) {
+      boostRush += 'p' + (i + 1) + ' ' + Math.ceil(rewards.rewards[i].fp * boostFactor) + ', ';
+    }
   }
 
   $('#great-building-boost-body').html(ggRows);
+  $('#boost-rush').text(boostRush.slice(0, -2));
 }
 
 function updateGreatBuildingChanges(changes) {
@@ -74,12 +80,11 @@ function addGreatBuildingAnalysisRow(spot, analysis) {
   return row;
 }
 
-function addGreatBuildingBoostRow(spot, reward, totalFP) {
+function addGreatBuildingBoostRow(spot, boostFactor, reward, totalFP) {
   if (reward.fp === undefined) {
     return '';
   }
 
-  boostFactor = $('#boost-factor').val();
   row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + Math.ceil(reward.fp * boostFactor) + '</td><td>' + iconImage('sp') + ' ' + (totalFP - Math.ceil(reward.fp * boostFactor) * 2) + '</td>';
   row += '<td>';
   if (reward.blueprints) {
