@@ -23,7 +23,7 @@ function updateGreatBuildingBoostInfo(fpAnalysis) {
     if (fpAnalysis.analysis[i].reward !== undefined) {
       reward = fpAnalysis.analysis[i].reward
       required = Math.ceil(reward.fp * boostFactor);
-      nextInvestment = (i + 1 < fpAnalysis.analysis.length) ? fpAnalysis.analysis[i+1].invested || 0 : 0
+      nextInvestment = (i + 1 < fpAnalysis.analysis.length) ? fpAnalysis.analysis[i + 1].invested || 0 : 0
       ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, fpAnalysis.analysis[i], fpAnalysis.totalFP, fpAnalysis.freeFP, nextInvestment);
       if (reward.fp !== undefined) {
         boostRush += 'p' + (i + 1) + ' ' + required + ', ';
@@ -94,7 +94,7 @@ function addGreatBuildingBoostRow(spot, boostFactor, analysis, totalFP, freeFP, 
   fillForSafe = totalFP - required * 2;
   requiredToMakeSafe = freeFP + nextInvestment - required;
   unsafe = analysis.invested >= required && nextInvestment + freeFP > analysis.invested && requiredToMakeSafe > 0
-  notInvestedEnough =  analysis.invested > 0 && analysis.invested < required
+  notInvestedEnough = analysis.invested > 0 && analysis.invested < required
 
   row = '<tr' + (unsafe ? ' class="table-danger"' : (notInvestedEnough ? ' class="table-warning"' : "")) + '>'
   row += '<td>' + spot + '</td>'

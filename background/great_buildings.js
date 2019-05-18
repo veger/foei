@@ -1,6 +1,7 @@
 greatBuilding = {
   requestId: -1,
   requiredFP: 0,
+  ownerId: -1,
   arcBonus: 0,
   process: function (method, data, id) {
     if (trace) {
@@ -39,7 +40,9 @@ greatBuilding = {
   performAnalysis: function (dataRankings) {
     investedFP = 0;
     userFP = 0;
-    userIndex = -1;
+    userIndex = undefined;
+    ownerFP = 0;
+    ownerIndex = undefined;
 
     // Remove player from rankings as this messes the calculations
     // (it is an investment that is already done on behalf of the player)
@@ -47,31 +50,37 @@ greatBuilding = {
     for (var i = 0; i < dataRankings.length; i++) {
       ranking = Object.assign({}, dataRankings[i]);
       rankings.push(ranking);
-      if (userIndex != -1) {
+      if (userIndex !== undefined) {
         // Move all other investments one up, to remove the player investment
         rankings[i - 1].forge_points = rankings[i].forge_points;
         rankings[i].forge_points == undefined;
       }
 
       if (ranking.forge_points) {
+        if (ranking.player.player_id == greatBuilding.ownerId) {
+          ownerIndex = i
+          ownerFP = ranking.forge_points;
+        }
         if (ranking.player.is_self) {
           userIndex = i;
           userFP = ranking.forge_points;
-        } else {
+        }
+        if (ranking.player.player_id != greatBuilding.ownerId && !ranking.player.is_self) {
           // Only count non-player investments
           investedFP += ranking.forge_points;
         }
       }
     }
-    if (userIndex != -1) {
+    if (userIndex !== undefined) {
       // Remove last investment, as they all moved up by one
       rankings[rankings.length - 1].forge_points = undefined;
     }
-    freeFP = (greatBuilding.requiredFP - investedFP);
+    freeFP = (greatBuilding.requiredFP - investedFP - ownerFP);
 
     if (debug) {
-      console.log('free FP (excluding player): ' + freeFP + ' (' + (freeFP / 2) + ')');
+      console.log('free FP (excluding player and owner): ' + freeFP);
       console.log('user (#' + (userIndex + 1) + '): ' + userFP);
+      console.log('owner (#' + (ownerIndex + 1) + '): ' + ownerFP);
     }
 
     var fpAnalysis = [];
@@ -80,7 +89,7 @@ greatBuilding = {
     while (rank <= 5 && i < rankings.length - 1) {
       i++;
       ranking = rankings[i];
-      if (ranking.reward === undefined) {
+      if (ranking.reward === undefined || ranking.player.player_id == greatBuilding.ownerId) {
         // Probably (hopefully) owner
         continue;
       }
@@ -91,7 +100,7 @@ greatBuilding = {
       var j = i + 1;
       while (j >= 1) {
         j--;
-        if (rankings[j].reward === undefined) {
+        if (rankings[j].reward === undefined || rankings[j].player.player_id == greatBuilding.ownerId) {
           // Probably (hopefully) owner
           continue;
         }
@@ -106,7 +115,8 @@ greatBuilding = {
         }
       }
 
-      if (bestSpotFP > freeFP) {
+      if ((userIndex !== undefined && userIndex == ownerIndex) || bestSpotFP > freeFP || bestSpotFP < userFP || bestSpotFP === 0) {
+        // Used for Boost information
         fpAnalysis.push({
           spotSafe: false,
           reward: {
@@ -120,12 +130,10 @@ greatBuilding = {
         });
         continue;
       }
-      if (bestSpotFP < userFP || bestSpotFP === 0) {
-        continue;
-      }
 
       profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP));
 
+      // Used for both Boost and GB information
       fpAnalysis.push({
         spotSafe: bestSpotFP,
         profit: profit,
@@ -143,13 +151,14 @@ greatBuilding = {
     // Add investments for all rankings (if available)
     ranking = 0
     for (var i = 0; i < rankings.length; i++) {
-      if ( rankings[i].forge_points === undefined) {
+      if (rankings[i].forge_points === undefined || (rankings[i].player.player_id == greatBuilding.ownerId && !rankings[i].player.is_self)) {
+        // Don't store SP for owner (unless it is player, as the SPs are shifted after player)
         continue;
       }
       if (fpAnalysis.length > ranking) {
         fpAnalysis[ranking].invested = rankings[i].forge_points;
       } else {
-        fpAnalysis.push({invested: rankings[i].forge_points});
+        fpAnalysis.push({ invested: rankings[i].forge_points });
       }
       ranking++;
     }
@@ -203,8 +212,9 @@ greatBuilding = {
       resultCallback({ player: data[0].player.name, changes: changes });
     });
   },
-  storeBuildingInfo: function (requestId, requiredFP) {
+  storeBuildingInfo: function (requestId, ownerId, requiredFP) {
     greatBuilding.requestId = requestId;
+    greatBuilding.ownerId = ownerId;
     greatBuilding.requiredFP = requiredFP;
   },
   checkArcBonus: function (entities) {

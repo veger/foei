@@ -6,7 +6,7 @@ cityMap = {
     switch (method) {
       case 'updateEntity':
         greatBuilding.checkArcBonus(data);
-        greatBuilding.storeBuildingInfo(id, data[0].state.forge_points_for_level_up);
+        greatBuilding.storeBuildingInfo(id, data[0].player_id, data[0].state.forge_points_for_level_up);
         break;
       case 'reset':
         greatBuilding.checkArcBonus(data);
