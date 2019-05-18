@@ -2,7 +2,6 @@ var currentGBRewards = { rewards: [] };
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
-    console.log(request);
     if (request.notifications) {
       updateNotifications(request.notifications);
     }
@@ -21,12 +20,10 @@ chrome.extension.onMessage.addListener(
     if (request.playerProtected !== undefined) {
       updatePlayerProtection(request.playerProtected);
     }
-    if (request.gbRewards) {
-      updateGreatBuildingBoostInfo(request.gbRewards);
-      currentGBRewards = request.gbRewards;
-    }
     if (request.gbFpAnalysis) {
-      updateGreatBuildingAnalysis(request.gbFpAnalysis);
+      currentGBRewards = request.gbFpAnalysis
+      updateGreatBuildingAnalysis(request.gbFpAnalysis.analysis);
+      updateGreatBuildingBoostInfo(request.gbFpAnalysis);
     }
     if (request.playerGBChanges) {
       updateGreatBuildingChanges(request.playerGBChanges);

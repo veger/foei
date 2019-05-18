@@ -4,7 +4,7 @@ function updateGreatBuildingAnalysis(fpAnalysis) {
   var hasAdvice = false;
   for (var i = 0; i < fpAnalysis.length; i++) {
     var analysis = fpAnalysis[i];
-    if (analysis !== false) {
+    if (analysis.spotSafe !== undefined && analysis.spotSafe !== false) {
       ggRows += addGreatBuildingAnalysisRow(i + 1, fpAnalysis[i]);
       hasAdvice = true;
     }
@@ -15,14 +15,19 @@ function updateGreatBuildingAnalysis(fpAnalysis) {
   $('#great-building-body').html(ggRows);
 }
 
-function updateGreatBuildingBoostInfo(rewards) {
+function updateGreatBuildingBoostInfo(fpAnalysis) {
   boostFactor = $('#boost-factor').val();
   var ggRows = '';
   var boostRush = '';
-  for (var i = 0; i < rewards.rewards.length; i++) {
-    ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, rewards.rewards[i], rewards.totalFP);
-    if (rewards.rewards[i].fp !== undefined) {
-      boostRush += 'p' + (i + 1) + ' ' + Math.ceil(rewards.rewards[i].fp * boostFactor) + ', ';
+  for (var i = 0; i < fpAnalysis.analysis.length; i++) {
+    if (fpAnalysis.analysis[i].reward !== undefined) {
+      reward = fpAnalysis.analysis[i].reward
+      required = Math.ceil(reward.fp * boostFactor);
+      nextInvestment = (i + 1 < fpAnalysis.analysis.length) ? fpAnalysis.analysis[i+1].invested || 0 : 0
+      ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, fpAnalysis.analysis[i], fpAnalysis.totalFP, fpAnalysis.freeFP, nextInvestment);
+      if (reward.fp !== undefined) {
+        boostRush += 'p' + (i + 1) + ' ' + required + ', ';
+      }
     }
   }
 
@@ -80,27 +85,35 @@ function addGreatBuildingAnalysisRow(spot, analysis) {
   return row;
 }
 
-function addGreatBuildingBoostRow(spot, boostFactor, reward, totalFP) {
-  if (reward.fp === undefined) {
+function addGreatBuildingBoostRow(spot, boostFactor, analysis, totalFP, freeFP, nextInvestment) {
+  if (analysis.reward.fp === undefined) {
     return '';
   }
 
-  row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + Math.ceil(reward.fp * boostFactor) + '</td><td>' + iconImage('sp') + ' ' + (totalFP - Math.ceil(reward.fp * boostFactor) * 2) + '</td>';
+  required = Math.ceil(analysis.reward.fp * boostFactor)
+  fillForSafe = totalFP - required * 2;
+  requiredToMakeSafe = freeFP + nextInvestment - required;
+  unsafe = analysis.invested >= required && nextInvestment + freeFP > analysis.invested && requiredToMakeSafe > 0
+  notInvestedEnough =  analysis.invested > 0 && analysis.invested < required
+
+  row = '<tr' + (unsafe ? ' class="table-danger"' : (notInvestedEnough ? ' class="table-warning"' : "")) + '>'
+  row += '<td>' + spot + '</td>'
+  row += '<td>' + iconImage('sp') + ' ' + required + (notInvestedEnough ? ` (${analysis.invested})` : '') + '</td><td>' + iconImage('sp') + ' ' + fillForSafe + (unsafe ? ` (${requiredToMakeSafe})` : '') + '</td>';
   row += '<td>';
-  if (reward.blueprints) {
-    row += iconImage('blueprint') + ' ' + reward.blueprints;
+  if (analysis.reward.blueprints) {
+    row += iconImage('blueprint') + ' ' + analysis.reward.blueprints;
   }
   row += '</td><td>';
-  if (reward.blueprints) {
-    row += '+ ' + iconImage('bonus') + ' ' + Math.round(reward.blueprints * (boostFactor - 1));
+  if (analysis.reward.blueprints) {
+    row += '+ ' + iconImage('bonus') + ' ' + Math.round(analysis.reward.blueprints * (boostFactor - 1));
   }
   row += '</td><td>';
-  if (reward.medals) {
-    row += iconImage('medal') + ' ' + reward.medals;
+  if (analysis.reward.medals) {
+    row += iconImage('medal') + ' ' + analysis.reward.medals;
   }
   row += '</td><td>';
-  if (reward.medals) {
-    row += '+ ' + iconImage('bonus') + ' ' + Math.round(reward.medals * (boostFactor - 1));
+  if (analysis.reward.medals) {
+    row += '+ ' + iconImage('bonus') + ' ' + Math.round(analysis.reward.medals * (boostFactor - 1));
   }
   row += '</td>';
   return row;

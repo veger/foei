@@ -13,14 +13,13 @@ greatBuilding = {
           return;
         }
 
-        gbRewards = greatBuilding.getRewards(data.rankings);
         gbFpAnalysis = greatBuilding.performAnalysis(data.rankings);
 
         if (debug) {
           console.log(gbFpAnalysis);
         }
 
-        sendMessageCache({ gbFpAnalysis: gbFpAnalysis, gbRewards: gbRewards });
+        sendMessageCache({ gbFpAnalysis: gbFpAnalysis });
         break;
       case 'getOtherPlayerOverview':
         greatBuilding.checkGBChanges(data, function (changes) {
@@ -37,21 +36,6 @@ greatBuilding = {
         }
     }
   },
-  getRewards: function (dataRankings) {
-    userIndex = -1;
-    var rewards = [];
-    for (var i = 0; i < dataRankings.length; i++) {
-      ranking = dataRankings[i];
-      if (ranking.reward && (ranking.reward.strategy_point_amount || ranking.reward.blueprints || ranking.reward.resources.medals)) {
-        rewards.push({
-          fp: ranking.reward.strategy_point_amount,
-          blueprints: ranking.reward.blueprints,
-          medals: ranking.reward.resources.medals
-        });
-      }
-    }
-    return { totalFP: greatBuilding.requiredFP, rewards: rewards };
-  },
   performAnalysis: function (dataRankings) {
     investedFP = 0;
     userFP = 0;
@@ -61,7 +45,7 @@ greatBuilding = {
     // (it is an investment that is already done on behalf of the player)
     rankings = [];
     for (var i = 0; i < dataRankings.length; i++) {
-      ranking = dataRankings[i];
+      ranking = Object.assign({}, dataRankings[i]);
       rankings.push(ranking);
       if (userIndex != -1) {
         // Move all other investments one up, to remove the player investment
@@ -123,7 +107,17 @@ greatBuilding = {
       }
 
       if (bestSpotFP > freeFP) {
-        fpAnalysis.push(false);
+        fpAnalysis.push({
+          spotSafe: false,
+          reward: {
+            fp: ranking.reward.strategy_point_amount,
+            fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
+            blueprints: ranking.reward.blueprints,
+            blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
+            medals: ranking.reward.resources.medals,
+            medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
+          }
+        });
         continue;
       }
       if (bestSpotFP < userFP || bestSpotFP === 0) {
@@ -145,7 +139,25 @@ greatBuilding = {
         }
       });
     }
-    return fpAnalysis;
+
+    // Add investments for all rankings (if available)
+    ranking = 0
+    for (var i = 0; i < rankings.length; i++) {
+      if ( rankings[i].forge_points === undefined) {
+        continue;
+      }
+      if (fpAnalysis.length > ranking) {
+        fpAnalysis[ranking].invested = rankings[i].forge_points;
+      } else {
+        fpAnalysis.push({invested: rankings[i].forge_points});
+      }
+      ranking++;
+    }
+    return {
+      totalFP: greatBuilding.requiredFP,
+      freeFP: freeFP - userFP,
+      analysis: fpAnalysis,
+    };
   },
   checkGBChanges: function (data, resultCallback) {
     if (data.length == 0) {
