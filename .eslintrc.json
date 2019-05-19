@@ -1,0 +1,65 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true,
+        "webextensions": true
+    },
+    "plugins": [
+        "momentjs"
+    ],
+    "extends": "standard",
+    "globals": {
+        "addTab": "readonly",
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "battleField": "readonly",
+        "cacheAction": "readonly",
+        "cityMap": "readonly",
+        "consts": "readonly",
+        "copyProductResources": "readonly",
+        "debug": "readonly",
+        "fixFloat": "readonly",
+        "greatBuilding": "readonly",
+        "hiddenReward": "readonly",
+        "humanReadableTime": "readonly",
+        "i18n": "readonly",
+        "iconImage": "readonly",
+        "listenToWorldIDChanged": "readonly",
+        "localGet": "readonly",
+        "localSet": "readonly",
+        "mapEqual": "readonly",
+        "moment": "readonly",
+        "msgCache": "readonly",
+        "otherPlayer": "readonly",
+        "resource": "readonly",
+        "saveAs": "readonly",
+        "sendMessageCache": "readonly",
+        "sendNotification": "readonly",
+        "sendPlayerArmies": "readonly",
+        "setWorldID": "readonly",
+        "sortByKey": "readonly",
+        "sortByKeyMultiple": "readonly",
+        "startup": "readonly",
+        "syncGet": "readonly",
+        "syncSet": "readonly",
+        "trace": "readonly",
+        "updateNotifications": "readonly",
+        "updateSettingsWorlds": "readonly",
+        "updatePlunder": "readonly",
+        "updateRewards": "readonly",
+        "updateBattleStats": "readonly",
+        "updatePlayerProtection": "readonly",
+        "updateGreatBuildingAnalysis": "readonly",
+        "updateGreatBuildingBoostInfo": "readonly",
+        "updateGreatBuildingChanges": "readonly",
+        "worldID": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-unused-vars": "off"
+    }
+}

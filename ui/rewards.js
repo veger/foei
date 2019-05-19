@@ -1,77 +1,78 @@
-var rewardUpdateInterval;
+let rewardUpdateInterval
 
-function updateRewards(rewards) {
-  clearInterval(rewardUpdateInterval);
-  var start = new Date().getTime();
+function updateRewards (rewards) {
+  clearInterval(rewardUpdateInterval)
+  let start = new Date().getTime()
 
   if (rewards.length > 0) {
     rewardUpdateInterval = setInterval(function () {
-      var now = new Date().getTime();
-      updateRewardsDetails((now - start) / 1000, rewards);
-    }, 500);
+      let now = new Date().getTime()
+      updateRewardsDetails((now - start) / 1000, rewards)
+    }, 500)
   }
 }
 
-function updateRewardsDetails(timePassed, rewards) {
-  rewardsRows = '';
-  hasActiveUncommon = false;
-  hasActive = false;
-  hasInactive = false;
-  for (var i = 0; i < rewards.length; i++) {
-    rewardsRows += addRewardRow(timePassed, rewards[i]);
+function updateRewardsDetails (timePassed, rewards) {
+  let rewardsRows = ''
+  let hasActiveUncommon = false
+  let hasActive = false
+  let hasInactive = false
+  for (let i = 0; i < rewards.length; i++) {
+    rewardsRows += addRewardRow(timePassed, rewards[i])
     if (rewards[i].startTime - timePassed < 1 && rewards[i].expireTime - timePassed > 0) {
-      hasActive = true;
-      hasActiveUncommon |= isUncommon(rewards[i]);
+      hasActive = true
+      hasActiveUncommon |= isUncommon(rewards[i])
     } else {
-      hasInactive = true;
+      hasInactive = true
     }
   }
-  if (rewardsRows == '') {
-    rewardsRows = '<td colspan="4">No rewards available</td>';
+  if (rewardsRows === '') {
+    rewardsRows = '<td colspan="4">No rewards available</td>'
   }
-  $('#rewards-body').html(rewardsRows);
+  $('#rewards-body').html(rewardsRows)
 
-  updateRewardsTab(hasActive, hasActiveUncommon);
+  updateRewardsTab(hasActive, hasActiveUncommon)
 
   if (!hasInactive && !hasActive) {
     // Nothing to update anymore, so stop timer
-    clearInterval(rewardUpdateInterval);
-    rewardUpdateInterval = undefined;
+    clearInterval(rewardUpdateInterval)
+    rewardUpdateInterval = undefined
   }
 }
 
-function updateRewardsTab(active, uncommon) {
-  $('#rewards-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards');
+function updateRewardsTab (active, uncommon) {
+  $('#rewards-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards')
 }
 
-function addRewardRow(timePassed, reward) {
+function addRewardRow (timePassed, reward) {
+  let activeInfo
   if (isActive(reward.startTime, timePassed)) {
-    activeInfo = humanReadableTime(reward.startTime - timePassed);
+    activeInfo = humanReadableTime(reward.startTime - timePassed)
   } else {
-    activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(reward.expireTime - timePassed) + ')</small>';
+    activeInfo = '<i style="color: green" class="fas fa-check"></i><br/><small>(' + humanReadableTime(reward.expireTime - timePassed) + ')</small>'
   }
 
-  row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.worldID + '</td><td>' + reward.position + '</td></tr>';
+  let row = '<tr><td class="text-center">' + activeInfo + '</td><td>' + reward.rarity + '</td><td>' + rewardType(reward.type) + '</td><td>' + reward.worldID + '</td><td>' + reward.position + '</td></tr>'
 
-  return row;
+  return row
 }
 
-function isUncommon(reward) {
-  return reward.rarity == 'uncommon' || reward.rarity == 'special' || reward.type == 'ge_relic_rare' || reward.type == 'ge_relic_uncommon';
+function isUncommon (reward) {
+  return reward.rarity === 'uncommon' || reward.rarity === 'special' || reward.type === 'ge_relic_rare' || reward.type === 'ge_relic_uncommon'
 }
 
-function isActive(startTime, timePassed) {
-  return startTime - timePassed > 1;
+function isActive (startTime, timePassed) {
+  return startTime - timePassed > 1
 }
 
-function rewardType(type) {
+function rewardType (type) {
   if (incidents.hasOwnProperty(type)) {
-    return '<img style="height:50px;" title="' + type + '" src="/ui/icons/hr/' + type + '.png"></td><td>' + incidents[type];
+    return '<img style="height:50px;" title="' + type + '" src="/ui/icons/hr/' + type + '.png"></td><td>' + incidents[type]
   }
-  return '</td><td>' + type;
+  return '</td><td>' + type
 }
 
-var incidents = {
+const incidents = {
   'ge_relic_rare': 'rare relic',
   'ge_relic_common': 'common relic',
   'ge_relic_uncommon': 'uncommon relic',
@@ -103,4 +104,4 @@ var incidents = {
   'incident_treasure_chest': 'treasure chest',
   'incident_wine_cask': 'wine casks',
   'spring_cherry_tree': 'cherry tree'
-};
+}

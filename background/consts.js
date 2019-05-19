@@ -1,4 +1,6 @@
-consts = {
+'use strict'
+
+const consts = {
   ages: {
     AllAge: 1,
     MultiAge: 1,
@@ -23,41 +25,41 @@ consts = {
 
   getGoodsAge: function (goodName) {
     if (!consts.goods.hasOwnProperty(goodName)) {
-      sendNotification('missingGood', 'error', goodName + ' is missing in goods');
-      return 1;
+      sendNotification('missingGood', 'error', goodName + ' is missing in goods')
+      return 1
     }
-    goodAge = consts.goods[goodName];
-    return consts.getAge(goodAge);
+    let goodAge = consts.goods[goodName]
+    return consts.getAge(goodAge)
   },
 
   getAge: function (age) {
     if (consts.ages[age] !== undefined) {
-      return consts.ages[age];
+      return consts.ages[age]
     }
 
-    sendNotification('missingAge', 'warning', age + ' is missing in ages');
+    sendNotification('missingAge', 'warning', age + ' is missing in ages')
 
-    return 1;
+    return 1
   },
 
   valueGoods: function (goodsArray) {
-    amount = 0;
-    for (var goodName in goodsArray) {
+    let amount = 0
+    for (let goodName in goodsArray) {
       if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
-        amount += goodsArray[goodName] * Math.pow(2, consts.getGoodsAge(goodName) - 1);
+        amount += goodsArray[goodName] * Math.pow(2, consts.getGoodsAge(goodName) - 1)
       }
     }
-    return amount;
+    return amount
   },
 
   amountGoods: function (goodsArray) {
-    amount = 0;
-    for (var goodName in goodsArray) {
+    let amount = 0
+    for (let goodName in goodsArray) {
       if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
-        amount += goodsArray[goodName];
+        amount += goodsArray[goodName]
       }
     }
-    return amount;
+    return amount
   },
 
   units: {
@@ -125,4 +127,4 @@ consts = {
     LateMiddleAge_champion: { name: 'Champions', type: 'champ' },
     ColonialAge_champion: { name: 'Champions', type: 'champ' }
   }
-};
+}

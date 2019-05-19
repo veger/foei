@@ -1,0 +1,36 @@
+{
+  "name": "foei",
+  "version": "0.2.0",
+  "description": "Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veger/foei.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "game",
+    "for-of-empires"
+  ],
+  "author": {
+    "name": "Maarten Bezemer",
+    "email": "maarten.bezemer@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/veger/foei/issues"
+  },
+  "homepage": "https://github.com/veger/foei#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-momentjs": "0.0.7",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "scripts": {
+    "lint": "eslint *.js background/*.js  ui/*.js"
+  }
+}

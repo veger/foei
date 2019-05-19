@@ -1,4 +1,6 @@
-var i18n = {
+'use strict'
+
+const i18n = {
   'P_MultiAge_Aviary': 'Aviary',
   'R_MultiAge_BirthdayBonus1': 'The King',
   'P_MultiAge_CarnivalBonus17': 'Masquerade Ball',
@@ -70,4 +72,4 @@ var i18n = {
   'R_MultiAge_WinterBonusSet17b': 'Moose Meadow',
   'R_MultiAge_WinterBonusSet17c': "Toymaker's Booth",
   'P_MultiAge_WinterBonus18': 'Sleigh Builder'
-};
+}

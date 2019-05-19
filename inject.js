@@ -1,6 +1,8 @@
-var s = document.createElement('script');
-s.src = chrome.extension.getURL('ajax_inspect.js');
+'use strict'
+
+let s = document.createElement('script')
+s.src = chrome.extension.getURL('ajax_inspect.js')
 s.onload = function () {
-  s.parentNode.removeChild(s);
+  s.parentNode.removeChild(s)
 };
-(document.head || document.documentElement).appendChild(s);
+(document.head || document.documentElement).appendChild(s)
