@@ -1,6 +1,5 @@
 {
     "mocha.requires": [
-        "babel-core/register",
         "test/setup.js"
     ],
     "mocha.options": {}
