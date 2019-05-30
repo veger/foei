@@ -3,9 +3,11 @@
         "browser": true,
         "es6": true,
         "jquery": true,
+        "mocha": true,
         "webextensions": true
     },
     "plugins": [
+        "mocha",
         "momentjs"
     ],
     "extends": "standard",
@@ -25,6 +27,7 @@
         "humanReadableTime": "readonly",
         "i18n": "readonly",
         "iconImage": "readonly",
+        "includeJavascript": "readonly",
         "listenToWorldIDChanged": "readonly",
         "localGet": "readonly",
         "localSet": "readonly",
