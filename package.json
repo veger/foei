@@ -23,6 +23,7 @@
   "homepage": "https://github.com/veger/foei#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
@@ -37,6 +38,6 @@
   },
   "scripts": {
     "lint": "eslint *.js background/*.js  ui/*.js",
-    "test": "nyc --hook-run-in-this-context --reporter text mocha --require test/setup.js \"test/specs/**/*.test.js\""
+    "test": "nyc --hook-run-in-this-context --reporter text --reporter lcov mocha --require test/setup.js \"test/specs/**/*.test.js\""
   }
 }

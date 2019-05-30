@@ -1,5 +1,8 @@
 # FoEI (Forge of Empires Inspector)
 
+[![Build Status](https://travis-ci.org/veger/foei.svg?branch=master)](https://travis-ci.org/veger/foei)
+[![Coverage Status](https://coveralls.io/repos/github/veger/foei/badge.svg?branch=master)](https://coveralls.io/github/veger/foei?branch=master)
+
 > Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.
 
 [![FoEI plunder screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-plunder.png?sha=b8c8ba4e86afb969)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl1d/foei-plunder.png?sha=320d240b8a0eb886)
