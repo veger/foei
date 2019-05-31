@@ -45,8 +45,8 @@ const startup = {
       cb(consts.goods)
     }
 
-    // Handle goods not being available yet  (eg during startup)
-    localGet({ 'goods': false }, function (result) {
+    // Handle goods not being available yet (eg during startup)
+    localGet({ 'goods': {} }, function (result) {
       startup.setGoods(result.goods)
       cb(result.goods)
     })
