@@ -2,6 +2,8 @@
 
 * Show shorthand boost information
 * Keep actual investments into account when calculating 'Boost information' ([#3](https://github.com/veger/foei/issues/3))
+* Hide GB information for self==owner
+* Various other/minor GB information improvements
 
 # 0.2.0
 * Rewards screen - Order on goods in stock when value is the same ([#2](https://github.com/veger/foei/issues/2))

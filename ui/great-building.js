@@ -1,17 +1,21 @@
 'use strict'
 
-function updateGreatBuildingAnalysis (fpAnalysis) {
+function updateGreatBuildingAnalysis (fpAnalysis, selfOwner) {
   let ggRows = ''
-  let hasAdvice = false
-  for (let i = 0; i < fpAnalysis.length; i++) {
-    let analysis = fpAnalysis[i]
-    if (analysis.spotSafe !== undefined && analysis.spotSafe !== false) {
-      ggRows += addGreatBuildingAnalysisRow(i + 1, fpAnalysis[i])
-      hasAdvice = true
+  if (selfOwner) {
+    ggRows = '<tr><td colspan="6">No investment advice available for own buildings</td></tr>'
+  } else {
+    let hasAdvice = false
+    for (let i = 0; i < fpAnalysis.length; i++) {
+      let analysis = fpAnalysis[i]
+      if (analysis.spotSafe !== undefined && analysis.spotSafe !== false) {
+        ggRows += addGreatBuildingAnalysisRow(i + 1, fpAnalysis[i])
+        hasAdvice = true
+      }
     }
-  }
-  if (!hasAdvice) {
-    ggRows = '<tr><td colspan="6">No advice available</td></tr>'
+    if (!hasAdvice) {
+      ggRows = '<tr><td colspan="6">No advice available</td></tr>'
+    }
   }
   $('#great-building-body').html(ggRows)
 }

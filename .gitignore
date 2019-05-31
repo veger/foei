@@ -1,3 +1,4 @@
+test/analysis_errors
 node_modules
 
 # Test/coverage outputs

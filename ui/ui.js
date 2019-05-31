@@ -24,7 +24,7 @@ chrome.extension.onMessage.addListener(
     }
     if (request.gbFpAnalysis) {
       currentGBRewards = request.gbFpAnalysis
-      updateGreatBuildingAnalysis(request.gbFpAnalysis.analysis)
+      updateGreatBuildingAnalysis(request.gbFpAnalysis.analysis, request.gbFpAnalysis.selfOwner)
       updateGreatBuildingBoostInfo(request.gbFpAnalysis)
     }
     if (request.playerGBChanges) {

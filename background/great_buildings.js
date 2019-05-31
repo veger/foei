@@ -87,45 +87,65 @@ const greatBuilding = {
     }
 
     let fpAnalysis = []
-    let rank = 0
-    let i = -1
-    while (i < rankings.length - 1) {
-      i++
-      let ranking = rankings[i]
-      if (ranking.player.player_id === greatBuilding.ownerId) {
-        // Skip owner (does not have rewards)
-        continue
-      }
-      rank = ranking.rank
+    // Check if owner is self -> skip as it/nothing makes sense (anymore)
+    if (greatBuilding.ownerId !== startup.playerId) {
+      let rank = 0
+      let i = -1
+      while (i < rankings.length - 1) {
+        i++
+        let ranking = rankings[i]
+        if (ranking.player.player_id === greatBuilding.ownerId) {
+          // Skip owner (does not have rewards)
+          continue
+        }
+        rank = ranking.rank
 
-      if (ranking.reward === undefined) {
-        // Nothing to calculate further
-        break
-      }
+        if (ranking.reward === undefined) {
+          // Nothing to calculate further
+          break
+        }
 
-      let investedByOthers = 0
-      let bestSpotFP = greatBuilding.requiredFP
-      let j = i + 1
-      while (j >= 1) {
-        j--
-        if (rankings[j].player.player_id === greatBuilding.ownerId) {
+        let investedByOthers = 0
+        let bestSpotFP = greatBuilding.requiredFP
+        let j = i + 1
+        while (j >= 1) {
+          j--
+          if (rankings[j].player.player_id === greatBuilding.ownerId) {
+            continue
+          }
+
+          investedByOthers += (rankings[j].forge_points || 0)
+          let tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2))
+          if (tmp <= rankings[j].forge_points) {
+            tmp = rankings[j].forge_points + 1
+          }
+          if (tmp < bestSpotFP) {
+            bestSpotFP = tmp
+          }
+        }
+
+        if (rank > 5 || bestSpotFP > freeFP || bestSpotFP < selfFP || bestSpotFP === 0) {
+          // Used for Boost information
+          fpAnalysis.push({
+            spotSafe: false,
+            reward: {
+              fp: ranking.reward.strategy_point_amount,
+              fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
+              blueprints: ranking.reward.blueprints,
+              blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
+              medals: ranking.reward.resources.medals,
+              medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
+            }
+          })
           continue
         }
 
-        investedByOthers += (rankings[j].forge_points || 0)
-        let tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2))
-        if (tmp <= rankings[j].forge_points) {
-          tmp = rankings[j].forge_points + 1
-        }
-        if (tmp < bestSpotFP) {
-          bestSpotFP = tmp
-        }
-      }
+        let profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP))
 
-      if (rank > 5 || bestSpotFP > freeFP || bestSpotFP < selfFP || bestSpotFP === 0) {
-        // Used for Boost information
+        // Used for both Boost and GB information
         fpAnalysis.push({
-          spotSafe: false,
+          spotSafe: bestSpotFP,
+          profit: profit,
           reward: {
             fp: ranking.reward.strategy_point_amount,
             fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
@@ -135,24 +155,32 @@ const greatBuilding = {
             medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
           }
         })
-        continue
       }
-
-      let profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP))
-
-      // Used for both Boost and GB information
-      fpAnalysis.push({
-        spotSafe: bestSpotFP,
-        profit: profit,
-        reward: {
-          fp: ranking.reward.strategy_point_amount,
-          fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
-          blueprints: ranking.reward.blueprints,
-          blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
-          medals: ranking.reward.resources.medals,
-          medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
+    } else {
+      // Just copy rewards for Boost information
+      for (let i = 0; i < rankings.length; i++) {
+        let ranking = rankings[i]
+        if (ranking.player.player_id === greatBuilding.ownerId) {
+          // Skip owner (doesn't have reward)
+          continue
         }
-      })
+
+        if (ranking.reward === undefined) {
+          // Nothing to calculate further
+          break
+        }
+
+        fpAnalysis.push({
+          reward: {
+            fp: ranking.reward.strategy_point_amount,
+            fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),
+            blueprints: ranking.reward.blueprints,
+            blueprintsBonus: Math.round(fixFloat(ranking.reward.blueprints * greatBuilding.arcBonus)),
+            medals: ranking.reward.resources.medals,
+            medalsBonus: Math.round(fixFloat(ranking.reward.resources.medals * greatBuilding.arcBonus))
+          }
+        })
+      }
     }
 
     // Add investments for all rankings (if available)
@@ -172,7 +200,8 @@ const greatBuilding = {
     return {
       totalFP: greatBuilding.requiredFP,
       freeFP: freeFP - selfFP,
-      analysis: fpAnalysis
+      analysis: fpAnalysis,
+      selfOwner: greatBuilding.ownerId === startup.playerId
     }
   },
   checkGBChanges: function (data, resultCallback) {

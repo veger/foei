@@ -28,6 +28,7 @@ describe('performAnalysis', function () {
 
     assert.equal(result.totalFP, totalFP)
     assert.isDefined(result.freeFP)
+    assert.isFalse(result.selfOwner)
 
     const aResult = result.analysis
     assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
@@ -64,6 +65,7 @@ describe('performAnalysis', function () {
 
     assert.equal(result.totalFP, totalFP)
     assert.isDefined(result.freeFP)
+    assert.isTrue(result.selfOwner)
 
     const aResult = result.analysis
     assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
