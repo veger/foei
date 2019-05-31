@@ -1,15 +1,18 @@
 const assert = require('chai').assert
 
-includeJavascript('background/great_buildings.js')
-includeJavascript('background/utils.js')
+includeJavascript('background/consts.js')
 includeJavascript('background/storage.js')
+includeJavascript('background/utils.js')
+includeJavascript('background/great_buildings.js')
+includeJavascript('background/startup.js')
 
 describe('performAnalysis', function () {
   beforeEach(function () {
     greatBuilding.arcBonus = 0
+    startup.playerId = 'self'
   })
 
-  it('should have basics its result', function () {
+  it('should have proper basics in its result', function () {
     const totalFP = 200
     const rankings = [
       { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 100, reward: { blueprints: 5, strategy_point_amount: 50, resources: { medals: 500 } } },
@@ -42,6 +45,42 @@ describe('performAnalysis', function () {
     assert.deepEqual(aResult[2].reward, { fp: rankings[3].reward.strategy_point_amount, fpBonus: 0, blueprints: rankings[3].reward.blueprints, blueprintsBonus: 0, medals: rankings[3].reward.resources.medals, medalsBonus: 0 }, 'rank 3 reward')
     assert.deepEqual(aResult[3].reward, { fp: rankings[4].reward.strategy_point_amount, fpBonus: 0, blueprints: rankings[4].reward.blueprints, blueprintsBonus: 0, medals: rankings[4].reward.resources.medals, medalsBonus: 0 }, 'rank 4 reward')
     assert.deepEqual(aResult[4].reward, { fp: rankings[5].reward.strategy_point_amount, fpBonus: 0, blueprints: rankings[5].reward.blueprints, blueprintsBonus: 0, medals: rankings[5].reward.resources.medals, medalsBonus: 0 }, 'rank 5 reward')
+  })
+
+  it('should have proper basics in its result (self-owner) (Arc lvl 61)', function () {
+    const totalFP = 3418
+    const rankings = [
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 100, reward: { blueprints: 12, strategy_point_amount: 990, resources: { medals: 25164 } } },
+      { rank: 2, player: { is_self: false, player_id: 'p2' }, forge_points: 50, reward: { blueprints: 9, strategy_point_amount: 495, resources: { medals: 12582 } } },
+      { player: { is_self: true, player_id: 'owner' }, forge_points: 25 },
+      { rank: 3, player: { }, reward: { blueprints: 7, strategy_point_amount: 165, resources: { medals: 6291 } } },
+      { rank: 4, player: { }, reward: { blueprints: 6, strategy_point_amount: 40, resources: { medals: 2516 } } },
+      { rank: 5, player: { }, reward: { blueprints: 5, strategy_point_amount: 10, resources: { medals: 1258 } } }
+    ]
+
+    greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
+    startup.setPlayerId('owner')
+    const result = greatBuilding.performAnalysis(rankings)
+
+    assert.equal(result.totalFP, totalFP)
+    assert.isDefined(result.freeFP)
+
+    const aResult = result.analysis
+    assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
+
+    // All investments (except owner) should be in results
+    assert.equal(aResult[0].invested, 100, 'rank 1 invested SP')
+    assert.equal(aResult[1].invested, 50, 'rank 2 invested SP')
+    assert.isUndefined(aResult[2].invested, 'rank 3 did not invest yet')
+    assert.isUndefined(aResult[3].invested, 'rank 4 did not invest yet')
+    assert.isUndefined(aResult[4].invested, 'rank 5 did not invest yet')
+
+    // All rewards should be filled
+    assert.isDefined(aResult[0].reward)
+    assert.isDefined(aResult[1].reward)
+    assert.isDefined(aResult[2].reward)
+    assert.isDefined(aResult[3].reward)
+    assert.isDefined(aResult[4].reward)
   })
 
   it('should have Arc bonus filled in', function () {
@@ -91,6 +130,35 @@ describe('performAnalysis', function () {
 
     assert.equal(aResultBonus[0].profit, 16 - aResultBonus[0].spotSafe)
     assert.equal(aResultBonus[1].profit, 0 - aResultBonus[1].spotSafe)
+  })
+
+  it('should be able to handle lots of investers', function () {
+    const totalFP = 200
+    const rankings = [
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 100, reward: { blueprints: 5, strategy_point_amount: 50, resources: { medals: 500 } } },
+      { rank: 2, player: { is_self: false, player_id: 'p2' }, forge_points: 50, reward: { blueprints: 4, strategy_point_amount: 40, resources: { medals: 400 } } },
+      { rank: 3, player: { is_self: false, player_id: 'p3' }, forge_points: 15, reward: { blueprints: 3, strategy_point_amount: 30, resources: { medals: 300 } } },
+      { rank: 4, player: { is_self: false, player_id: 'p4' }, forge_points: 5, reward: { blueprints: 2, strategy_point_amount: 20, resources: { medals: 200 } } },
+      { rank: 5, player: { is_self: false, player_id: 'p5' }, forge_points: 4, reward: { blueprints: 2, strategy_point_amount: 20, resources: { medals: 200 } } },
+      { rank: 6, player: { is_self: false, player_id: 'p6' }, forge_points: 3 },
+      { rank: 7, player: { is_self: false, player_id: 'p7' }, forge_points: 2 },
+      { rank: 8, player: { is_self: false, player_id: 'p8' }, forge_points: 1 }
+    ]
+
+    greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
+    const result = greatBuilding.performAnalysis(rankings)
+
+    const aResult = result.analysis
+    assert.lengthOf(aResult, 8, '8 ranks should be in results')
+
+    assert.isDefined(aResult[0].spotSafe)
+    assert.isDefined(aResult[1].spotSafe)
+    assert.isDefined(aResult[2].spotSafe)
+    assert.isDefined(aResult[3].spotSafe)
+    assert.isDefined(aResult[4].spotSafe)
+    assert.isUndefined(aResult[5].spotSafe) // Only first 5 ranks should have calculations
+    assert.isUndefined(aResult[6].spotSafe)
+    assert.isUndefined(aResult[7].spotSafe)
   })
 
   it('should be able to calculate empty GB (Delphi lvl 1)', function () {

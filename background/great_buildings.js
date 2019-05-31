@@ -41,8 +41,8 @@ const greatBuilding = {
   },
   performAnalysis: function (dataRankings) {
     let investedFP = 0
-    let userFP = 0
-    let userIndex
+    let selfFP = 0
+    let selfIndex
     let ownerFP = 0
     let ownerIndex
 
@@ -52,58 +52,63 @@ const greatBuilding = {
     for (let i = 0; i < dataRankings.length; i++) {
       let ranking = Object.assign({}, dataRankings[i])
       rankings.push(ranking)
-      if (userIndex !== undefined) {
-        // Move all other investments one up, to remove the player investment
+
+      const forgePoints = ranking.forge_points
+      if (selfIndex !== undefined) {
+        // Move all other investments one up, to remove the self investment
         rankings[i - 1].forge_points = rankings[i].forge_points
         rankings[i].forge_points = undefined
       }
 
-      if (ranking.forge_points) {
+      if (forgePoints) {
         if (ranking.player.player_id === greatBuilding.ownerId) {
           ownerIndex = i
-          ownerFP = ranking.forge_points
+          ownerFP = forgePoints
         }
         if (ranking.player.is_self) {
-          userIndex = i
-          userFP = ranking.forge_points
-        }
-        if (ranking.player.player_id !== greatBuilding.ownerId && !ranking.player.is_self) {
-          // Only count non-player investments
-          investedFP += ranking.forge_points
+          selfIndex = i
+          selfFP = forgePoints
+        } else {
+          // Only count non-self investments, they do not influence the calculations
+          investedFP += forgePoints
         }
       }
     }
-    if (userIndex !== undefined) {
+    if (selfIndex !== undefined) {
       // Remove last investment, as they all moved up by one
       rankings[rankings.length - 1].forge_points = undefined
     }
-    let freeFP = (greatBuilding.requiredFP - investedFP - ownerFP)
+    let freeFP = (greatBuilding.requiredFP - investedFP)
 
     if (debug) {
-      console.log('free FP (excluding player and owner): ' + freeFP)
-      console.log('user (#' + (userIndex + 1) + '): ' + userFP)
+      console.log('free FP (excluding player): ' + freeFP)
+      console.log('user (#' + (selfIndex + 1) + '): ' + selfFP)
       console.log('owner (#' + (ownerIndex + 1) + '): ' + ownerFP)
     }
 
     let fpAnalysis = []
     let rank = 0
     let i = -1
-    while (rank <= 5 && i < rankings.length - 1) {
+    while (i < rankings.length - 1) {
       i++
       let ranking = rankings[i]
-      if (ranking.reward === undefined || ranking.player.player_id === greatBuilding.ownerId) {
-        // Probably (hopefully) owner
+      if (ranking.player.player_id === greatBuilding.ownerId) {
+        // Skip owner (does not have rewards)
         continue
       }
       rank = ranking.rank
+
+      if (ranking.reward === undefined) {
+        // Nothing to calculate further
+        break
+      }
 
       let investedByOthers = 0
       let bestSpotFP = greatBuilding.requiredFP
       let j = i + 1
       while (j >= 1) {
         j--
-        if (rankings[j].reward === undefined || rankings[j].player.player_id === greatBuilding.ownerId) {
-          // Probably (hopefully) owner
+        if (rankings[j].player.player_id === greatBuilding.ownerId) {
           continue
         }
 
@@ -117,7 +122,7 @@ const greatBuilding = {
         }
       }
 
-      if ((userIndex !== undefined && userIndex === ownerIndex) || bestSpotFP > freeFP || bestSpotFP < userFP || bestSpotFP === 0) {
+      if (rank > 5 || bestSpotFP > freeFP || bestSpotFP < selfFP || bestSpotFP === 0) {
         // Used for Boost information
         fpAnalysis.push({
           spotSafe: false,
@@ -153,7 +158,7 @@ const greatBuilding = {
     // Add investments for all rankings (if available)
     let ranking = 0
     for (let i = 0; i < rankings.length; i++) {
-      if (rankings[i].forge_points === undefined || (rankings[i].player.player_id === greatBuilding.ownerId && !rankings[i].player.is_self)) {
+      if (rankings[i].player.player_id === greatBuilding.ownerId) {
         // Don't store SP for owner (unless it is player, as the SPs are shifted after player)
         continue
       }
@@ -166,7 +171,7 @@ const greatBuilding = {
     }
     return {
       totalFP: greatBuilding.requiredFP,
-      freeFP: freeFP - userFP,
+      freeFP: freeFP - selfFP,
       analysis: fpAnalysis
     }
   },
