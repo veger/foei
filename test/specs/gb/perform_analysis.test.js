@@ -1,11 +1,5 @@
 const assert = require('chai').assert
 
-includeJavascript('background/consts.js')
-includeJavascript('background/storage.js')
-includeJavascript('background/utils.js')
-includeJavascript('background/great_buildings.js')
-includeJavascript('background/startup.js')
-
 describe('performAnalysis', function () {
   beforeEach(function () {
     greatBuilding.arcBonus = 0

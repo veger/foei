@@ -35,7 +35,8 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "sinon": "^7.3.2",
-    "sinon-chrome": "^3.0.1"
+    "sinon-chrome": "^3.0.1",
+    "sinon-stub-promise": "^4.0.0"
   },
   "scripts": {
     "lint": "eslint *.js background/*.js  ui/*.js",

@@ -50,6 +50,36 @@ const startup = {
       startup.setGoods(result.goods)
       cb(result.goods)
     })
+  },
+  checkRelease: function () {
+    return fetch('https://api.github.com/repos/veger/foei/releases/latest', {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    })
+      .then(
+        function (response) {
+          if (response.status !== 200) {
+            console.error('Failed to fetch latest release information: ', response.statusText)
+            return
+          }
+
+          response.json().then(function (data) {
+            let latestVersion = data.name
+            if (latestVersion[0] === 'v') {
+              latestVersion = latestVersion.substring(1)
+            }
+            let ownVersion = chrome.runtime.getManifest().version
+            if (debug) {
+              console.log(`Own version '${ownVersion}', latest version '${latestVersion}'`)
+            }
+            sendMessageCache({ version: { own: ownVersion, latest: latestVersion } })
+          })
+        }
+      )
+      .catch(function (err) {
+        console.error('Error while trying to fetch release information: ', err)
+      })
   }
 }
 
@@ -67,3 +97,4 @@ listenToWorldIDChanged(function () {
 })
 
 startup.getGoods(function () { })
+startup.checkRelease()

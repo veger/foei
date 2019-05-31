@@ -4,6 +4,9 @@ let currentGBRewards = { rewards: [] }
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
+    if (request.version) {
+      checkVersion(request.version)
+    }
     if (request.notifications) {
       updateNotifications(request.notifications)
     }
@@ -54,6 +57,16 @@ function getNotificationBootstrapClass (type) {
     'error': 'danger'
   }
   return notificationTypes2Bootstrap[type] || 'danger'
+}
+
+function checkVersion (versionInfo) {
+  $('#foei-version').text(versionInfo.own)
+  if (versionInfo.own !== versionInfo.latest) {
+    $('#update').html(`<div class="alert alert-warning alert-dismissible fade show">
+    A new version of FoEI is available: <em><a id="release-version" href="https://www.vegerweb.nl/foei">${versionInfo.latest}</a></em>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  </div>`)
+  }
 }
 
 function updateNotifications (notifications) {
