@@ -11,12 +11,13 @@ const greatBuilding = {
     }
     switch (method) {
       case 'getConstruction':
+      case 'contributeForgePoints':
         if (greatBuilding.requestId !== id) {
           console.error('Wrong id ' + id + ', expected ' + greatBuilding.requestId)
           return
         }
 
-        let gbFpAnalysis = greatBuilding.performAnalysis(data.rankings)
+        let gbFpAnalysis = greatBuilding.performAnalysis(method === 'getConstruction' ? data.rankings : data)
 
         if (debug) {
           console.log(gbFpAnalysis)
