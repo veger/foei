@@ -1,6 +1,6 @@
 {
   "name": "foei",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.",
   "main": "main.js",
   "repository": {
@@ -40,6 +40,7 @@
   },
   "scripts": {
     "lint": "eslint *.js background/*.js  ui/*.js",
+    "release": "if [ -z \"$KEY\" ]; then echo \"\nERROR: KEY missing\n\n\"; exit 1; fi && rm -rf foei.crx dist && mkdir dist && cp -r background images ui ajax_inspect.js inject.js LICENSE manifest.json options* dist && google-chrome-unstable --pack-extension=dist --pack-extension-key=$(readlink -f $PWD/$KEY) && mv dist.crx foei.crx",
     "test": "nyc --hook-run-in-this-context --reporter text --reporter lcov mocha --require test/setup.js \"test/specs/**/*.test.js\""
   }
 }

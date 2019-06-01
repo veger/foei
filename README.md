@@ -29,10 +29,9 @@ Nonetheless, I take no responsibility for lost accounts or any other loss that m
 FoEI has been tested by a select few players for a couple of months running on different servers, showing it works and it is great aid.
 Now it is time to present it to the public and polish it some more:
 
-* Try on more servers / languages
 * I made some quick & dirty UI...
 * Lacking much experience I also made a quick & dirty Javascript implementation
-* **Fix MacOS support**, for some reason intercepting the incoming traffic does not seem to work..??
+* **Fix MacOS support**, for some reason intercepting the incoming traffic does not seem to work..?? (can people confirm/deny in [issue #7](https://github.com/veger/foei/issues/7)?)
 * more...
 
 ## Installation
@@ -43,7 +42,7 @@ Installation instructions can be found on the [FoEI website](https://www.vegerwe
 
 ## Contributing
 
-As stated the UI and implementation itself can use some polishing. MacOS support should be figured out and fixed. Also there are lots of other features that can be added to the extension using the readily available game information.
+As stated the UI and implementation itself can use some polishing. MacOS support should be figured out and fixed ([#7](https://github.com/veger/foei/issues/7)). Also there are lots of other features that can be added to the extension using the readily available game information.
 
 So feel free to send bug reports, pull requests and questions. But be aware to use an *anonymous* account or at least one that cannot be traced to your game account if you are afraid of getting banned.
 

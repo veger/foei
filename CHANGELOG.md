@@ -1,5 +1,6 @@
 # Upcoming
 
+# 0.3.0
 * Show shorthand boost information
 * Keep actual investments into account when calculating 'Boost information' ([#3](https://github.com/veger/foei/issues/3))
 * Hide GB information for self==owner
