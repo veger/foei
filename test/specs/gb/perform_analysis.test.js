@@ -42,6 +42,38 @@ describe('performAnalysis', function () {
     assert.deepEqual(aResult[4].reward, { fp: rankings[5].reward.strategy_point_amount, fpBonus: 0, blueprints: rankings[5].reward.blueprints, blueprintsBonus: 0, medals: rankings[5].reward.resources.medals, medalsBonus: 0 }, 'rank 5 reward')
   })
 
+  it('should have proper basics in its result (self not owner) (Inno lvl 38)', function () {
+    const totalFP = 1757
+    const rankings = [
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 700, reward: { strategy_point_amount: 510, resources: {} } },
+      { rank: 2, player: { is_self: false, player_id: 'p2' }, forge_points: 400, reward: { strategy_point_amount: 255, resources: {} } },
+      { rank: 3, player: { is_self: true, player_id: 'self' }, forge_points: 150, reward: { strategy_point_amount: 85, resources: {} } },
+      { player: { is_self: false, player_id: 'owner' }, forge_points: 7 },
+      { rank: 4, player: { }, reward: { strategy_point_amount: 20, resources: {} } },
+      { rank: 5, player: { }, reward: { strategy_point_amount: 5, resources: {} } }
+    ]
+
+    greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
+    const result = greatBuilding.performAnalysis(rankings)
+
+    const aResult = result.analysis
+    assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
+
+    // All investments (except owner) should be in results
+    assert.equal(aResult[0].invested, 700, 'rank 1 invested SP')
+    assert.equal(aResult[1].invested, 400, 'rank 2 invested SP')
+    assert.equal(aResult[2].invested, 150, 'rank 3 invested SP') // actual 7 -> owner is not filtered
+    assert.isUndefined(aResult[3].invested, 'rank 4 did not invest yet')
+    assert.isUndefined(aResult[4].invested, 'rank 5 did not invest yet')
+
+    // All rewards should be filled
+    assert.isDefined(aResult[0].reward)
+    assert.isDefined(aResult[1].reward)
+    assert.isDefined(aResult[2].reward)
+    assert.isDefined(aResult[3].reward)
+    assert.isDefined(aResult[4].reward)
+  })
+
   it('should have proper basics in its result (self-owner) (Arc lvl 61)', function () {
     const totalFP = 3418
     const rankings = [
@@ -160,11 +192,11 @@ describe('performAnalysis', function () {
   it('should be able to calculate empty GB (Delphi lvl 1)', function () {
     const totalFP = 40
     const rankings = [
-      { rank: 1, player: { is_self: false, name: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, name: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
-      { rank: 3, player: { is_self: false, name: 'p3' }, reward: { resources: {} } },
-      { rank: 4, player: { is_self: false, name: 'p4' }, reward: { resources: {} } },
-      { rank: 5, player: { is_self: false, name: 'p5' }, reward: { resources: {} } }
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { is_self: false, player_id: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
+      { rank: 3, player: { }, reward: { resources: {} } },
+      { rank: 4, player: { }, reward: { resources: {} } },
+      { rank: 5, player: { }, reward: { resources: {} } }
     ]
 
     greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
@@ -184,11 +216,11 @@ describe('performAnalysis', function () {
     const totalFP = 40
     const rankings = [
       { player: { is_self: false, player_id: 'owner' }, forge_points: 10 },
-      { rank: 1, player: { is_self: false, name: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, name: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
-      { rank: 3, player: { is_self: false, name: 'p3' }, reward: { resources: {} } },
-      { rank: 4, player: { is_self: false, name: 'p4' }, reward: { resources: {} } },
-      { rank: 5, player: { is_self: false, name: 'p5' }, reward: { resources: {} } }
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { is_self: false, player_id: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
+      { rank: 3, player: { }, reward: { resources: {} } },
+      { rank: 4, player: { }, reward: { resources: {} } },
+      { rank: 5, player: { }, reward: { resources: {} } }
     ]
 
     greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
@@ -207,11 +239,11 @@ describe('performAnalysis', function () {
   it('should be able to calculate GB with p1 invested (unsafe) (Delphi lvl 1)', function () {
     const totalFP = 40
     const rankings = [
-      { rank: 1, player: { is_self: false, name: 'p1' }, forge_points: 10, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, name: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
-      { rank: 3, player: { is_self: false, name: 'p3' }, reward: { resources: {} } },
-      { rank: 4, player: { is_self: false, name: 'p4' }, reward: { resources: {} } },
-      { rank: 5, player: { is_self: false, name: 'p5' }, reward: { resources: {} } }
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 10, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { }, reward: { strategy_point_amount: 5, resources: {} } },
+      { rank: 3, player: { }, reward: { resources: {} } },
+      { rank: 4, player: { }, reward: { resources: {} } },
+      { rank: 5, player: { }, reward: { resources: {} } }
     ]
 
     greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
@@ -230,11 +262,11 @@ describe('performAnalysis', function () {
   it('should be able to calculate GB with p1 invested (exactly safe) (Delphi lvl 1)', function () {
     const totalFP = 40
     const rankings = [
-      { rank: 1, player: { is_self: false, name: 'p1' }, forge_points: 20, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, name: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
-      { rank: 3, player: { is_self: false, name: 'p3' }, reward: { resources: {} } },
-      { rank: 4, player: { is_self: false, name: 'p4' }, reward: { resources: {} } },
-      { rank: 5, player: { is_self: false, name: 'p5' }, reward: { resources: {} } }
+      { rank: 1, player: { is_self: false, player_id: 'p1' }, forge_points: 20, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { }, reward: { strategy_point_amount: 5, resources: {} } },
+      { rank: 3, player: { }, reward: { resources: {} } },
+      { rank: 4, player: { }, reward: { resources: {} } },
+      { rank: 5, player: { }, reward: { resources: {} } }
     ]
 
     greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
@@ -253,11 +285,11 @@ describe('performAnalysis', function () {
   it('should be able to calculate GB with self invested (Delphi lvl 1)', function () {
     const totalFP = 40
     const rankings = [
-      { rank: 1, player: { is_self: true, name: 'p1' }, forge_points: 10, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, name: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
-      { rank: 3, player: { is_self: false, name: 'p3' }, reward: { resources: {} } },
-      { rank: 4, player: { is_self: false, name: 'p4' }, reward: { resources: {} } },
-      { rank: 5, player: { is_self: false, name: 'p5' }, reward: { resources: {} } }
+      { rank: 1, player: { is_self: true, player_id: 'p1' }, forge_points: 10, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { }, reward: { strategy_point_amount: 5, resources: {} } },
+      { rank: 3, player: { }, reward: { resources: {} } },
+      { rank: 4, player: { }, reward: { resources: {} } },
+      { rank: 5, player: { }, reward: { resources: {} } }
     ]
 
     greatBuilding.storeBuildingInfo(0, 'owner', totalFP)

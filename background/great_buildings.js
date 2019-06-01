@@ -184,17 +184,17 @@ const greatBuilding = {
       }
     }
 
-    // Add investments for all rankings (if available)
+    // Add investments for all (original) rankings
     let ranking = 0
-    for (let i = 0; i < rankings.length; i++) {
-      if (rankings[i].player.player_id === greatBuilding.ownerId) {
+    for (let i = 0; i < dataRankings.length; i++) {
+      if (dataRankings[i].player.player_id === greatBuilding.ownerId) {
         // Don't store SP for owner (unless it is player, as the SPs are shifted after player)
         continue
       }
       if (fpAnalysis.length > ranking) {
-        fpAnalysis[ranking].invested = rankings[i].forge_points
+        fpAnalysis[ranking].invested = dataRankings[i].forge_points
       } else {
-        fpAnalysis.push({ invested: rankings[i].forge_points })
+        fpAnalysis.push({ invested: dataRankings[i].forge_points })
       }
       ranking++
     }
