@@ -13,7 +13,7 @@ let createRingBuffer = function (length) {
   }
 }
 
-var worldID
+var worldID = 'unknown'
 function setWorldID (newWorldID) {
   if (worldID === newWorldID + '-') {
     return
