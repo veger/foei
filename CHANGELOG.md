@@ -7,6 +7,7 @@
 * Check for new version
 * Update GB and Boost information when spending SP
 * Only update Arc bonus when updating owned Arc
+* Fix some issues for new users
 
 # 0.2.0
 * Rewards screen - Order on goods in stock when value is the same ([#2](https://github.com/veger/foei/issues/2))

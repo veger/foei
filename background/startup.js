@@ -33,12 +33,15 @@ const startup = {
     startup.playerId = playerId
   },
   setGoods: function (goods) {
-    if (debug) {
-      console.log(Object.keys(goods).length + ' goods registered')
+    if (goods !== undefined && Object.keys(goods).length > 0) {
+      if (debug) {
+        console.log(Object.keys(goods).length + ' goods registered')
+      }
+
+      localSet({ 'goods': goods })
+      consts.goods = goods
+      sendNotification('goods', '', '')
     }
-    localSet({ 'goods': goods })
-    consts.goods = goods
-    sendNotification('goods', '', '')
   },
   getGoods: function (cb) {
     if (consts.goods !== undefined) {
@@ -85,7 +88,7 @@ const startup = {
 
 listenToWorldIDChanged(function () {
   localGet({ 'goods': false, playerId: false }, function (result) {
-    if (!result.goods) {
+    if (!result.goods || Object.keys(result.goods).length === 0) {
       sendNotification('goods', 'error', 'Goods not available, restart/refresh game')
     } else {
       startup.setGoods(result.goods)
