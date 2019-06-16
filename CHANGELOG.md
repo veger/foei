@@ -1,4 +1,6 @@
 # Upcoming
+
+# 0.3.1
 * Fix GB calculation when self is followed by owner
 
 # 0.3.0
