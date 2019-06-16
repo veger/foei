@@ -1,4 +1,5 @@
 # Upcoming
+* Fix GB calculation when self is followed by owner
 
 # 0.3.0
 * Show shorthand boost information

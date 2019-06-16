@@ -215,9 +215,9 @@ describe('performAnalysis', function () {
   it('should be able to calculate GB with owner donation (Delphi lvl 1)', function () {
     const totalFP = 40
     const rankings = [
-      { player: { is_self: false, player_id: 'owner' }, forge_points: 10 },
-      { rank: 1, player: { is_self: false, player_id: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
-      { rank: 2, player: { is_self: false, player_id: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
+      { player: { player_id: 'owner' }, forge_points: 10 },
+      { rank: 1, player: { player_id: 'p1' }, reward: { strategy_point_amount: 10, resources: {} } },
+      { rank: 2, player: { player_id: 'p2' }, reward: { strategy_point_amount: 5, resources: {} } },
       { rank: 3, player: { }, reward: { resources: {} } },
       { rank: 4, player: { }, reward: { resources: {} } },
       { rank: 5, player: { }, reward: { resources: {} } }
@@ -302,6 +302,31 @@ describe('performAnalysis', function () {
     assert.equal(aResult[1].spotSafe, 13)
     assert.equal(aResult[2].spotSafe, 10)
     assert.equal(aResult[3].spotSafe, false) // already invested more than required to be safe
+    assert.equal(aResult[4].spotSafe, false)
+  })
+
+  it('should work when self is followed by owner (Arc lvl 35)', function () {
+    const totalFP = 1844
+    const rankings = [
+      { rank: 1, player: { player_id: 'p1' }, forge_points: 980, reward: { blueprints: 8, strategy_point_amount: 525, resources: { medals: 13270 } } },
+      { rank: 2, player: { player_id: 'p2' }, forge_points: 499, reward: { blueprints: 6, strategy_point_amount: 265, resources: { medals: 6635 } } },
+      { rank: 3, player: { is_self: true, player_id: 'p3' }, forge_points: 164, reward: { blueprints: 5, strategy_point_amount: 90, resources: { medals: 3318 } } },
+      { player: { player_id: 'owner' }, 'forge_points': 60 },
+      { rank: 4, player: {}, reward: { blueprints: 4, strategy_point_amount: 25, resources: { medals: 1327 } } },
+      { rank: 5, player: {}, reward: { blueprints: 3, strategy_point_amount: 5, resources: { medals: 664 } } }
+    ]
+
+    greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
+    const result = greatBuilding.performAnalysis(rankings)
+
+    const aResult = result.analysis
+    assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
+
+    // All spots are safe (or uninteresting to self)
+    assert.equal(aResult[0].spotSafe, false)
+    assert.equal(aResult[1].spotSafe, false)
+    assert.equal(aResult[2].spotSafe, false)
+    assert.equal(aResult[3].spotSafe, false)
     assert.equal(aResult[4].spotSafe, false)
   })
 })

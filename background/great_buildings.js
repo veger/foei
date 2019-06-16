@@ -47,7 +47,7 @@ const greatBuilding = {
     let ownerFP = 0
     let ownerIndex
 
-    // Remove player from rankings as this messes the calculations
+    // Remove player (self) from rankings as this messes the calculations
     // (it is an investment that is already done on behalf of the player)
     let rankings = []
     for (let i = 0; i < dataRankings.length; i++) {
@@ -58,7 +58,7 @@ const greatBuilding = {
       if (selfIndex !== undefined) {
         // Move all other investments one up, to remove the self investment
         rankings[i - 1].forge_points = rankings[i].forge_points
-        rankings[i].forge_points = undefined
+        rankings[i - 1].player = rankings[i].player
       }
 
       if (forgePoints) {
@@ -78,6 +78,7 @@ const greatBuilding = {
     if (selfIndex !== undefined) {
       // Remove last investment, as they all moved up by one
       rankings[rankings.length - 1].forge_points = undefined
+      rankings[rankings.length - 1].player = {}
     }
     let freeFP = (greatBuilding.requiredFP - investedFP)
 
@@ -90,20 +91,15 @@ const greatBuilding = {
     let fpAnalysis = []
     // Check if owner is self -> skip as it/nothing makes sense (anymore)
     if (greatBuilding.ownerId !== startup.playerId) {
-      let rank = 0
       let i = -1
       while (i < rankings.length - 1) {
         i++
         let ranking = rankings[i]
-        if (ranking.player.player_id === greatBuilding.ownerId) {
-          // Skip owner (does not have rewards)
-          continue
-        }
-        rank = ranking.rank
+        let rank = ranking.rank
 
         if (ranking.reward === undefined) {
-          // Nothing to calculate further
-          break
+          // Nothing to calculate
+          continue
         }
 
         let investedByOthers = 0
@@ -167,8 +163,8 @@ const greatBuilding = {
         }
 
         if (ranking.reward === undefined) {
-          // Nothing to calculate further
-          break
+          // Nothing to store
+          continue
         }
 
         fpAnalysis.push({
