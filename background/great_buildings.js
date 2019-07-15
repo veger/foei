@@ -213,13 +213,13 @@ const greatBuilding = {
       let changes = []
       let now = Date.now() / 1000
       for (let i = 0; i < data.length; i++) {
-        if (playerGB[data[i].city_entity_id] === undefined || playerGB[data[i].city_entity_id].last_spent !== data[i].last_spent || data[i].last_spent + 2 * 24 * 3600 > now) {
+        // if (playerGB[data[i].city_entity_id] === undefined || playerGB[data[i].city_entity_id].last_spent !== data[i].last_spent || data[i].last_spent + 2 * 24 * 3600 > now) {
           changes.push({
             name: data[i].name,
             last_spent: data[i].last_spent,
             completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
           })
-        }
+        // }
       }
 
       if (changes.length === 0) {
