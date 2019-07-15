@@ -138,11 +138,12 @@ const greatBuilding = {
         }
 
         let profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP))
-
+        const revenue = Math.round(fixFloat(100 - (bestSpotFP / (bestSpotFP + profit) * 100)));
         // Used for both Boost and GB information
         fpAnalysis.push({
           spotSafe: bestSpotFP,
           profit: profit,
+          revenue: revenue,
           reward: {
             fp: ranking.reward.strategy_point_amount,
             fpBonus: Math.round(fixFloat(ranking.reward.strategy_point_amount * greatBuilding.arcBonus)),

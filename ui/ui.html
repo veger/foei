@@ -17,20 +17,20 @@
   <div id="army-info" class="container-fluid mb-2"></div>
   <ul class="nav nav-tabs" id="mainTabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active show" id="plunder-tab" data-toggle="tab" href="#plunder" role="tab" aria-controls="plunder" aria-selected="true">Plunder</a>
+      <a class="nav-link" id="plunder-tab" data-toggle="tab" href="#plunder" role="tab" aria-controls="plunder" aria-selected="true">Plunder</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="rewards-tab" data-toggle="tab" href="#rewards" role="tab" aria-controls="rewards" aria-selected="false">Rewards</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="great-building-tab" data-toggle="tab" href="#great-building" role="tab" aria-controls="great-building" aria-selected="false">Great Buildings</a>
+      <a class="nav-link active show" id="great-building-tab" data-toggle="tab" href="#great-building" role="tab" aria-controls="great-building" aria-selected="false">Great Buildings</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="plunder" role="tabpanel" aria-labelledby="plunder-tab">
+    <div class="tab-pane fade" id="plunder" role="tabpanel" aria-labelledby="plunder-tab">
       <div class="alert alert-warning d-none" id="player-protected">Player/City is protected
       </div>
       <table class="table table-sm">
@@ -63,7 +63,7 @@
         </tbody>
       </table>
     </div>
-    <div class="tab-pane fade" id="great-building" role="tabpanel" aria-labelledby="great-building-tab">
+    <div class="tab-pane fade show active" id="great-building" role="tabpanel" aria-labelledby="great-building-tab">
       <div class="card m-1">
         <div class="card-body">
           <table id="great-building-table" class="table table-sm table-responsive" style="white-space:nowrap;">
@@ -71,7 +71,7 @@
               <tr>
                 <th scope="col">Spot</th>
                 <th scope="col">Required</th>
-                <th scope="col" width="150px">Profit</th>
+                <th scope="col">Profit</th>
                 <th scope="col" colspan="6">Rewards</th>
               </tr>
             </thead>

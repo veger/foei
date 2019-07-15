@@ -60,34 +60,23 @@ function updateGreatBuildingChanges (changes) {
 }
 
 function addGreatBuildingAnalysisRow (spot, analysis) {
-  let row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('sp') + ' ' + analysis.profit : '>') + '</td>'
-  row += '<td>'
-  if (analysis.reward.blueprints) {
-    row += iconImage('blueprint') + ' ' + analysis.reward.blueprints
-  }
-  row += '</td><td>'
-  if (analysis.reward.blueprintsBonus) {
-    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.blueprintsBonus
-  }
-  row += '</td><td>'
-  if (analysis.reward.medals) {
-    row += iconImage('medal') + ' ' + analysis.reward.medals
-  }
-  row += '</td><td>'
-  if (analysis.reward.medalsBonus) {
-    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.medalsBonus
-  }
-  row += '</td><td>'
-  if (analysis.reward.fp) {
-    row += iconImage('sp') + ' ' + analysis.reward.fp
-  }
-  row += '</td><td>'
-  if (analysis.reward.fpBonus) {
-    row += '+ ' + iconImage('bonus') + ' ' + analysis.reward.fpBonus
-  }
-  row += '</td>'
+  const addReward = (reward, rewardBonus, image) => {
+    return reward && iconImage(image) + ' ' + (reward + rewardBonus) + ' (' + reward + ' ' +iconImage('bonus') + ' ' + rewardBonus + ')';
+  };
 
-  return row
+  const hasProfit = analysis.spotSafe >= 0 && analysis.profit < 0;
+
+  const content = [
+    spot, // spot
+    iconImage('sp') + ' ' + analysis.spotSafe, // required
+    '<span ' + (hasProfit ? 'style="color:red;"' : '') + '>' + iconImage('sp') + ' '  + analysis.profit +
+      (analysis.profit >= 0 ? ' (' + analysis.revenue + '%)</span>' : ''), // profit
+    addReward(analysis.reward.fp, analysis.reward.fpBonus, 'sp'), // fp's
+    addReward(analysis.reward.blueprints, analysis.reward.blueprintsBonus, 'blueprint'), // blueprints
+    addReward(analysis.reward.medals, analysis.reward.medalsBonus, 'medal'), // medals
+  ];
+
+  return '<tr><td>' + content.join('</td><td>') + '</td></tr>';
 }
 
 function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP, nextInvestment) {
