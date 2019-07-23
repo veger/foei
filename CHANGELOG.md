@@ -1,5 +1,7 @@
 # Upcoming
 
+* Fix battle info for newest version of FoE
+
 # 0.3.1
 * Fix GB calculation when self is followed by owner
 

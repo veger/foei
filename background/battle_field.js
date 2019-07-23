@@ -13,7 +13,8 @@ const battleField = {
           battleField.processBattleMove(data.state)
         })
         break
-      case 'startPvP':
+      case 'startPvP': // old/depreciated message
+      case 'startByBattleType':
         battleField.processStartBattle(data, function () { })
         break
       case 'submitMove':
