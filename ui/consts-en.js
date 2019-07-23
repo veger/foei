@@ -31,6 +31,7 @@ const i18n = {
   'P_MultiAge_FallBonus17d': 'Prosperous Cider Mill',
   'R_MultiAge_FallBonus18': 'Forest of Fall',
   'R_MultiAge_FallBonus18b': 'Mill of Fall',
+  'G_IndustrialAge_GoodProduction3': 'Textile Mill',
   'R_MultiAge_HalloweenBonus4': 'Haunted House',
   'P_MultiAge_HalloweenBonus15': "Mad Scientist's Lab",
   'P_MultiAge_MonroeBonus17': 'Rosarium',

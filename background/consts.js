@@ -121,10 +121,12 @@ const consts = {
     rogue: { name: 'Rogue', type: 'rogue' },
 
     // Champions
+    BronzeAge_champion: { name: 'Champions', type: 'champ' },
     IronAge_champion: { name: 'Champions', type: 'champ' },
     EarlyMiddleAge_champion: { name: 'Champions', type: 'champ' },
     HighMiddleAge_champion: { name: 'Champions', type: 'champ' },
     LateMiddleAge_champion: { name: 'Champions', type: 'champ' },
-    ColonialAge_champion: { name: 'Champions', type: 'champ' }
+    ColonialAge_champion: { name: 'Champions', type: 'champ' },
+    IndustrialAge_champion: { name: 'Champions', type: 'champ' }
   }
 }
