@@ -1,8 +1,5 @@
 'use strict'
 
-// Clean up v0.0.3 (moved to local storage)
-chrome.storage.sync.remove(['_debug', '_trace'])
-
 var debug
 localGet('_debug', function (data) {
   debug = data._debug === true
