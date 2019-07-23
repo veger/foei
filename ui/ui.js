@@ -22,6 +22,9 @@ chrome.extension.onMessage.addListener(
     if (request.battleStats) {
       updateBattleStats(request.battleStats)
     }
+    if (request.clanArmies) {
+      updateClanArmies(request.clanArmies)
+    }
     if (request.playerProtected !== undefined) {
       updatePlayerProtection(request.playerProtected)
     }

@@ -15,6 +15,7 @@
       "background/main.js",
       "background/battle_field.js",
       "background/city_map.js",
+      "background/clan_battle.js",
       "background/great_buildings.js",
       "background/hidden_reward.js",
       "background/other_player.js",

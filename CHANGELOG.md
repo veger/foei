@@ -1,5 +1,7 @@
 # Upcoming
 
+* Add GvG tab (showing sector army details)
+
 # 0.3.2
 * Fix battle info for newest version of FoE
 * More building and unit IDs
