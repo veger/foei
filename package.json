@@ -1,6 +1,6 @@
 {
   "name": "foei",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.",
   "main": "main.js",
   "repository": {
