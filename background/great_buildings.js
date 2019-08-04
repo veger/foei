@@ -83,8 +83,8 @@ const greatBuilding = {
     let freeFP = (greatBuilding.requiredFP - investedFP)
 
     if (debug) {
-      console.log('free FP (excluding player): ' + freeFP)
-      console.log('user (#' + (selfIndex + 1) + '): ' + selfFP)
+      console.log('free FP (excluding self): ' + freeFP)
+      console.log('self (#' + (selfIndex + 1) + '): ' + selfFP)
       console.log('owner (#' + (ownerIndex + 1) + '): ' + ownerFP)
     }
 
@@ -107,15 +107,21 @@ const greatBuilding = {
         let j = i + 1
         while (j >= 1) {
           j--
-          if (rankings[j].player.player_id === greatBuilding.ownerId) {
+          if (rankings[j].player.player_id !== greatBuilding.ownerId) {
+            investedByOthers += (rankings[j].forge_points || 0)
+          } else if (j === selfIndex && j + 1 < rankings.length) {
+            // In order to calculate the 'self' spot (directly above owner spot), we'll have to grab next spot (as this is direct 'competitor')
+            investedByOthers += (rankings[j + 1].forge_points || 0)
+          } else {
+            // Ignore owner spot
             continue
           }
 
-          investedByOthers += (rankings[j].forge_points || 0)
           let tmp = Math.ceil((freeFP + investedByOthers + j - i) / (i - j + 2))
           if (tmp <= rankings[j].forge_points) {
             tmp = rankings[j].forge_points + 1
           }
+
           if (tmp < bestSpotFP) {
             bestSpotFP = tmp
           }

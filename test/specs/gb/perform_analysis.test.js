@@ -305,7 +305,7 @@ describe('performAnalysis', function () {
     assert.equal(aResult[4].spotSafe, false)
   })
 
-  it('should work when self is followed by owner (Arc lvl 35)', function () {
+  it('should work when self (safe) is followed by owner (Arc lvl 35)', function () {
     const totalFP = 1844
     const rankings = [
       { rank: 1, player: { player_id: 'p1' }, forge_points: 980, reward: { blueprints: 8, strategy_point_amount: 525, resources: { medals: 13270 } } },
@@ -325,6 +325,30 @@ describe('performAnalysis', function () {
     // All spots are safe (or uninteresting to self)
     assert.equal(aResult[0].spotSafe, false)
     assert.equal(aResult[1].spotSafe, false)
+    assert.equal(aResult[2].spotSafe, false)
+    assert.equal(aResult[3].spotSafe, false)
+    assert.equal(aResult[4].spotSafe, false)
+  })
+
+  it('should work when self (unsafe) is followed by owner (Arc lvl 68)', function () {
+    const totalFP = 4164
+    const rankings = [
+      { rank: 1, player: { player_id: 'p1' }, forge_points: 2002, reward: { blueprints: 14, strategy_point_amount: 1150, resources: { medals: 29214 } } },
+      { rank: 2, player: { is_self: true, player_id: 'p2' }, forge_points: 707, reward: { blueprints: 10, strategy_point_amount: 575, resources: { medals: 14607 } } },
+      { player: { player_id: 'owner' }, forge_points: 199 },
+      { rank: 3, player: { player_id: 'p3' }, forge_points: 100, reward: { blueprints: 8, strategy_point_amount: 190, resources: { medals: 7304 } } },
+      { rank: 4, player: { player_id: 'p4' }, forge_points: 10, reward: { blueprints: 6, strategy_point_amount: 50, resources: { medals: 2921 } } },
+      { rank: 5, player: { }, reward: { blueprints: 5, strategy_point_amount: 10, resources: { medals: 1461 } } }
+    ]
+
+    greatBuilding.storeBuildingInfo(0, 'owner', totalFP)
+    const result = greatBuilding.performAnalysis(rankings)
+
+    const aResult = result.analysis
+    assert.lengthOf(aResult, 5, '5 ranks with results should be in result')
+
+    assert.equal(aResult[0].spotSafe, false)
+    assert.equal(aResult[1].spotSafe, 977)
     assert.equal(aResult[2].spotSafe, false)
     assert.equal(aResult[3].spotSafe, false)
     assert.equal(aResult[4].spotSafe, false)
