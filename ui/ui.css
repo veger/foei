@@ -1,0 +1,11 @@
+.thumbnail {
+    max-height: 30px;
+}
+
+.thumbnail:hover {
+    position: relative;
+    background-color: white;
+    transform: scale(7.5);
+    top: 0px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
