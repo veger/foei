@@ -20,7 +20,8 @@ const consts = {
     FutureEra: 14,
     ArcticFuture: 15,
     OceanicFuture: 16,
-    VirtualFuture: 17
+    VirtualFuture: 17,
+    SpaceAgeMars: 18
   },
 
   getGoodsAge: function (goodName) {
@@ -114,6 +115,23 @@ const consts = {
 
     // Progressive Era
     conscript: { name: 'Conscript', type: 'light' },
+    armored_car: { name: 'Armored Car', type: 'fast' },
+    tank: { name: 'Tank', type: 'heavy' },
+    sniper: { name: 'Sniper', type: 'ranged' },
+    rf_cannon: { name: 'Rapid Fire Cannon', type: 'artillery' },
+
+    // Modern
+    bazooka: { name: 'Bazooka Team', type: 'light' },
+
+    // Post modern
+    automatic_rifleman: { name: 'MG Team', type: 'ranged' },
+
+    // Virtual Future
+    ninja: { name: 'Ninja', type: 'ranged' },
+    augmented_samurai: { name: 'Augmented Samurai', type: 'light' },
+    warrior_monk: { name: 'Warrior Monk', type: 'fast' },
+    ronin_bot: { name: 'Ronin Bot', type: 'heavy' },
+    rocket_troop: { name: 'Rocket Troop', type: 'artillery' },
 
     // All Ages
     military_drummer: { name: 'Military Drummer', type: 'drum' },
@@ -121,12 +139,14 @@ const consts = {
     rogue: { name: 'Rogue', type: 'rogue' },
 
     // Champions
-    BronzeAge_champion: { name: 'Champions', type: 'champ' },
-    IronAge_champion: { name: 'Champions', type: 'champ' },
-    EarlyMiddleAge_champion: { name: 'Champions', type: 'champ' },
-    HighMiddleAge_champion: { name: 'Champions', type: 'champ' },
-    LateMiddleAge_champion: { name: 'Champions', type: 'champ' },
-    ColonialAge_champion: { name: 'Champions', type: 'champ' },
-    IndustrialAge_champion: { name: 'Champions', type: 'champ' }
+    BronzeAge_champion: { name: 'Champion', type: 'champ' },
+    IronAge_champion: { name: 'Champion', type: 'champ' },
+    EarlyMiddleAge_champion: { name: 'Champion', type: 'champ' },
+    HighMiddleAge_champion: { name: 'Champion', type: 'champ' },
+    LateMiddleAge_champion: { name: 'Champion', type: 'champ' },
+    ColonialAge_champion: { name: 'Champion', type: 'champ' },
+    IndustrialAge_champion: { name: 'Champion', type: 'champ' },
+    ProgressiveEra_champion: { name: 'Champion', type: 'champ' },
+    VirtualFuture_champion: { name: 'Champion', type: 'champ' }
   }
 }

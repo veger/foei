@@ -4,6 +4,7 @@
 * Fix GB calculation when self (still unsafe) is followed by owner
 * Fix (auto) battle info for newest version of FoE
 * Show images of buildings in plunder tab (thanks for contribution)
+* More building and unit IDs
 
 # 0.3.2
 * Fix battle info for newest version of FoE
