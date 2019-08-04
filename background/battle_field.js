@@ -7,15 +7,19 @@ const battleField = {
       console.log('BattlefieldService.' + method, data)
     }
     switch (method) {
-      case 'autoFinish':
+      case 'autoFinish': // old/depreciated message
         battleField.processStartBattle(data, function () {
-          console.log(data.state)
           battleField.processBattleMove(data.state)
         })
         break
       case 'startPvP': // old/depreciated message
       case 'startByBattleType':
-        battleField.processStartBattle(data, function () { })
+        battleField.processStartBattle(data, function () {
+          if (data.isAutoBattle) {
+            // Battle finished immediately
+            battleField.processBattleMove(data.state)
+          }
+        })
         break
       case 'submitMove':
       case 'surrender':
