@@ -1,5 +1,6 @@
 # Upcoming
 
+# 0.4.0
 * Add GvG tab (showing sector army details)
 * Fix GB calculation when self (still unsafe) is followed by owner
 * Fix (auto) battle info for newest version of FoE
