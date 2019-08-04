@@ -1,4 +1,5 @@
 # Upcoming
+* The Crow's Nest cannot be plundered
 
 # 0.4.0
 * Add GvG tab (showing sector army details)

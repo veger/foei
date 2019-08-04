@@ -115,7 +115,11 @@ const otherPlayer = {
           case 'goods':
           case 'random_production':
           case 'residential':
-            if (entity.state.boosted !== true && entity.state.current_product !== undefined && entity.state.__class__ === 'ProductionFinishedState') {
+            if (entity.state.boosted !== true &&
+               entity.state.current_product !== undefined &&
+               entity.state.__class__ === 'ProductionFinishedState' &&
+                !entity.cityentity_id.match(/R_MultiAge_SummerBonus19[a-h]/) // The Crow's Nest cannot be plundered...
+            ) {
               let age = consts.getAge(entity.cityentity_id.split('_')[1])
               result.push({
                 age: age,
