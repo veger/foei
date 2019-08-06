@@ -1,6 +1,7 @@
 # Upcoming
 * The Crow's Nest cannot be plundered
 * Show 'not available' or 'closed' if the last change info of a GB is not available ([#10](https://github.com/veger/foei/issues/10))
+* Show if battle was 'automatic'
 
 # 0.4.0
 * Add GvG tab (showing sector army details)
