@@ -75,9 +75,10 @@ function battleReport (battle, showLabel) {
 
 function listUnits (unitMap) {
   let units = []
-  for (let [unitType, amount] of Object.entries(unitMap)) {
+  Object.keys(unitMap).sort().forEach((unitType) => {
+    const amount = unitMap[unitType]
     units.push((amount > 1 ? amount + ' ' : '') + unitType)
-  }
+  })
 
   return units
 }
