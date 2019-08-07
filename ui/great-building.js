@@ -48,13 +48,7 @@ function updateGreatBuildingChanges (changes) {
     ggRows = '<tr><td colspan="3">No buildings</td></tr>'
   } else {
     if (changes.length === 1 && changes[0].name === 'last change') {
-<<<<<<< HEAD
-      ggRows = changes[0].last_spent
-        ? '<tr><td colspan="3">Last change ' + moment.unix(changes[0].last_spent).fromNow() + '</td></tr>'
-        : '<tr><td colspan="3">Not available</td></tr>'
-=======
       ggRows = '<tr><td colspan="3">' + (changes[0].last_spent ? 'Last change ' + moment.unix(changes[0].last_spent).fromNow() : 'Not available') + '</td></tr>'
->>>>>>> master/master
     } else {
       for (let i = 0; i < changes.length; i++) {
         ggRows += addGreatBuildingChangesRow(changes[i])
