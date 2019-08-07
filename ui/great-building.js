@@ -48,9 +48,13 @@ function updateGreatBuildingChanges (changes) {
     ggRows = '<tr><td colspan="3">No buildings</td></tr>'
   } else {
     if (changes.length === 1 && changes[0].name === 'last change') {
+<<<<<<< HEAD
       ggRows = changes[0].last_spent
         ? '<tr><td colspan="3">Last change ' + moment.unix(changes[0].last_spent).fromNow() + '</td></tr>'
         : '<tr><td colspan="3">Not available</td></tr>'
+=======
+      ggRows = '<tr><td colspan="3">' + (changes[0].last_spent ? 'Last change ' + moment.unix(changes[0].last_spent).fromNow() : 'Not available') + '</td></tr>'
+>>>>>>> master/master
     } else {
       for (let i = 0; i < changes.length; i++) {
         ggRows += addGreatBuildingChangesRow(changes[i])
@@ -116,8 +120,5 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP,
 }
 
 function addGreatBuildingChangesRow (change) {
-  return '<tr' + (change.last_spent ? '' : ' style="text-decoration:line-through;" ') +
-    '><td>' + change.name + '</td><td>' +
-    (change.last_spent ? moment.unix(change.last_spent).fromNow(true) : 'Not open') +
-    '</td><td>' + change.completePercentage + '%</td></tr>'
+  return '<tr><td>' + change.name + '</td><td>' + (change.last_spent ? moment.unix(change.last_spent).fromNow(true) : '<em>closed</em>') + '</td><td>' + change.completePercentage + '%</td></tr>'
 }

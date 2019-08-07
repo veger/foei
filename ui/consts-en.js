@@ -1,6 +1,7 @@
 'use strict'
 
 const i18n = {
+  'R_MultiAge_ArcheologyBonus19a': "World's Fair",
   'P_MultiAge_Aviary': 'Aviary',
   'R_MultiAge_BirthdayBonus1': 'The King',
   'P_MultiAge_CarnivalBonus17': 'Masquerade Ball',
@@ -31,6 +32,16 @@ const i18n = {
   'P_MultiAge_FallBonus17d': 'Prosperous Cider Mill',
   'R_MultiAge_FallBonus18': 'Forest of Fall',
   'R_MultiAge_FallBonus18b': 'Mill of Fall',
+  'G_IndustrialAge_GoodProduction1': 'Rubber Plant',
+  'G_IndustrialAge_GoodProduction2': 'Coke Oven',
+  'G_IndustrialAge_GoodProduction3': 'Textile Mill',
+  'G_IndustrialAge_GoodProduction4': 'Whaling Station',
+  'G_IndustrialAge_GoodProduction5': 'Fertilizer Plant',
+  'G_ProgressiveEra_GoodProduction1': 'Asbestos Factory',
+  'G_ProgressiveEra_GoodProduction2': 'Oil Refinery',
+  'G_ProgressiveEra_GoodProduction3': 'Machine Workshop',
+  'G_ProgressiveEra_GoodProduction4': 'Tinning Plant',
+  'G_ProgressiveEra_GoodProduction5': 'Explosives Factory',
   'R_MultiAge_HalloweenBonus4': 'Haunted House',
   'P_MultiAge_HalloweenBonus15': "Mad Scientist's Lab",
   'P_MultiAge_MonroeBonus17': 'Rosarium',
@@ -39,6 +50,10 @@ const i18n = {
   'R_LateMiddleAge_Residential3': 'Kasteel',
   'R_MultiAge_RoyalBonusSet17a': 'King Statue',
   'R_MultiAge_RoyalBonusSet17b': 'Queens Statue',
+  'R_MultiAge_SoccerBonus19a': 'Altar Garden',
+  'R_MultiAge_SoccerBonus19b': 'Altar Garden (lvl 2)',
+  'R_MultiAge_SoccerBonus19c': 'Altar Garden (lvl 3)',
+  'R_MultiAge_SoccerBonus19d': 'Altar Garden (lvl 4)',
   'P_MultiAge_SportBonus17': 'Arena of Victors',
   'R_MultiAge_SportBonus17c': 'Pillar of Heroes',
   'R_MultiAge_SportBonus18a': 'Tholos of Idols',
@@ -71,5 +86,7 @@ const i18n = {
   'R_MultiAge_WinterBonusSet17a': "Sugar Baker's Booth",
   'R_MultiAge_WinterBonusSet17b': 'Moose Meadow',
   'R_MultiAge_WinterBonusSet17c': "Toymaker's Booth",
-  'P_MultiAge_WinterBonus18': 'Sleigh Builder'
+  'P_MultiAge_WinterBonus18': 'Sleigh Builder',
+  'P_ProgressiveEra_Workshop1': 'Cattle Ranch',
+  'P_IndustrialAge_Workshop2': 'Ceramics Factory'
 }

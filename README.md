@@ -5,9 +5,9 @@
 
 > Browser extension that helps you playing Forge of Empires, saving your time and (thereby) giving you an advantage over other players.
 
-[![FoEI plunder screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-plunder.png?sha=b8c8ba4e86afb969)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvM3AwcmUxNjkzOF9mb2VpX3BsdW5kZXIucG5nIl1d/foei-plunder.png?sha=320d240b8a0eb886)
-[![FoEI rewards screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvMjJnY2I1M2MxdF9mb2VpX3Jld2FyZHMucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-rewards.png?sha=5a15e0fe9be0b277)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvMjJnY2I1M2MxdF9mb2VpX3Jld2FyZHMucG5nIl1d/foei-rewards.png?sha=b7662d3d84db46b1)
-[![FoEI great buildings screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvNDYxaWVxdWxka19mb2VpX2diLnBuZyJdLFsicCIsInRodW1iIiwiMjI1eDI1NVx1MDAzZSJdXQ/foei-gb.png?sha=fbba6bedf69a3169)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDMvMjcvNDYxaWVxdWxka19mb2VpX2diLnBuZyJdXQ/foei-gb.png?sha=fbab799e483fada8)
+[![FoEI plunder screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvNzZydm96cTljMF9mb2VpX3BsdW5kZXIucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-plunder.png?sha=5c044d77dd8bb8f3)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvNzZydm96cTljMF9mb2VpX3BsdW5kZXIucG5nIl1d/foei-plunder.png?sha=28aefa91e73d1822)
+[![FoEI rewards screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvMjY4eXgyNWZmal9mb2VpX3Jld2FyZHMucG5nIl0sWyJwIiwidGh1bWIiLCIyMjV4MjU1XHUwMDNlIl1d/foei-rewards.png?sha=23089fd283ae2cf7)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvMjY4eXgyNWZmal9mb2VpX3Jld2FyZHMucG5nIl1d/foei-rewards.png?sha=e7daa77fc46e9577)
+[![FoEI great buildings screen](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvNDk5d2F6ODliel9mb2VpX2diLnBuZyJdLFsicCIsInRodW1iIiwiMjI1eDI1NVx1MDAzZSJdXQ/foei-gb.png?sha=8258b72264885af6)](https://www.vegerweb.nl/system/refinery/images/W1siZiIsIjIwMTkvMDgvMDQvNDk5d2F6ODliel9mb2VpX2diLnBuZyJdXQ/foei-gb.png?sha=7135ea530dccff36)
 
 ## Safe
 
@@ -46,7 +46,7 @@ As stated the UI and implementation itself can use some polishing. MacOS support
 
 So feel free to send bug reports, pull requests and questions. But be aware to use an *anonymous* account or at least one that cannot be traced to your game account if you are afraid of getting banned.
 
-I do this because of my personal interest/hobby, so my goal is not to make a profit out of this, but if you _really, **really**_ enjoy FoEI, feel free to send me a small token op appreciation (which I will convert to game diamonds :wink: ):
+I do this because of my personal interest/hobby, so my goal is not to make a profit out of this, but if you _really, **really**_ enjoy FoEI, feel free to send me a small token of appreciation (which I will convert to game diamonds :wink: ):
 
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/NL/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2EYSNR29PEPDC&source=url)
 

@@ -1,8 +1,5 @@
 'use strict'
 
-// Clean up v0.0.3 (moved to local storage)
-chrome.storage.sync.remove(['_debug', '_trace'])
-
 var debug
 localGet('_debug', function (data) {
   debug = data._debug === true
@@ -78,6 +75,9 @@ chrome.runtime.onMessageExternal.addListener(
             break
           case 'CityMapService':
             cityMap.process(response.requestMethod, response.responseData, response.requestId)
+            break
+          case 'ClanBattleService':
+            clanBattle.process(response.requestMethod, response.responseData, response.requestId)
             break
           case 'GreatBuildingsService':
             greatBuilding.process(response.requestMethod, response.responseData, response.requestId)

@@ -7,14 +7,19 @@ const battleField = {
       console.log('BattlefieldService.' + method, data)
     }
     switch (method) {
-      case 'autoFinish':
+      case 'autoFinish': // old/depreciated message
         battleField.processStartBattle(data, function () {
-          console.log(data.state)
-          battleField.processBattleMove(data.state)
+          battleField.processBattleMove(data.state, true)
         })
         break
-      case 'startPvP':
-        battleField.processStartBattle(data, function () { })
+      case 'startPvP': // old/depreciated message
+      case 'startByBattleType':
+        battleField.processStartBattle(data, function () {
+          if (data.isAutoBattle) {
+            // Battle finished immediately
+            battleField.processBattleMove(data.state, true)
+          }
+        })
         break
       case 'submitMove':
       case 'surrender':
@@ -59,7 +64,7 @@ const battleField = {
     }
   },
 
-  processBattleMove: function (data) {
+  processBattleMove: function (data, isAutoBattle) {
     if (battleField.lastPlayerAttacked < 0) {
       // Unknown player (Expedition, other non-pvp battle, or error), no need to update battle statistics
       return
@@ -88,7 +93,7 @@ const battleField = {
     if (debug) {
       console.log('Battle ' + (battleWon ? 'won' : 'lost') + ', lost HP: ' + lostHP + ' died: ', unitsDied)
     }
-    battleField.storeBattleResults(battleWon, data.surrenderBit === 1, lostHP, unitsDied)
+    battleField.storeBattleResults(battleWon, data.surrenderBit === 1, lostHP, unitsDied, isAutoBattle === true)
   },
 
   getArmies: function (armiesData) {
@@ -170,7 +175,7 @@ const battleField = {
     })
   },
 
-  storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied) {
+  storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied, isAutoBattle) {
     syncGet({ 'playerArmies': {} }, function (result) {
       let playerArmies = result.playerArmies
       let armyDetails = playerArmies[battleField.lastPlayerAttacked] || {}
@@ -183,6 +188,7 @@ const battleField = {
       details.won = battleWon
       details.lost = !battleWon
       details.surrendered = surrendered
+      details.isAutoBattle = isAutoBattle
       armyDetails.battles.details[armyDetails.battles.details.length - 1] = details
 
       armyDetails.battles[battleWon ? 'wins' : 'loses']++

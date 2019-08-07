@@ -58,7 +58,7 @@ function battleReport (battle, showLabel) {
       reportHTML += 'lost'
     }
   }
-  reportHTML += '</span>: ' + attackUnits.join(', ')
+  reportHTML += '</span>' + (battle.isAutoBattle ? ' (auto):  ' : ': ') + attackUnits.join(', ')
 
   if (battle.lostHp) {
     reportHTML += ' (HP lost: ' + battle.lostHp

@@ -58,7 +58,7 @@ function createAllRows (all) {
 }
 
 function addPlunderRow (resource, revenue) {
-  let row = '<tr><td>' + iconImage(resource) + '</td><td>' + revenue.value + '</td>' + (revenue.name ? '<td>' + l10n(revenue.name) + '</td>' : '')
+  let row = '<tr><td>' + iconImage(resource) + '</td><td>' + revenue.value + '</td>' + (revenue.name ? '<td style="width:1px; text-align: center;">' + (buildingImage(revenue.name) + '</td><td>' + l10n(revenue.name)) + '</td>' : '')
   row += '<td>'
   if (revenue.all) {
     row += '<table>' + createAllRows(revenue.all) + '</table></td><td>'
@@ -94,4 +94,10 @@ function iconImage (name) {
 function l10n (key) {
   let value = i18n[key]
   return value || key
+}
+
+function buildingImage (buildingName) {
+  var start = buildingName.substring(0, 2)
+  var last = buildingName.substring(2, buildingName.length)
+  return '<img class="thumbnail" src="https://foeen.innogamescdn.com/assets/city/buildings/' + start + 'SS_' + last + '.png">'
 }
