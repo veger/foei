@@ -41,18 +41,24 @@ function updateGreatBuildingBoostInfo (fpAnalysis) {
 }
 
 function updateGreatBuildingChanges (changes) {
-  $('#great-building-changes-player').text(changes.player)
+  $('#great-building-changes-player').text(changes.player.name)
+
+  let playerInfoHTML
+  if (changes.player.info === undefined || changes.player.info.lastUpdate === undefined) {
+    playerInfoHTML = '<span style="color:orange;">no info</span>'
+  } else {
+    playerInfoHTML = (changes.player.info.active ? 'active' : '<span style="color:red;">inactive</span>')
+    playerInfoHTML += ' <span style="font-size:8pt">updated ' + moment.unix(changes.player.info.lastUpdate).fromNow(false) + '</span>'
+  }
+  $('#great-building-changes-player-info').html(playerInfoHTML)
+
   changes = changes.changes
   let ggRows = ''
   if (changes.length === 0) {
     ggRows = '<tr><td colspan="3">No buildings</td></tr>'
   } else {
-    if (changes.length === 1 && changes[0].name === 'last change') {
-      ggRows = '<tr><td colspan="3">' + (changes[0].last_spent ? 'Last change ' + moment.unix(changes[0].last_spent).fromNow() : 'Not available') + '</td></tr>'
-    } else {
-      for (let i = 0; i < changes.length; i++) {
-        ggRows += addGreatBuildingChangesRow(changes[i])
-      }
+    for (let i = 0; i < changes.length; i++) {
+      ggRows += addGreatBuildingChangesRow(changes[i])
     }
   }
 
@@ -125,5 +131,5 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP,
 }
 
 function addGreatBuildingChangesRow (change) {
-  return '<tr><td>' + change.name + '</td><td>' + (change.last_spent ? moment.unix(change.last_spent).fromNow(true) : '<em>closed</em>') + '</td><td>' + change.completePercentage + '%</td></tr>'
+  return '<tr><td>' + change.name + '</td><td>' + change.completePercentage + '%</td></tr>'
 }

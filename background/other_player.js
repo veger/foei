@@ -87,6 +87,12 @@ const otherPlayer = {
         // Provide battle information of this player
         otherPlayer.sendPlayerProtected(data.other_player.player_id)
         sendPlayerArmies(data.other_player.player_id)
+
+        // Store additional player info (e.g. to reduce risk in GB)
+        otherPlayer.setPlayerActive(data.other_player.player_id, data.other_player.is_active === true)
+        break
+      case 'getOtherPlayerVO':
+        otherPlayer.setPlayerActive(data.player_id, data.is_active === true)
         break
       case 'getCityProtections':
         let protectedPlayers = []
@@ -161,6 +167,22 @@ const otherPlayer = {
   },
   sendPlayerProtected: function (playerId) {
     chrome.runtime.sendMessage({ 'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId) })
-  }
+  },
+  setPlayerActive: function (playerId, active) {
+    syncGet({ 'playerInfo': {} }, function (result) {
+      let playerInfo = result.playerInfo
+      console.log(playerInfo)
+      if (playerInfo[playerId] === undefined) {
+        playerInfo[playerId] = {}
+      }
+      if (trace && playerInfo[playerId].active !== active) {
+        console.log(`Setting player ${playerId} to ` + (active ? 'active' : 'inactive'))
+      }
+      playerInfo[playerId].active = active
 
+      // always refresh date
+      playerInfo[playerId].lastUpdate = Date.now() / 1000
+      syncSet({ 'playerInfo': playerInfo })
+    })
+  }
 }
