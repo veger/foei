@@ -78,7 +78,8 @@ function processRawGoodsPlunderData (raw) {
   let list = []
   for (let goodName in raw) {
     if (raw.hasOwnProperty(goodName)) {
-      list.push(raw[goodName] + ' <img src="https://foeen.innogamescdn.com/assets/shared/icons/'+goodName+'.png">')
+      //list.push((raw[goodName] === 1 ? '' : raw[goodName] + ' ') + goodName)
+      list.push('<img src="https://foeen.innogamescdn.com/assets/shared/icons/'+goodName+'.png"> ' + (raw[goodName] === 1 ? '' : raw[goodName] + ' ') + goodName)
     }
   }
   return list.join(', ')
