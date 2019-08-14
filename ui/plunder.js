@@ -24,6 +24,9 @@ function updatePlunder (revenue) {
     plunderRows = '<td colspan="5">Nothing to plunder</td>'
   }
   $('#plunder-body').html(plunderRows)
+  $('body').tooltip({
+    selector: '[data-toggle="tooltip"]'
+  })
 }
 
 function updatePlayerProtection (isProtected) {
@@ -78,11 +81,10 @@ function processRawGoodsPlunderData (raw) {
   let list = []
   for (let goodName in raw) {
     if (raw.hasOwnProperty(goodName)) {
-      //list.push((raw[goodName] === 1 ? '' : raw[goodName] + ' ') + goodName)
-      list.push('<img src="https://foeen.innogamescdn.com/assets/shared/icons/'+goodName+'.png"> ' + (raw[goodName] === 1 ? '' : raw[goodName] + ' ') + goodName)
+      list.push((raw[goodName] === 1 ? '' : raw[goodName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + goodName + '.png" data-toggle="tooltip" data-placement="top" title="' + goodName + '">')
     }
   }
-  return list.join(', ')
+  return list.join('&nbsp;&nbsp;&nbsp;')
 }
 
 function iconImage (name) {

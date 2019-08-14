@@ -3,6 +3,7 @@
 * Show 'not available' or 'closed' if the last change info of a GB is not available ([#10](https://github.com/veger/foei/issues/10))
 * Show if battle was 'automatic'
 * Sort GvG units for clarity
+* Show images of goods in plunder tab ([#13](https://github.com/veger/foei/issues/13) thanks djmichaelsaler)
 
 # 0.4.0
 * Add GvG tab (showing sector army details)
