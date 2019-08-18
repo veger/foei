@@ -122,9 +122,14 @@ const consts = {
 
     // Modern
     bazooka: { name: 'Bazooka Team', type: 'light' },
+    mech_artillery: { name: 'Mechanized Artillery', type: 'artillery' },
+    mech_infantry: { name: 'Mechanized Infantry', type: 'light' },
+    battle_tank: { name: 'Battle Tank', type: 'heavy' },
+    paratrooper: { name: 'Paratrooper', type: 'ranged' },
 
     // Post modern
     automatic_rifleman: { name: 'MG Team', type: 'ranged' },
+    commando: { name: 'Commando', type: 'light' },
 
     // Virtual Future
     ninja: { name: 'Ninja', type: 'ranged' },
@@ -147,6 +152,8 @@ const consts = {
     ColonialAge_champion: { name: 'Champion', type: 'champ' },
     IndustrialAge_champion: { name: 'Champion', type: 'champ' },
     ProgressiveEra_champion: { name: 'Champion', type: 'champ' },
+    PostModernEra_champion: { name: 'Champion', type: 'champ' },
+    ModernEra_champion: { name: 'Champion', type: 'champ' },
     VirtualFuture_champion: { name: 'Champion', type: 'champ' }
   }
 }
