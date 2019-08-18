@@ -217,22 +217,40 @@ const greatBuilding = {
       let playerGB = (result.playerGBs[playerId]) || {}
       let playerInfo = (result.playerInfo[playerId]) || {}
       let changes = []
-      for (let i = 0; i < data.length; i++) {
-        // TODO Find changes using 'other ways'
-        changes.push({
-          name: data[i].name,
-          completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
-        })
+      let newPlayerGB = {
+        lastAccess: Math.floor(Date.now() / 1000)
       }
 
-      let newPlayerGB = {
-        lastAccess: Date.now()
+      if (playerGB.lastAccess > newPlayerGB.lastAccess) {
+        // Remove in a few releases: convert existing data from milliseconds to seconds
+        playerGB.lastAccess = playerGB.lastAccess / 1000
       }
+
       for (let i = 0; i < data.length; i++) {
-        let GBentry = playerGB[data[i].city_entity_id] || {}
+        let GBentry = playerGB[data[i].city_entity_id] || {
+          // New GB, so use current values to prevent it being 'just changed'
+          level: data[i].level,
+          current_process: data[i].current_progress,
+          lastChange: playerGB.lastAccess
+        }
+
+        let changeData = {
+          name: data[i].name,
+          lastChange: GBentry.lastChange,
+          completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
+        }
+        // Check for changes
+        if (GBentry.level !== data[i].level || GBentry.current_progress !== data[i].current_progress) {
+          // GB changed since last time
+          console.log('changed', JSON.stringify(GBentry), data[i])
+          changeData.lastChange = playerGB.lastAccess
+          GBentry.lastChange = playerGB.lastAccess
+        }
+        changes.push(changeData)
+
+        // Update entry
         GBentry.level = data[i].level
         GBentry.current_progress = data[i].current_progress
-
         newPlayerGB[data[i].city_entity_id] = GBentry
       }
       result.playerGBs[playerId] = newPlayerGB

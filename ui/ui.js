@@ -95,3 +95,7 @@ $('#boost-factor').change(function () {
 $('#boost-factor').on('input', function () {
   updateGreatBuildingBoostInfo(currentGBRewards)
 })
+
+$('body').tooltip({
+  selector: '[data-toggle="tooltip"]'
+})

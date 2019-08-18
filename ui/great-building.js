@@ -131,5 +131,5 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP,
 }
 
 function addGreatBuildingChangesRow (change) {
-  return '<tr><td>' + change.name + '</td><td>' + change.completePercentage + '%</td></tr>'
+  return '<tr><td>' + change.name + '</td><td>' + (change.lastChange !== undefined ? moment.unix(change.lastChange).fromNow(true) : '<em>???</em>') + '</td><td>' + change.completePercentage + '%</td></tr>'
 }
