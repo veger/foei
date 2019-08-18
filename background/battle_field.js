@@ -14,6 +14,7 @@ const battleField = {
         break
       case 'startPvP': // old/depreciated message
       case 'startByBattleType':
+      case 'continueBattle':
         battleField.processStartBattle(data, function () {
           if (data.isAutoBattle) {
             // Battle finished immediately
@@ -49,7 +50,7 @@ const battleField = {
     }
     let bonuses = battleField.getBonuses(data.state.unitsOrder[enemyUnit].bonuses)
 
-    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'), callback)
+    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join(' / '), callback)
 
     if (debug) {
       console.log('attacker', armies[1])
@@ -60,7 +61,7 @@ const battleField = {
         summary.push((amount > 1 ? amount + ' ' : '') + unitType)
       }
 
-      console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join('/') + ')' : ''))
+      console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join(' / ') + ')' : ''))
     }
   },
 
@@ -138,13 +139,14 @@ const battleField = {
       }
     }
     let atkDef = []
-    let def = bonusesMap.defense_boost
+    let def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0)
     if (def > 0) {
-      atkDef.push((def === 1 ? '' : def) + '% def')
+      atkDef.push(`${def}% def`)
     }
-    let atk = bonusesMap.attack_boost
+    let atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0)
+    console.log('bonusesMap', bonusesMap, def, atk)
     if (atk > 0) {
-      atkDef.push((atk === 1 ? '' : atk) + '% atk')
+      atkDef.push(`${atk}% atk`)
     }
 
     return atkDef
