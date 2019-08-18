@@ -1,4 +1,6 @@
 # Upcoming
+
+# 0.5.0
 * The Crow's Nest cannot be plundered
 * Show if battle was 'automatic'
 * Sort GvG units for clarity
