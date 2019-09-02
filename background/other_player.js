@@ -171,7 +171,6 @@ const otherPlayer = {
   setPlayerActive: function (playerId, active) {
     syncGet({ 'playerInfo': {} }, function (result) {
       let playerInfo = result.playerInfo
-      console.log(playerInfo)
       if (playerInfo[playerId] === undefined) {
         playerInfo[playerId] = {}
       }

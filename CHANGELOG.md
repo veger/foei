@@ -1,4 +1,5 @@
 # Upcoming
+* Include advanced tactics in calculated attack and defense bonus
 
 # 0.5.0
 * The Crow's Nest cannot be plundered

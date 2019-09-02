@@ -139,11 +139,11 @@ const battleField = {
       }
     }
     let atkDef = []
-    let def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0)
+    let def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
     if (def > 0) {
       atkDef.push(`${def}% def`)
     }
-    let atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0)
+    let atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
     console.log('bonusesMap', bonusesMap, def, atk)
     if (atk > 0) {
       atkDef.push(`${atk}% atk`)
