@@ -51,57 +51,73 @@ chrome.extension.onMessage.addListener(
 
 chrome.runtime.onMessageExternal.addListener(
   function (request, sender, sendResponse) {
-    if (request.hostname) {
-      let match = RegExp('^[^\\.]*').exec(request.hostname)
-      setWorldID(match[0])
-    }
-
-    if (request.jsonRequest) {
-      if (trace) {
+    if (trace) {
+      console.log('metadata', request.metadata)
+      if (request.jsonRequest) {
         console.log('request', request.jsonRequest)
       }
+      if (request.jsonResponse) {
+        console.log('response', request.jsonResponse)
+      }
+    }
+
+    if (request.metadata && request.metadata.world) {
+      setWorldID(request.metadata.world)
     }
 
     if (request.jsonResponse) {
-      if (trace) {
-        console.log('response', request.jsonResponse)
-      }
-
-      for (let i = 0; i < request.jsonResponse.length; i++) {
-        const response = request.jsonResponse[i]
-        switch (response.requestClass) {
-          case 'BattlefieldService':
-            battleField.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'CityMapService':
-            cityMap.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'ClanBattleService':
-            clanBattle.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'GreatBuildingsService':
-            greatBuilding.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'HiddenRewardService':
-            hiddenReward.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'OtherPlayerService':
-            otherPlayer.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'ResourceService':
-            resource.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'StartupService':
-            startup.process(response.requestMethod, response.responseData, response.requestId)
-            break
-          case 'TimeService':
-            // Extremely not interesting
-            break
-          default:
-            if (trace || debug) {
-              console.log(response.requestClass + '.' + response.requestMethod + ' is not used')
+      switch (request.metadata.type) {
+        case 'game':
+          for (let i = 0; i < request.jsonResponse.length; i++) {
+            const response = request.jsonResponse[i]
+            switch (response.requestClass) {
+              case 'BattlefieldService':
+                battleField.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'CityMapService':
+                cityMap.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'ClanBattleService':
+                clanBattle.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'GreatBuildingsService':
+                greatBuilding.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'HiddenRewardService':
+                hiddenReward.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'OtherPlayerService':
+                otherPlayer.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'ResourceService':
+                resource.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'StartupService':
+                startup.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'StaticDataService':
+                staticData.process(response.requestMethod, response.responseData, response.requestId)
+                break
+              case 'TimeService':
+                // Extremely not interesting
+                break
+              default:
+                if (trace || debug) {
+                  console.log(response.requestClass + '.' + response.requestMethod + ' is not used')
+                }
             }
-        }
+          }
+          break
+        case 'meta':
+          switch (request.metadata.id) {
+            default:
+              if (debug) {
+                console.log(`Not interested in ${request.metadata.id} metadata`)
+              }
+          }
+          break
+        default:
+          console.error(`Unknown data type: ${request.metadata.type}`)
       }
     }
   })

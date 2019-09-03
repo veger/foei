@@ -1,7 +1,7 @@
 const assert = require('chai').assert
 
 describe('checkRelease', function () {
-  it('should have own en release version', function () {
+  it('should have own and latest release version', function () {
     assert.equal(msgCache.version.own, '4.2.0')
     assert.equal(msgCache.version.latest, '4.2.0')
   })

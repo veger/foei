@@ -48,6 +48,7 @@
         "sortByKey": "readonly",
         "sortByKeyMultiple": "readonly",
         "startup": "readonly",
+        "staticData": "readonly",
         "syncGet": "readonly",
         "syncSet": "readonly",
         "trace": "readonly",
