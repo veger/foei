@@ -5,8 +5,8 @@ function updatePlunder (revenue) {
   if (revenue.spMax.value > 0) {
     plunderRows += addPlunderRow('sp', revenue.spMax)
   }
-  for (let i = 0; i < revenue.goods.length; i++) {
-    plunderRows += addPlunderRow((i === 0 ? 'goods' : ''), revenue.goods[i])
+  for (let i = 0; i < revenue.resources.length; i++) {
+    plunderRows += addPlunderRow((i === 0 ? 'goods' : ''), revenue.resources[i])
   }
   if (revenue.suppliesMax.value > 0) {
     plunderRows += addPlunderRow('supplies', revenue.suppliesMax)
@@ -42,8 +42,8 @@ function createAllRows (all) {
   if (all.strategy_points) {
     allRows += addPlunderRow('sp', { value: all.strategy_points })
   }
-  if (all.goods) {
-    allRows += addPlunderRow('goods', { value: processRawGoodsPlunderData(all.goods) })
+  if (all.resources) {
+    allRows += addPlunderRow('goods', { value: processRawResourcesPlunderData(all.resources) })
   }
   if (all.supplies) {
     allRows += addPlunderRow('supplies', { value: all.supplies })
@@ -66,7 +66,7 @@ function addPlunderRow (resource, revenue) {
   if (revenue.all) {
     row += '<table>' + createAllRows(revenue.all) + '</table></td><td>'
   } else if (revenue.raw) {
-    row += processRawGoodsPlunderData(revenue.raw) + '</td><td>'
+    row += processRawResourcesPlunderData(revenue.raw) + '</td><td>'
     if (Object.keys(revenue.raw).length === 1) {
       row += revenue.stock
     }
@@ -77,26 +77,39 @@ function addPlunderRow (resource, revenue) {
   return row
 }
 
-function processRawGoodsPlunderData (raw) {
+function processRawResourcesPlunderData (raw) {
   let list = []
-  for (let goodName in raw) {
-    if (raw.hasOwnProperty(goodName)) {
-      list.push((raw[goodName] === 1 ? '' : raw[goodName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + goodName + '.png" data-toggle="tooltip" data-placement="top" title="' + goodName + '">')
+  for (let resourceName in raw) {
+    if (raw.hasOwnProperty(resourceName)) {
+      list.push((raw[resourceName] === 1 ? '' : raw[resourceName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + resourceName + '.png" class="plunder-raw-resource" data-toggle="tooltip" data-placement="top" title="' + l10nResource(resourceName) + '">')
     }
   }
-  return list.join('&nbsp;&nbsp;&nbsp;')
+  return list.join(' ')
 }
 
 function iconImage (name) {
   if (name === undefined || !name) {
     return ''
   }
-  return '<img src="icons/' + name + '.png">'
+  let l10nName
+  switch (name) {
+    case 'medal':
+      l10nName = 'medals'
+      break
+    default:
+      l10nName = name
+  }
+  return '<img src="icons/' + name + '.png" data-toggle="tooltip" data-placement="top" title="' + l10nResource(l10nName) + '">'
 }
 
 function l10n (key) {
   let value = i18n[key]
   return value || key
+}
+
+function l10nResource (key) {
+  let value = resources[key]
+  return (value || { name: key }).name
 }
 
 function buildingImage (buildingName) {

@@ -17,18 +17,18 @@ const otherPlayer = {
         let spMax = { value: 0 }
         let medalsMax = { value: 0 }
         let clanPowerMax = { value: 0 }
-        let goods = []
+        let resources = []
         for (let i = 0; i < results.length; i++) {
           let result = results[i]
           if (result.product !== undefined && result.product.resources !== undefined && result.type !== 'random_production') {
-            let goodsValue = consts.valueGoods(result.product.resources)
-            if (goodsValue > 0) {
-              goods.push({
-                amount: consts.amountGoods(result.product.resources),
+            let resourcesValue = consts.valueResources(result.product.resources)
+            if (resourcesValue > 0) {
+              resources.push({
+                amount: consts.amountResources(result.product.resources),
                 name: result.id,
                 all: copyProductResources(result),
-                value: goodsValue,
-                // TODO Get total stock (although it would be a huge coincidence that 2 'multi good' results have exactly the same value...)
+                value: resourcesValue,
+                // TODO Get total stock (although it would be a huge coincidence that 2 'multi resource' results have exactly the same value...)
                 stock: (resource.resources[worldID] || {})[Object.keys(result.product.resources)[0]] || 0,
                 raw: result.product.resources
               })
@@ -57,9 +57,9 @@ const otherPlayer = {
         if (spMax.value > 0) {
           console.log('sp', spMax)
         }
-        if (goods.length > 0) {
-          goods = goods.sort(sortByKeyMultiple('-value', 'stock'))
-          console.log('goods', goods)
+        if (resources.length > 0) {
+          resources = resources.sort(sortByKeyMultiple('-value', 'stock'))
+          console.log('resources', resources)
         }
         if (moneyMax.value > 0) {
           console.log('money', moneyMax)
@@ -76,7 +76,7 @@ const otherPlayer = {
         sendMessageCache({
           'revenue': {
             spMax: spMax,
-            goods: goods,
+            resources: resources,
             moneyMax: moneyMax,
             suppliesMax: suppliesMax,
             medalsMax: medalsMax,
@@ -118,7 +118,7 @@ const otherPlayer = {
         // TODO Figure out if available, or producing
         switch (entity.type) {
           case 'production':
-          case 'goods':
+          case 'resources':
           case 'random_production':
           case 'residential':
             if (entity.state.boosted !== true &&
@@ -126,9 +126,9 @@ const otherPlayer = {
                entity.state.__class__ === 'ProductionFinishedState' &&
                 !entity.cityentity_id.match(/R_MultiAge_SummerBonus19[a-h]/) // The Crow's Nest cannot be plundered...
             ) {
-              let age = consts.getAge(entity.cityentity_id.split('_')[1])
+              let era = consts.getEra(entity.cityentity_id.split('_')[1])
               result.push({
-                age: age,
+                era: era,
                 id: entity.cityentity_id,
                 type: entity.type,
                 state: entity.state.__class__,
@@ -152,10 +152,10 @@ const otherPlayer = {
       return newRevenue.strategy_points > currentRevenue.value
     }
 
-    // Compare goods value
-    let newGoodsValue = consts.valueGoods(newRevenue)
-    let currentGoodsValue = consts.valueGoods(currentRevenue)
-    if (newGoodsValue < currentGoodsValue) {
+    // Compare resources value
+    let newResourcesValue = consts.valueResources(newRevenue)
+    let currentResourcesValue = consts.valueResources(currentRevenue)
+    if (newResourcesValue < currentResourcesValue) {
       return false
     }
 

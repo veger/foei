@@ -9,3 +9,7 @@
     top: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+.plunder-raw-resource {
+    padding-right: 10px;
+}

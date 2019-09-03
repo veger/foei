@@ -1,6 +1,7 @@
 'use strict'
 
 let currentGBRewards = { rewards: [] }
+let resources = {}
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
@@ -9,6 +10,9 @@ chrome.extension.onMessage.addListener(
     }
     if (request.notifications) {
       updateNotifications(request.notifications)
+    }
+    if (request.resources) {
+      resources = request.resources
     }
     if (request.worlds) {
       updateSettingsWorlds(request.worlds)

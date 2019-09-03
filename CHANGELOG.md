@@ -1,5 +1,6 @@
 # Upcoming
 * Include advanced tactics in calculated attack and defense bonus
+* Show tooltips for resources in plunder screen in local (server) language ([#12](https://github.com/veger/foei/issues/12))
 
 # 0.5.0
 * The Crow's Nest cannot be plundered

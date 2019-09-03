@@ -154,6 +154,20 @@ function localGet (keys, callback) {
   })
 }
 
+function localRemove (key) {
+  chrome.storage.local.get(null, function (results) {
+    for (let entry in results) {
+      if (entry.endsWith('-' + key)) {
+        chrome.storage.local.remove(entry, function () {
+          if (debug) {
+            console.log(`Removed ${entry} from storage`)
+          }
+        })
+      }
+    }
+  })
+}
+
 function cacheAction (request) {
   for (worldID in request) {
     if (worldID === 'data') {

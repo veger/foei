@@ -1,7 +1,8 @@
 'use strict'
 
 const consts = {
-  ages: {
+  eras: {
+    NoAge: 1,
     AllAge: 1,
     MultiAge: 1,
     StoneAge: 2,
@@ -24,40 +25,40 @@ const consts = {
     SpaceAgeMars: 18
   },
 
-  getGoodsAge: function (goodName) {
-    if (!consts.goods.hasOwnProperty(goodName)) {
-      sendNotification('missingGood', 'error', goodName + ' is missing in goods')
+  getResourcesEra: function (resourceName) {
+    if (!consts.resources.hasOwnProperty(resourceName)) {
+      sendNotification('missingResource', 'error', resourceName + ' is missing in resources')
       return 1
     }
-    let goodAge = consts.goods[goodName]
-    return consts.getAge(goodAge)
+    let resourceAge = consts.resources[resourceName].era
+    return consts.getEra(resourceAge)
   },
 
-  getAge: function (age) {
-    if (consts.ages[age] !== undefined) {
-      return consts.ages[age]
+  getEra: function (era) {
+    if (consts.eras[era] !== undefined) {
+      return consts.eras[era]
     }
 
-    sendNotification('missingAge', 'warning', age + ' is missing in ages')
+    sendNotification('missingAge', 'warning', era + ' is missing in eras')
 
     return 1
   },
 
-  valueGoods: function (goodsArray) {
+  valueResources: function (resourcesArray) {
     let amount = 0
-    for (let goodName in goodsArray) {
-      if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
-        amount += goodsArray[goodName] * Math.pow(2, consts.getGoodsAge(goodName) - 1)
+    for (let resourceName in resourcesArray) {
+      if (resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
+        amount += resourcesArray[resourceName] * Math.pow(2, consts.getResourcesEra(resourceName) - 1)
       }
     }
     return amount
   },
 
-  amountGoods: function (goodsArray) {
+  amountResources: function (resourcesArray) {
     let amount = 0
-    for (let goodName in goodsArray) {
-      if (goodsArray.hasOwnProperty(goodName) && consts.goods[goodName] !== undefined) {
-        amount += goodsArray[goodName]
+    for (let resourceName in resourcesArray) {
+      if (resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
+        amount += resourcesArray[resourceName]
       }
     }
     return amount
