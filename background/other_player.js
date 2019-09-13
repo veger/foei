@@ -118,7 +118,7 @@ const otherPlayer = {
         // TODO Figure out if available, or producing
         switch (entity.type) {
           case 'production':
-          case 'resources':
+          case 'goods':
           case 'random_production':
           case 'residential':
             if (entity.state.boosted !== true &&
