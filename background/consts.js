@@ -47,7 +47,8 @@ const consts = {
   valueResources: function (resourcesArray) {
     let amount = 0
     for (let resourceName in resourcesArray) {
-      if (resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
+      console.log(resourceName)
+      if (resourceName !== 'medals' && resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
         amount += resourcesArray[resourceName] * Math.pow(2, consts.getResourcesEra(resourceName) - 1)
       }
     }
