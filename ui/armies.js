@@ -59,18 +59,18 @@ function battleReport (battle, showLabel) {
       reportHTML += 'lost'
     }
   }
-  reportHTML += '</span>' + (battle.isAutoBattle ? ' (auto):  ' : ': ') + attackUnits.join(', ')
+  reportHTML += '</span>' + (battle.isAutoBattle ? ' (auto):  ' : ': ') + attackUnits.join('')
 
   if (battle.lostHp) {
     reportHTML += ' (HP lost: ' + battle.lostHp
     if (battle.unitsDied !== undefined) {
       let unitsDied = listUnits(battle.unitsDied)
-      reportHTML += ', <span style="color: red;">' + unitsDied.join(', ') + '</span> died'
+      reportHTML += ', <span style="color: red;">' + unitsDied.join('') + '</span> died'
     }
     reportHTML += ')'
   }
   reportHTML += '</div></div>'
-
+  // https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_hoplite.jpg
   return reportHTML
 }
 
@@ -82,8 +82,12 @@ function listUnits (unitMap) {
     console.log(unitID, (unitData[unitID] || { name: unitID }).name)
     const unitName = (unitData[unitID] || { name: unitID }).name
     const amount = unitMap[unitID]
-    units.push((amount > 1 ? amount + ' ' : '') + unitName)
+    units.push((amount > 1 ? amount + ' ' : '') + renderUnit(unitID, unitName))
   })
 
   return units
+}
+
+function renderUnit (unitID, unitName) {
+  return `<img srcset="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_${unitID}.jpg 100w" sizes="75px" src="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_${unitID}.jpg" class="unit-portrait" data-toggle="tooltip" data-placement="top" title="${unitName}"/>`
 }

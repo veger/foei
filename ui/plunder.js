@@ -99,6 +99,7 @@ function iconImage (name) {
     default:
       l10nName = name
   }
+  // /assets/city/gui/production_icons/production_icon_money.png
   return '<img src="icons/' + name + '.png" data-toggle="tooltip" data-placement="top" title="' + l10nResource(l10nName) + '">'
 }
 
