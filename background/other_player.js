@@ -9,7 +9,9 @@ const otherPlayer = {
     switch (method) {
       case 'visitPlayer':
         let results = otherPlayer.processEntities(data.city_map.entities)
-        console.log('rewards', results)
+        if (debug) {
+          console.log('rewards', results)
+        }
 
         // Show full rewards, not only max!
         let suppliesMax = { value: 0 }

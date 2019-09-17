@@ -108,24 +108,10 @@ const battleField = {
     }
 
     let summary = {}
-    let unknownTypes = []
     for (let [unitId, amount] of Object.entries(armies[2])) {
-      let unitInfo = consts.units[unitId]
-      if (unitInfo === undefined) {
-        if (!unknownTypes.includes(unitId)) {
-          unknownTypes.push(unitId)
-        }
-      } else {
-        summary[unitInfo.type] = (summary[unitInfo.type] | 0) + amount
-      }
+      summary[unitId] = (summary[unitId] | 0) + amount
     }
     armies[3] = summary
-
-    if (unknownTypes.length === 0) {
-      sendNotification('unitUnknown', '', '')
-    } else {
-      sendNotification('unitUnknown', 'warning', 'unknown type(s): ' + unknownTypes.join(', '))
-    }
 
     return armies
   },

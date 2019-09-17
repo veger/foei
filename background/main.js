@@ -110,6 +110,19 @@ chrome.runtime.onMessageExternal.addListener(
           break
         case 'meta':
           switch (request.metadata.id) {
+            case 'unit_types':
+              staticData.setData(request.metadata.lang, 'unit_types', request.metadata.hash, function () {
+                let data = {}
+                for (let index in request.jsonResponse) {
+                  const unitType = request.jsonResponse[index]
+                  data[unitType.unitTypeId] = {
+                    name: unitType.name,
+                    unitClass: unitType.unitClass
+                  }
+                }
+                return data
+              })
+              break
             default:
               if (debug) {
                 console.log(`Not interested in ${request.metadata.id} metadata`)

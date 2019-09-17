@@ -1,12 +1,13 @@
 'use strict'
 
 function updateBattleStats (battleStats) {
+  const unitData = getStaticData('unit_types')
   let battleStatsHTML = ''
 
   if (battleStats.defendUnits) {
     let defendArmies = []
-    for (let [unitType, amount] of Object.entries(battleStats.defendUnits)) {
-      defendArmies.push((amount > 1 ? amount + ' ' : '') + unitType)
+    for (let [unitID, amount] of Object.entries(battleStats.defendUnits)) {
+      defendArmies.push((amount > 1 ? amount + ' ' : '') + (unitData[unitID] || { name: unitID }).name)
     }
 
     battleStatsHTML += '<div class="row"><div class="col-2">Units:</div><div class="col-10">' + defendArmies.join(', ')
@@ -74,10 +75,14 @@ function battleReport (battle, showLabel) {
 }
 
 function listUnits (unitMap) {
+  const unitData = getStaticData('unit_types')
+  console.log(unitData)
   let units = []
-  Object.keys(unitMap).sort().forEach((unitType) => {
-    const amount = unitMap[unitType]
-    units.push((amount > 1 ? amount + ' ' : '') + unitType)
+  Object.keys(unitMap).sort().forEach((unitID) => {
+    console.log(unitID, (unitData[unitID] || { name: unitID }).name)
+    const unitName = (unitData[unitID] || { name: unitID }).name
+    const amount = unitMap[unitID]
+    units.push((amount > 1 ? amount + ' ' : '') + unitName)
   })
 
   return units

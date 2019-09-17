@@ -33,6 +33,7 @@ function setWorldID (newWorldID) {
     sendWorldsWithDataSize(result._worlds)
   })
 
+  sendMessageCache({ worldID: worldID })
   // dispatch() is an undocumented feature, used to force sending events on same page
   chrome.runtime.onMessage.dispatch({ worldIDChanged: newWorldID })
   if (debug) {

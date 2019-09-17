@@ -1,5 +1,7 @@
 'use strict'
 
+const worldRegex = RegExp(/([a-z]*)/)
+
 const staticData = {
   _data: {},
   process: function (method, data) {
@@ -9,7 +11,7 @@ const staticData = {
     switch (method) {
       case 'getMetadata':
         for (let index in data) {
-          if (data[index].identifier === 'interested_type') {
+          if (data[index].identifier === 'unit_types') {
             let match = RegExp('https://foe[^\\.]*.innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(data[index].url)
             if (match === null) {
               console.log(`Could not find id and hash from url ${data[index].url}`)
@@ -26,32 +28,33 @@ const staticData = {
     }
   },
   registerWorldHash: function (worldId, type, hash) {
-    const lang = RegExp(/([a-z]*)/).exec(worldId)[0]
+    const lang = worldRegex.exec(worldId)[0]
 
     if (!this._data[lang]) {
       this._data[lang] = {}
     }
     if (!this._data[lang][type]) {
-      this._data[lang][type] = {}
+      this._data[lang][type] = { hashes: {}, worldHashes: {} }
     }
-    if (!this._data[lang][type][hash]) {
-      this._data[lang][type][hash] = { worlds: [], data: [] }
+    if (!this._data[lang][type].hashes[hash]) {
+      this._data[lang][type].hashes[hash] = { worlds: [], data: [] }
     }
 
-    let index = this._data[lang][type][hash].worlds.indexOf(worldId)
+    this._data[lang][type].worldHashes[worldId] = hash
+    let index = this._data[lang][type].hashes[hash].worlds.indexOf(worldId)
     if (index > -1) {
       // Already registered, nothing to do
       return
     }
 
     // Remove old hash
-    for (let [hashIndex, hash] of Object.entries(this._data[lang][type])) {
+    for (let [hashIndex, hash] of Object.entries(this._data[lang][type].hashes)) {
       let index = hash.worlds.indexOf(worldId)
       if (index > -1) {
         hash.worlds.splice(index, 1)
         if (hash.worlds.length === 0) {
           // Hash/data is not used anymore
-          delete this._data[lang][type][hashIndex]
+          delete this._data[lang][type].hashes[hashIndex]
         }
 
         // No need to continue searching
@@ -60,20 +63,26 @@ const staticData = {
     }
 
     // Store world in hash
-    this._data[lang][type][hash].worlds.push(worldId)
+    this._data[lang][type].hashes[hash].worlds.push(worldId)
 
     localSet({ _metadata: this._data })
   },
   setData: function (lang, type, hash, dataFunc) {
-    if (this._data[lang] && this._data[lang][type] && this._data[lang][type][hash] && this._data[lang][type][hash].data.length === 0) {
-      this._data[lang][type][hash].data = dataFunc()
+    if (this._data[lang] && this._data[lang][type] && this._data[lang][type].hashes[hash] && this._data[lang][type].hashes[hash].data.length === 0) {
+      this._data[lang][type].hashes[hash].data = dataFunc()
+      sendMessageCache({ 'staticData': this._data })
       localSet({ _metadata: this._data })
     }
   },
-  getData: function (type, hash) {
-    const lang = RegExp(/([a-z]*)/).exec(worldID)[0]
-    if (this._data[lang] && this._data[lang][type] && this._data[lang][type][hash]) {
-      return this._data[lang][type][hash].data
+  getData: function (type) {
+    const lang = worldRegex.exec(worldID)[0]
+    if (!(this._data[lang] && this._data[lang][type])) {
+      return null
+    }
+
+    const hash = this._data[lang][type].worldHashes[worldID]
+    if (hash && this._data[lang][type].hashes[hash]) {
+      return this._data[lang][type].hashes[hash].data
     }
     return null
   }
@@ -82,5 +91,6 @@ const staticData = {
 localGet('_metadata', function (result) {
   if (result._metadata) {
     staticData._data = result._metadata
+    sendMessageCache({ 'staticData': staticData._data })
   }
 })

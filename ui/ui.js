@@ -2,11 +2,19 @@
 
 let currentGBRewards = { rewards: [] }
 let resources = {}
+let staticData = {}
+let worldID = '<unknown>'
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.version) {
       checkVersion(request.version)
+    }
+    if (request.worldID) {
+      worldID = request.worldID
+    }
+    if (request.staticData) {
+      staticData = request.staticData
     }
     if (request.notifications) {
       updateNotifications(request.notifications)
@@ -82,6 +90,20 @@ function updateNotifications (notifications) {
     html += '<div class="alert alert-' + getNotificationBootstrapClass(notifications[id].type) + '"">' + notifications[id].msg + '</div>'
   }
   $('#notifications').html(html)
+}
+
+const worldRegex = RegExp(/([a-z]*)/)
+function getStaticData (type) {
+  const lang = worldRegex.exec(worldID)[0]
+  if (!(staticData[lang] && staticData[lang][type])) {
+    return {}
+  }
+
+  const hash = staticData[lang][type].worldHashes[worldID]
+  if (hash && staticData[lang][type].hashes[hash]) {
+    return staticData[lang][type].hashes[hash].data
+  }
+  return {}
 }
 
 function addTab (barParent, bodyParent, id, title, body) {
