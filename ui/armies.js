@@ -9,7 +9,9 @@ function updateBattleStats (battleStats) {
     for (let [unitID, amount] of Object.entries(battleStats.defendUnits)) {
       if (unitData[unitID]) {
         const unitName = unitData[unitID].name
-        defendArmies.push((amount > 1 ? amount + ' ' : '') + renderUnit(unitID, unitName))
+        for (let i = 0; i < amount; i++) {
+          defendArmies.push(renderUnit(unitID, unitName))
+        }
       } else {
         // TODO Remove after (some) release(s), it is a hack to correctly show the 'old' units
         defendArmies.push((amount > 1 ? amount + ' ' : '') + unitID + ', ')
@@ -32,7 +34,7 @@ function updateBattleStats (battleStats) {
       battleStatsHTML += battleReport(lastBattle, true)
 
       if (battleStats.battles.details.length > 1) {
-        battleStatsHTML += '<div class="row"><div class="col-2"></div><div class="col-10"><button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#all-battles" aria-expanded="false" aria-controls="all-battles">previous battles</button>'
+        battleStatsHTML += '<div class="row"><div class="col-2"></div><div class="col-10"><button id ="show-all-battles" class="btn btn-link" type="button" data-toggle="collapse" data-target="#all-battles" aria-expanded="false" aria-controls="all-battles">previous battles</button>'
         battleStatsHTML += '<div class="collapse" id="all-battles">'
 
         for (let i = battleStats.battles.details.length - 2; i >= 0; i--) {
@@ -71,7 +73,7 @@ function battleReport (battle, showLabel) {
     reportHTML += ' (HP lost: ' + battle.lostHp
     if (battle.unitsDied !== undefined) {
       let unitsDied = listUnits(battle.unitsDied)
-      reportHTML += ', <span style="color: red;">' + unitsDied.join('') + '</span> died'
+      reportHTML += ', dead: ' + unitsDied.join('')
     }
     reportHTML += ')'
   }
@@ -81,13 +83,13 @@ function battleReport (battle, showLabel) {
 
 function listUnits (unitMap) {
   const unitData = getStaticData('unit_types')
-  console.log(unitData)
   let units = []
   Object.keys(unitMap).sort().forEach((unitID) => {
-    console.log(unitID, (unitData[unitID] || { name: unitID }).name)
     const unitName = (unitData[unitID] || { name: unitID }).name
     const amount = unitMap[unitID]
-    units.push((amount > 1 ? amount + ' ' : '') + renderUnit(unitID, unitName))
+    for (let i = 0; i < amount; i++) {
+      units.push(renderUnit(unitID, unitName))
+    }
   })
 
   return units

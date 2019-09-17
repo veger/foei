@@ -168,7 +168,7 @@ const battleField = {
       let playerArmies = result.playerArmies
       let armyDetails = playerArmies[battleField.lastPlayerAttacked] || {}
 
-      let details = armyDetails.battles.details[armyDetails.battles.details.length - 1]
+      let details = armyDetails.battles.details.pop()
       details.lostHp = lostHP
       if (Object.keys(unitsDied).length > 0) {
         details.unitsDied = unitsDied
@@ -177,7 +177,7 @@ const battleField = {
       details.lost = !battleWon
       details.surrendered = surrendered
       details.isAutoBattle = isAutoBattle
-      armyDetails.battles.details[armyDetails.battles.details.length - 1] = details
+      armyDetails.battles.details.push(details)
 
       armyDetails.battles[battleWon ? 'wins' : 'loses']++
 

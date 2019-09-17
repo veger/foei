@@ -11,12 +11,24 @@
     z-index: 1000;
 }
 
+#army-info .row {
+    line-height: 33px;
+}
+
+#all-battles {
+    margin-left: 0.75rem
+}
+
+#show-all-battles {
+    margin: 2px 0;
+}
+
 .plunder-raw-resource {
     padding-right: 10px;
 }
 
 .unit-portrait {
-    margin-right: 10px;
+    margin-right: 1px;
 }
 
 .unit-portrait:hover {
