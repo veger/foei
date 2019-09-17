@@ -7,10 +7,16 @@ function updateBattleStats (battleStats) {
   if (battleStats.defendUnits) {
     let defendArmies = []
     for (let [unitID, amount] of Object.entries(battleStats.defendUnits)) {
-      defendArmies.push((amount > 1 ? amount + ' ' : '') + (unitData[unitID] || { name: unitID }).name)
+      if (unitData[unitID]) {
+        const unitName = unitData[unitID].name
+        defendArmies.push((amount > 1 ? amount + ' ' : '') + renderUnit(unitID, unitName))
+      } else {
+        // TODO Remove after (some) release(s), it is a hack to correctly show the 'old' units
+        defendArmies.push((amount > 1 ? amount + ' ' : '') + unitID + ', ')
+      }
     }
 
-    battleStatsHTML += '<div class="row"><div class="col-2">Units:</div><div class="col-10">' + defendArmies.join(', ')
+    battleStatsHTML += '<div class="row"><div class="col-2">Units:</div><div class="col-10">' + defendArmies.join('')
     if (battleStats.defendBonus) {
       battleStatsHTML += ' (' + battleStats.defendBonus + ')'
     }
@@ -70,7 +76,6 @@ function battleReport (battle, showLabel) {
     reportHTML += ')'
   }
   reportHTML += '</div></div>'
-  // https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_hoplite.jpg
   return reportHTML
 }
 
@@ -89,5 +94,5 @@ function listUnits (unitMap) {
 }
 
 function renderUnit (unitID, unitName) {
-  return `<img srcset="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_${unitID}.jpg 100w" sizes="75px" src="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_${unitID}.jpg" class="unit-portrait" data-toggle="tooltip" data-placement="top" title="${unitName}"/>`
+  return `<img srcset="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${unitID}.jpg 100w" sizes="75px" src="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${unitID}.jpg" class="unit-portrait thumbnail" data-toggle="tooltip" data-placement="top" title="${unitName}"/>`
 }

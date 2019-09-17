@@ -8,6 +8,7 @@
     transform: scale(7.5);
     top: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .plunder-raw-resource {
@@ -15,5 +16,9 @@
 }
 
 .unit-portrait {
-    padding-right: 10px;
+    margin-right: 10px;
+}
+
+.unit-portrait:hover {
+    top: 95px;
 }
