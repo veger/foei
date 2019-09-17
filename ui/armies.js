@@ -45,6 +45,10 @@ function updateBattleStats (battleStats) {
     }
   }
 
+  if (battleStatsHTML) {
+    battleStatsHTML = '<div><button type="button" class="close" data-dismiss="alert" data-target="#army-info div" aria-label="Close"><span aria-hidden="true">×</span></button>' + battleStatsHTML + '</div>'
+  }
+
   $('#army-info').html(battleStatsHTML)
 }
 

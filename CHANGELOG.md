@@ -4,6 +4,7 @@
 * Use localized names for the units ([#12](https://github.com/veger/foei/issues/12))
 * Use localized names for the buildings ([#12](https://github.com/veger/foei/issues/12))
 * Show unit images instead of unit names
+* Make (previous) battle information closable
 
 # 0.5.0
 * The Crow's Nest cannot be plundered
