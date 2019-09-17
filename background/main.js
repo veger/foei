@@ -123,6 +123,19 @@ chrome.runtime.onMessageExternal.addListener(
                 return data
               })
               break
+            case 'city_entities':
+              staticData.setData(request.metadata.lang, 'city_entities', request.metadata.hash, function () {
+                let data = {}
+                for (let index in request.jsonResponse) {
+                  const entityType = request.jsonResponse[index]
+                  data[entityType.id] = {
+                    name: entityType.name,
+                    type: entityType.type
+                  }
+                }
+                return data
+              })
+              break
             default:
               if (debug) {
                 console.log(`Not interested in ${request.metadata.id} metadata`)

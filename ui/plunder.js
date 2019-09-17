@@ -104,8 +104,9 @@ function iconImage (name) {
 }
 
 function l10n (key) {
-  let value = i18n[key]
-  return value || key
+  const entities = getStaticData('city_entities')
+  const entity = (entities || {})[key]
+  return (entity || { name: key }).name
 }
 
 function l10nResource (key) {

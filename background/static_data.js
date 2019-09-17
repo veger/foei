@@ -11,7 +11,7 @@ const staticData = {
     switch (method) {
       case 'getMetadata':
         for (let index in data) {
-          if (data[index].identifier === 'unit_types') {
+          if (data[index].identifier === 'unit_types' || data[index].identifier === 'city_entities') {
             let match = RegExp('https://foe[^\\.]*.innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(data[index].url)
             if (match === null) {
               console.log(`Could not find id and hash from url ${data[index].url}`)
@@ -65,6 +65,7 @@ const staticData = {
     // Store world in hash
     this._data[lang][type].hashes[hash].worlds.push(worldId)
 
+    sendMessageCache({ 'staticData': this._data })
     localSet({ _metadata: this._data })
   },
   setData: function (lang, type, hash, dataFunc) {
