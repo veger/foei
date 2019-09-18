@@ -66,7 +66,7 @@ function updateGreatBuildingChanges (changes) {
 }
 
 function addGreatBuildingAnalysisRow (spot, analysis) {
-  let row = '<tr><td>' + spot + '</td><td>' + iconImage('sp') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('sp') + ' ' + analysis.profit : '>') + '</td>'
+  let row = '<tr><td>' + spot + '</td><td>' + iconImage('strategy_points') + ' ' + analysis.spotSafe + (analysis.spotSafe <= 0 ? ' (safe)' : '') + '</td><td' + (analysis.spotSafe >= 0 ? (analysis.profit < 0 ? ' style="color:red;"' : '') + '>' + iconImage('strategy_points') + ' ' + analysis.profit : '>') + '</td>'
   row += '<td>'
   if (analysis.reward.blueprints) {
     row += iconImage('blueprint') + ' ' + analysis.reward.blueprints
@@ -77,7 +77,7 @@ function addGreatBuildingAnalysisRow (spot, analysis) {
   }
   row += '</td><td>'
   if (analysis.reward.medals) {
-    row += iconImage('medal') + ' ' + analysis.reward.medals
+    row += iconImage('medals') + ' ' + analysis.reward.medals
   }
   row += '</td><td>'
   if (analysis.reward.medalsBonus) {
@@ -85,7 +85,7 @@ function addGreatBuildingAnalysisRow (spot, analysis) {
   }
   row += '</td><td>'
   if (analysis.reward.fp) {
-    row += iconImage('sp') + ' ' + analysis.reward.fp
+    row += iconImage('strategy_points') + ' ' + analysis.reward.fp
   }
   row += '</td><td>'
   if (analysis.reward.fpBonus) {
@@ -109,7 +109,7 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP,
 
   let row = '<tr' + (unsafe ? ' class="table-danger"' : (notInvestedEnough ? ' class="table-warning"' : '')) + '>'
   row += '<td>' + spot + '</td>'
-  row += '<td>' + iconImage('sp') + ' ' + required + (notInvestedEnough ? ` (${analysis.invested})` : '') + '</td><td>' + iconImage('sp') + ' ' + fillForSafe + (unsafe ? ` (${requiredToMakeSafe})` : '') + '</td>'
+  row += '<td>' + iconImage('strategy_points') + ' ' + required + (notInvestedEnough ? ` (${analysis.invested})` : '') + '</td><td>' + iconImage('strategy_points') + ' ' + fillForSafe + (unsafe ? ` (${requiredToMakeSafe})` : '') + '</td>'
   row += '<td>'
   if (analysis.reward.blueprints) {
     row += iconImage('blueprint') + ' ' + analysis.reward.blueprints
@@ -120,7 +120,7 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP,
   }
   row += '</td><td>'
   if (analysis.reward.medals) {
-    row += iconImage('medal') + ' ' + analysis.reward.medals
+    row += iconImage('medals') + ' ' + analysis.reward.medals
   }
   row += '</td><td>'
   if (analysis.reward.medals) {

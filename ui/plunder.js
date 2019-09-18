@@ -3,7 +3,7 @@
 function updatePlunder (revenue) {
   let plunderRows = ''
   if (revenue.spMax.value > 0) {
-    plunderRows += addPlunderRow('sp', revenue.spMax)
+    plunderRows += addPlunderRow('strategy_points', revenue.spMax)
   }
   for (let i = 0; i < revenue.resources.length; i++) {
     plunderRows += addPlunderRow((i === 0 ? 'goods' : ''), revenue.resources[i])
@@ -15,7 +15,7 @@ function updatePlunder (revenue) {
     plunderRows += addPlunderRow('money', revenue.moneyMax)
   }
   if (revenue.medalsMax.value > 0) {
-    plunderRows += addPlunderRow('medal', revenue.medalsMax)
+    plunderRows += addPlunderRow('medals', revenue.medalsMax)
   }
   if (revenue.clanPowerMax.value > 0) {
     plunderRows += addPlunderRow('clan_power', revenue.clanPowerMax)
@@ -40,7 +40,7 @@ function updatePlayerProtection (isProtected) {
 function createAllRows (all) {
   let allRows = ''
   if (all.strategy_points) {
-    allRows += addPlunderRow('sp', { value: all.strategy_points })
+    allRows += addPlunderRow('strategy_points', { value: all.strategy_points })
   }
   if (all.resources) {
     allRows += addPlunderRow('goods', { value: processRawResourcesPlunderData(all.resources) })
@@ -52,7 +52,7 @@ function createAllRows (all) {
     allRows += addPlunderRow('money', { value: all.money })
   }
   if (all.medals) {
-    allRows += addPlunderRow('medal', { value: all.medals })
+    allRows += addPlunderRow('medals', { value: all.medals })
   }
   if (all.clanPower) {
     allRows += addPlunderRow('clan_power', { value: all.clanPower })
@@ -87,20 +87,22 @@ function processRawResourcesPlunderData (raw) {
   return list.join(' ')
 }
 
+const icons = {
+  blueprint: 'shared/icons/reward_icons/reward_icon_blueprint.png',
+  bonus: 'city/gui/great_building_bonus_icons/great_building_bonus_contribution_boost.png',
+  clan_power: 'city/gui/production_icons/production_icon_guild_power.png',
+  goods: 'shared/icons/reward_icons/reward_icon_random_goods.png',
+  medals: 'shared/icons/reward_icons/reward_icon_small_medals.png',
+  money: 'shared/icons/reward_icons/reward_icon_money.png',
+  strategy_points: 'shared/icons/reward_icons/reward_icon_forgepoints.png',
+  supplies: 'shared/icons/reward_icons/reward_icon_supply.png'
+}
+
 function iconImage (name) {
   if (name === undefined || !name) {
     return ''
   }
-  let l10nName
-  switch (name) {
-    case 'medal':
-      l10nName = 'medals'
-      break
-    default:
-      l10nName = name
-  }
-  // /assets/city/gui/production_icons/production_icon_money.png
-  return '<img src="icons/' + name + '.png" data-toggle="tooltip" data-placement="top" title="' + l10nResource(l10nName) + '">'
+  return `<img src="https://foeen.innogamescdn.com/assets/${icons[name]}" width="24" height="24" data-toggle="tooltip" data-placement="top" title="${l10nResource(name)}">`
 }
 
 function l10n (key) {
