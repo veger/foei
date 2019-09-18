@@ -29,8 +29,8 @@ Nonetheless, I take no responsibility for lost accounts or any other loss that m
 FoEI has been tested by a select few players for a couple of months running on different servers, showing it works and it is great aid.
 Now it is time to present it to the public and polish it some more:
 
-* I made some quick & dirty UI...
-* Lacking much experience I also made a quick & dirty Javascript implementation
+* ~~I made some quick & dirty UI...~~ I like it good enough
+* ~~Lacking much experience I also made a quick & dirty Javascript implementation~~ Meh... it works, who casres :stuck_out_tongue:
 * **Fix MacOS support**, for some reason intercepting the incoming traffic does not seem to work..?? (can people confirm/deny in [issue #7](https://github.com/veger/foei/issues/7)?)
 * more...
 
@@ -50,6 +50,6 @@ I do this because of my personal interest/hobby, so my goal is not to make a pro
 
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/NL/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2EYSNR29PEPDC&source=url)
 
-(Note that I cannot accept game diamonds directly, as I wish to be anonymous and not get banned.)
+(Note that I cannot accept game diamonds, strategy points or any other donations in-game, as I wish to be anonymous and not get banned.)
 
 On this notice, please don't bother players with a same/similar (account)name to ask questions or support, it is not me :stuck_out_tongue:.

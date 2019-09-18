@@ -1,4 +1,6 @@
 # Upcoming
+
+# 0.6.0
 * Include advanced tactics in calculated attack and defense bonus
 * Show tooltips for resources in plunder screen in local (server) language ([#12](https://github.com/veger/foei/issues/12))
 * Use localized names for the units ([#12](https://github.com/veger/foei/issues/12))
