@@ -3,10 +3,10 @@
 function updatePlunder (revenue) {
   let plunderRows = ''
   if (revenue.spMax.value > 0) {
-    plunderRows += addPlunderRow('sp', revenue.spMax)
+    plunderRows += addPlunderRow('strategy_points', revenue.spMax)
   }
-  for (let i = 0; i < revenue.goods.length; i++) {
-    plunderRows += addPlunderRow((i === 0 ? 'goods' : ''), revenue.goods[i])
+  for (let i = 0; i < revenue.resources.length; i++) {
+    plunderRows += addPlunderRow((i === 0 ? 'goods' : ''), revenue.resources[i])
   }
   if (revenue.suppliesMax.value > 0) {
     plunderRows += addPlunderRow('supplies', revenue.suppliesMax)
@@ -15,7 +15,7 @@ function updatePlunder (revenue) {
     plunderRows += addPlunderRow('money', revenue.moneyMax)
   }
   if (revenue.medalsMax.value > 0) {
-    plunderRows += addPlunderRow('medal', revenue.medalsMax)
+    plunderRows += addPlunderRow('medals', revenue.medalsMax)
   }
   if (revenue.clanPowerMax.value > 0) {
     plunderRows += addPlunderRow('clan_power', revenue.clanPowerMax)
@@ -40,10 +40,10 @@ function updatePlayerProtection (isProtected) {
 function createAllRows (all) {
   let allRows = ''
   if (all.strategy_points) {
-    allRows += addPlunderRow('sp', { value: all.strategy_points })
+    allRows += addPlunderRow('strategy_points', { value: all.strategy_points })
   }
-  if (all.goods) {
-    allRows += addPlunderRow('goods', { value: processRawGoodsPlunderData(all.goods) })
+  if (all.resources) {
+    allRows += addPlunderRow('goods', { value: processRawResourcesPlunderData(all.resources) })
   }
   if (all.supplies) {
     allRows += addPlunderRow('supplies', { value: all.supplies })
@@ -52,7 +52,7 @@ function createAllRows (all) {
     allRows += addPlunderRow('money', { value: all.money })
   }
   if (all.medals) {
-    allRows += addPlunderRow('medal', { value: all.medals })
+    allRows += addPlunderRow('medals', { value: all.medals })
   }
   if (all.clanPower) {
     allRows += addPlunderRow('clan_power', { value: all.clanPower })
@@ -66,7 +66,7 @@ function addPlunderRow (resource, revenue) {
   if (revenue.all) {
     row += '<table>' + createAllRows(revenue.all) + '</table></td><td>'
   } else if (revenue.raw) {
-    row += processRawGoodsPlunderData(revenue.raw) + '</td><td>'
+    row += processRawResourcesPlunderData(revenue.raw) + '</td><td>'
     if (Object.keys(revenue.raw).length === 1) {
       row += revenue.stock
     }
@@ -77,26 +77,43 @@ function addPlunderRow (resource, revenue) {
   return row
 }
 
-function processRawGoodsPlunderData (raw) {
+function processRawResourcesPlunderData (raw) {
   let list = []
-  for (let goodName in raw) {
-    if (raw.hasOwnProperty(goodName)) {
-      list.push((raw[goodName] === 1 ? '' : raw[goodName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + goodName + '.png" data-toggle="tooltip" data-placement="top" title="' + goodName + '">')
+  for (let resourceName in raw) {
+    if (raw.hasOwnProperty(resourceName)) {
+      list.push((raw[resourceName] === 1 ? '' : raw[resourceName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + resourceName + '.png" class="plunder-raw-resource" data-toggle="tooltip" data-placement="top" title="' + l10nResource(resourceName) + '">')
     }
   }
-  return list.join('&nbsp;&nbsp;&nbsp;')
+  return list.join(' ')
+}
+
+const icons = {
+  blueprint: 'shared/icons/reward_icons/reward_icon_blueprint.png',
+  bonus: 'city/gui/great_building_bonus_icons/great_building_bonus_contribution_boost.png',
+  clan_power: 'city/gui/production_icons/production_icon_guild_power.png',
+  goods: 'shared/icons/reward_icons/reward_icon_random_goods.png',
+  medals: 'shared/icons/reward_icons/reward_icon_small_medals.png',
+  money: 'shared/icons/reward_icons/reward_icon_money.png',
+  strategy_points: 'shared/icons/reward_icons/reward_icon_forgepoints.png',
+  supplies: 'shared/icons/reward_icons/reward_icon_supply.png'
 }
 
 function iconImage (name) {
   if (name === undefined || !name) {
     return ''
   }
-  return '<img src="icons/' + name + '.png">'
+  return `<img src="https://foeen.innogamescdn.com/assets/${icons[name]}" width="24" height="24" data-toggle="tooltip" data-placement="top" title="${l10nResource(name)}">`
 }
 
 function l10n (key) {
-  let value = i18n[key]
-  return value || key
+  const entities = getStaticData('city_entities')
+  const entity = (entities || {})[key]
+  return (entity || { name: key }).name
+}
+
+function l10nResource (key) {
+  let value = resources[key]
+  return (value || { name: key }).name
 }
 
 function buildingImage (buildingName) {

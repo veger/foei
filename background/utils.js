@@ -52,13 +52,13 @@ function mapEqual (map1, map2, reversedOrder) {
 }
 
 function copyProductResources (result) {
-  let productResources = { goods: {} }
+  let productResources = { resources: {} }
 
   if (result.product !== undefined && result.product.resources !== undefined) {
     for (let resource in result.product.resources) {
       if (result.product.resources.hasOwnProperty(resource)) {
-        if (consts.goods[resource] !== undefined) {
-          productResources.goods[resource] = result.product.resources[resource]
+        if (consts.resources[resource] !== undefined && consts.resources[resource].era !== 'NoAge') {
+          productResources.resources[resource] = result.product.resources[resource]
         } else {
           productResources[resource] = result.product.resources[resource]
         }
@@ -68,8 +68,9 @@ function copyProductResources (result) {
   if (result.current_product && result.current_product.clan_power) {
     productResources['clan_power'] = result.current_product.clan_power
   }
-  if (Object.keys(productResources.goods).length === 0) {
-    delete productResources.goods
+  console.log(productResources)
+  if (Object.keys(productResources.resources).length === 0) {
+    delete productResources.resources
   }
   if (Object.keys(productResources).length > 1) {
     return productResources

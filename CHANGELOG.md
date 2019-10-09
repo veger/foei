@@ -1,9 +1,20 @@
 # Upcoming
+
+# 0.6.0
+* Include advanced tactics in calculated attack and defense bonus
+* Show tooltips for resources in plunder screen in local (server) language ([#12](https://github.com/veger/foei/issues/12))
+* Use localized names for the units ([#12](https://github.com/veger/foei/issues/12))
+* Use localized names for the buildings ([#12](https://github.com/veger/foei/issues/12))
+* Show unit images instead of unit names
+* Make (previous) battle information closable
+
+# 0.5.0
 * The Crow's Nest cannot be plundered
-* Show 'not available' or 'closed' if the last change info of a GB is not available ([#10](https://github.com/veger/foei/issues/10))
 * Show if battle was 'automatic'
 * Sort GvG units for clarity
 * Show images of goods in plunder tab ([#13](https://github.com/veger/foei/issues/13) thanks djmichaelsaler)
+* `last_spend` is not available, so resort to other means of tracking activity of other players ([#10](https://github.com/veger/foei/issues/10))
+* More building and unit IDs
 
 # 0.4.0
 * Add GvG tab (showing sector army details)

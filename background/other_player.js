@@ -9,7 +9,9 @@ const otherPlayer = {
     switch (method) {
       case 'visitPlayer':
         let results = otherPlayer.processEntities(data.city_map.entities)
-        console.log('rewards', results)
+        if (debug) {
+          console.log('rewards', results)
+        }
 
         // Show full rewards, not only max!
         let suppliesMax = { value: 0 }
@@ -17,18 +19,18 @@ const otherPlayer = {
         let spMax = { value: 0 }
         let medalsMax = { value: 0 }
         let clanPowerMax = { value: 0 }
-        let goods = []
+        let resources = []
         for (let i = 0; i < results.length; i++) {
           let result = results[i]
           if (result.product !== undefined && result.product.resources !== undefined && result.type !== 'random_production') {
-            let goodsValue = consts.valueGoods(result.product.resources)
-            if (goodsValue > 0) {
-              goods.push({
-                amount: consts.amountGoods(result.product.resources),
+            let resourcesValue = consts.valueResources(result.product.resources)
+            if (resourcesValue > 0) {
+              resources.push({
+                amount: consts.amountResources(result.product.resources),
                 name: result.id,
                 all: copyProductResources(result),
-                value: goodsValue,
-                // TODO Get total stock (although it would be a huge coincidence that 2 'multi good' results have exactly the same value...)
+                value: resourcesValue,
+                // TODO Get total stock (although it would be a huge coincidence that 2 'multi resource' results have exactly the same value...)
                 stock: (resource.resources[worldID] || {})[Object.keys(result.product.resources)[0]] || 0,
                 raw: result.product.resources
               })
@@ -57,9 +59,9 @@ const otherPlayer = {
         if (spMax.value > 0) {
           console.log('sp', spMax)
         }
-        if (goods.length > 0) {
-          goods = goods.sort(sortByKeyMultiple('-value', 'stock'))
-          console.log('goods', goods)
+        if (resources.length > 0) {
+          resources = resources.sort(sortByKeyMultiple('-value', 'stock'))
+          console.log('resources', resources)
         }
         if (moneyMax.value > 0) {
           console.log('money', moneyMax)
@@ -76,7 +78,7 @@ const otherPlayer = {
         sendMessageCache({
           'revenue': {
             spMax: spMax,
-            goods: goods,
+            resources: resources,
             moneyMax: moneyMax,
             suppliesMax: suppliesMax,
             medalsMax: medalsMax,
@@ -87,6 +89,12 @@ const otherPlayer = {
         // Provide battle information of this player
         otherPlayer.sendPlayerProtected(data.other_player.player_id)
         sendPlayerArmies(data.other_player.player_id)
+
+        // Store additional player info (e.g. to reduce risk in GB)
+        otherPlayer.setPlayerActive(data.other_player.player_id, data.other_player.is_active === true, data.other_player.score)
+        break
+      case 'getOtherPlayerVO':
+        otherPlayer.setPlayerActive(data.player_id, data.is_active === true, data.score)
         break
       case 'getCityProtections':
         let protectedPlayers = []
@@ -120,9 +128,9 @@ const otherPlayer = {
                entity.state.__class__ === 'ProductionFinishedState' &&
                 !entity.cityentity_id.match(/R_MultiAge_SummerBonus19[a-h]/) // The Crow's Nest cannot be plundered...
             ) {
-              let age = consts.getAge(entity.cityentity_id.split('_')[1])
+              let era = consts.getEra(entity.cityentity_id.split('_')[1])
               result.push({
-                age: age,
+                era: era,
                 id: entity.cityentity_id,
                 type: entity.type,
                 state: entity.state.__class__,
@@ -146,10 +154,10 @@ const otherPlayer = {
       return newRevenue.strategy_points > currentRevenue.value
     }
 
-    // Compare goods value
-    let newGoodsValue = consts.valueGoods(newRevenue)
-    let currentGoodsValue = consts.valueGoods(currentRevenue)
-    if (newGoodsValue < currentGoodsValue) {
+    // Compare resources value
+    let newResourcesValue = consts.valueResources(newRevenue)
+    let currentResourcesValue = consts.valueResources(currentRevenue)
+    if (newResourcesValue < currentResourcesValue) {
       return false
     }
 
@@ -161,6 +169,36 @@ const otherPlayer = {
   },
   sendPlayerProtected: function (playerId) {
     chrome.runtime.sendMessage({ 'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId) })
-  }
+  },
+  setPlayerActive: function (playerId, active, score) {
+    //syncGet({ 'playerInfo': {} }, function (result) {
+    localGet({ 'playerInfo': {} }, function (result) {
+      let playerInfo = result.playerInfo
+      if (playerInfo[playerId] === undefined) {
+        playerInfo[playerId] = {}
+      }
+      if (trace && playerInfo[playerId].active !== active) {
+        console.log(`Setting player ${playerId} to ` + (active ? 'active' : 'inactive'))
+      }
+      playerInfo[playerId].active = active
 
+      // always refresh date
+      if (playerInfo[playerId].lastUpdate === undefined){
+        playerInfo[playerId].lastUpdate = Date.now() / 1000
+      }
+      //syncSet({ 'playerInfo': playerInfo })
+
+      if (playerInfo[playerId].score === undefined){
+        playerInfo[playerId].score = score
+        playerInfo[playerId].lastUpdate = Date.now() / 1000
+      }
+      else{
+        if(playerInfo[playerId].score != score){
+          playerInfo[playerId].score = score
+          playerInfo[playerId].lastUpdate = Date.now() / 1000
+        }
+      }
+      localSet({ 'playerInfo': playerInfo })
+    })
+  }
 }

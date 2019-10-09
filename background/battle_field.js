@@ -14,6 +14,7 @@ const battleField = {
         break
       case 'startPvP': // old/depreciated message
       case 'startByBattleType':
+      case 'continueBattle':
         battleField.processStartBattle(data, function () {
           if (data.isAutoBattle) {
             // Battle finished immediately
@@ -49,7 +50,7 @@ const battleField = {
     }
     let bonuses = battleField.getBonuses(data.state.unitsOrder[enemyUnit].bonuses)
 
-    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join('/'), callback)
+    battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join(' / '), callback)
 
     if (debug) {
       console.log('attacker', armies[1])
@@ -60,7 +61,7 @@ const battleField = {
         summary.push((amount > 1 ? amount + ' ' : '') + unitType)
       }
 
-      console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join('/') + ')' : ''))
+      console.log('summary', summary.join(', ') + (bonuses.length > 0 ? ' (' + bonuses.join(' / ') + ')' : ''))
     }
   },
 
@@ -107,24 +108,10 @@ const battleField = {
     }
 
     let summary = {}
-    let unknownTypes = []
     for (let [unitId, amount] of Object.entries(armies[2])) {
-      let unitInfo = consts.units[unitId]
-      if (unitInfo === undefined) {
-        if (!unknownTypes.includes(unitId)) {
-          unknownTypes.push(unitId)
-        }
-      } else {
-        summary[unitInfo.type] = (summary[unitInfo.type] | 0) + amount
-      }
+      summary[unitId] = (summary[unitId] | 0) + amount
     }
     armies[3] = summary
-
-    if (unknownTypes.length === 0) {
-      sendNotification('unitUnknown', '', '')
-    } else {
-      sendNotification('unitUnknown', 'warning', 'unknown type(s): ' + unknownTypes.join(', '))
-    }
 
     return armies
   },
@@ -138,13 +125,14 @@ const battleField = {
       }
     }
     let atkDef = []
-    let def = bonusesMap.defense_boost
+    let def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
     if (def > 0) {
-      atkDef.push((def === 1 ? '' : def) + '% def')
+      atkDef.push(`${def}% def`)
     }
-    let atk = bonusesMap.attack_boost
+    let atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
+    console.log('bonusesMap', bonusesMap, def, atk)
     if (atk > 0) {
-      atkDef.push((atk === 1 ? '' : atk) + '% atk')
+      atkDef.push(`${atk}% atk`)
     }
 
     return atkDef
@@ -153,7 +141,8 @@ const battleField = {
   storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus, callback) {
     battleField.lastPlayerAttacked = playerId
 
-    syncGet({ 'playerArmies': {} }, function (result) {
+    //syncGet({ 'playerArmies': {} }, function (result) {
+    localGet({ 'playerArmies': {} }, function (result) {
       let playerArmies = result.playerArmies
       let armyDetails = playerArmies[playerId] || {}
 
@@ -169,18 +158,20 @@ const battleField = {
 
       armyDetails.lastAccess = Date.now()
       playerArmies[playerId] = armyDetails
-      syncSet({ 'playerArmies': playerArmies }, callback)
+      //syncSet({ 'playerArmies': playerArmies }, callback)
+      localSet({ 'playerArmies': playerArmies }, callback)
 
       sendPlayerArmies(playerId)
     })
   },
 
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied, isAutoBattle) {
-    syncGet({ 'playerArmies': {} }, function (result) {
+    //syncGet({ 'playerArmies': {} }, function (result) {
+    localGet({ 'playerArmies': {} }, function (result) {
       let playerArmies = result.playerArmies
       let armyDetails = playerArmies[battleField.lastPlayerAttacked] || {}
 
-      let details = armyDetails.battles.details[armyDetails.battles.details.length - 1]
+      let details = armyDetails.battles.details.pop()
       details.lostHp = lostHP
       if (Object.keys(unitsDied).length > 0) {
         details.unitsDied = unitsDied
@@ -189,13 +180,14 @@ const battleField = {
       details.lost = !battleWon
       details.surrendered = surrendered
       details.isAutoBattle = isAutoBattle
-      armyDetails.battles.details[armyDetails.battles.details.length - 1] = details
+      armyDetails.battles.details.push(details)
 
       armyDetails.battles[battleWon ? 'wins' : 'loses']++
 
       armyDetails.lastAccess = Date.now()
       playerArmies[battleField.lastPlayerAttacked] = armyDetails
-      syncSet({ 'playerArmies': playerArmies })
+      //syncSet({ 'playerArmies': playerArmies })
+      localSet({ 'playerArmies': playerArmies })
 
       sendPlayerArmies(battleField.lastPlayerAttacked)
 

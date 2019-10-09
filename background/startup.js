@@ -1,5 +1,8 @@
 'use strict'
 
+// TODO Remove obsolete entry in storage
+localRemove('goods')
+
 const startup = {
   playerId: 0,
   process: function (method, data) {
@@ -10,14 +13,6 @@ const startup = {
       case 'getData':
         startup.setPlayerId(data.user_data.player_id)
         greatBuilding.checkArcBonus(data.city_map.entities)
-
-        let goods = {}
-        let goodsList = data.goodsList
-        for (let i = 0; i < goodsList.length; i++) {
-          goods[goodsList[i].id] = goodsList[i].era
-        }
-        startup.setGoods(goods)
-
         break
       default:
         if (trace || debug) {
@@ -31,28 +26,6 @@ const startup = {
     }
     localSet({ 'playerId': playerId })
     startup.playerId = playerId
-  },
-  setGoods: function (goods) {
-    if (goods !== undefined && Object.keys(goods).length > 0) {
-      if (debug) {
-        console.log(Object.keys(goods).length + ' goods registered')
-      }
-
-      localSet({ 'goods': goods })
-      consts.goods = goods
-      sendNotification('goods', '', '')
-    }
-  },
-  getGoods: function (cb) {
-    if (consts.goods !== undefined) {
-      cb(consts.goods)
-    }
-
-    // Handle goods not being available yet (eg during startup)
-    localGet({ 'goods': {} }, function (result) {
-      startup.setGoods(result.goods)
-      cb(result.goods)
-    })
   },
   checkRelease: function () {
     return fetch('https://api.github.com/repos/veger/foei/releases/latest', {
@@ -87,11 +60,11 @@ const startup = {
 }
 
 listenToWorldIDChanged(function () {
-  localGet({ 'goods': false, playerId: false }, function (result) {
-    if (!result.goods || Object.keys(result.goods).length === 0) {
-      sendNotification('goods', 'error', 'Goods not available, restart/refresh game')
+  localGet({ 'resources': false, playerId: false }, function (result) {
+    if (!result.resources || Object.keys(result.resources).length === 0) {
+      sendNotification('resources', 'error', 'Resources not available, restart/refresh game')
     } else {
-      startup.setGoods(result.goods)
+      resource.set(result.resources)
     }
     if (result.playerId) {
       startup.playerId = result.playerId
@@ -99,5 +72,5 @@ listenToWorldIDChanged(function () {
   })
 })
 
-startup.getGoods(function () { })
+resource.get(function () { })
 startup.checkRelease()

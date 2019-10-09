@@ -1,15 +1,24 @@
 'use strict'
 
 function updateBattleStats (battleStats) {
+  const unitData = getStaticData('unit_types')
   let battleStatsHTML = ''
 
   if (battleStats.defendUnits) {
     let defendArmies = []
-    for (let [unitType, amount] of Object.entries(battleStats.defendUnits)) {
-      defendArmies.push((amount > 1 ? amount + ' ' : '') + unitType)
+    for (let [unitID, amount] of Object.entries(battleStats.defendUnits)) {
+      if (unitData[unitID]) {
+        const unitName = unitData[unitID].name
+        for (let i = 0; i < amount; i++) {
+          defendArmies.push(renderUnit(unitID, unitName))
+        }
+      } else {
+        // TODO Remove after (some) release(s), it is a hack to correctly show the 'old' units
+        defendArmies.push((amount > 1 ? amount + ' ' : '') + unitID + ', ')
+      }
     }
 
-    battleStatsHTML += '<div class="row"><div class="col-2">Units:</div><div class="col-10">' + defendArmies.join(', ')
+    battleStatsHTML += '<div class="row"><div class="col-2">Units:</div><div class="col-10">' + defendArmies.join('')
     if (battleStats.defendBonus) {
       battleStatsHTML += ' (' + battleStats.defendBonus + ')'
     }
@@ -25,7 +34,7 @@ function updateBattleStats (battleStats) {
       battleStatsHTML += battleReport(lastBattle, true)
 
       if (battleStats.battles.details.length > 1) {
-        battleStatsHTML += '<div class="row"><div class="col-2"></div><div class="col-10"><button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#all-battles" aria-expanded="false" aria-controls="all-battles">previous battles</button>'
+        battleStatsHTML += '<div class="row"><div class="col-2"></div><div class="col-10"><button id ="show-all-battles" class="btn btn-link" type="button" data-toggle="collapse" data-target="#all-battles" aria-expanded="false" aria-controls="all-battles">previous battles</button>'
         battleStatsHTML += '<div class="collapse" id="all-battles">'
 
         for (let i = battleStats.battles.details.length - 2; i >= 0; i--) {
@@ -34,6 +43,10 @@ function updateBattleStats (battleStats) {
         battleStatsHTML += '</div></div></div>'
       }
     }
+  }
+
+  if (battleStatsHTML) {
+    battleStatsHTML = '<div><button type="button" class="close" data-dismiss="alert" data-target="#army-info div" aria-label="Close"><span aria-hidden="true">×</span></button>' + battleStatsHTML + '</div>'
   }
 
   $('#army-info').html(battleStatsHTML)
@@ -58,27 +71,34 @@ function battleReport (battle, showLabel) {
       reportHTML += 'lost'
     }
   }
-  reportHTML += '</span>' + (battle.isAutoBattle ? ' (auto):  ' : ': ') + attackUnits.join(', ')
+  reportHTML += '</span>' + (battle.isAutoBattle ? ' (auto):  ' : ': ') + attackUnits.join('')
 
   if (battle.lostHp) {
     reportHTML += ' (HP lost: ' + battle.lostHp
     if (battle.unitsDied !== undefined) {
       let unitsDied = listUnits(battle.unitsDied)
-      reportHTML += ', <span style="color: red;">' + unitsDied.join(', ') + '</span> died'
+      reportHTML += ', dead: ' + unitsDied.join('')
     }
     reportHTML += ')'
   }
   reportHTML += '</div></div>'
-
   return reportHTML
 }
 
 function listUnits (unitMap) {
+  const unitData = getStaticData('unit_types')
   let units = []
-  Object.keys(unitMap).sort().forEach((unitType) => {
-    const amount = unitMap[unitType]
-    units.push((amount > 1 ? amount + ' ' : '') + unitType)
+  Object.keys(unitMap).sort().forEach((unitID) => {
+    const unitName = (unitData[unitID] || { name: unitID }).name
+    const amount = unitMap[unitID]
+    for (let i = 0; i < amount; i++) {
+      units.push(renderUnit(unitID, unitName))
+    }
   })
 
   return units
+}
+
+function renderUnit (unitID, unitName) {
+  return `<img srcset="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${unitID}.jpg 100w" sizes="75px" src="https://foeen.innogamescdn.com/assets/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${unitID}.jpg" class="unit-portrait thumbnail" data-toggle="tooltip" data-placement="top" title="${unitName}"/>`
 }

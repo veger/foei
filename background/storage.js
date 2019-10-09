@@ -22,17 +22,20 @@ function setWorldID (newWorldID) {
   localSet({ _lastWorldID: newWorldID })
   worldID = newWorldID + '-'
 
-  syncGet({ _worlds: [] }, function (result) {
+  //syncGet({ _worlds: [] }, function (result) {
+  localGet({ _worlds: [] }, function (result) {
     if (!result._worlds.includes(newWorldID)) {
       if (debug) {
         console.log('New world: ' + newWorldID)
       }
       result._worlds.push(newWorldID)
-      syncSet({ _worlds: result._worlds })
+      //syncSet({ _worlds: result._worlds })
+      localSet({ _worlds: result._worlds })
     }
     sendWorldsWithDataSize(result._worlds)
   })
 
+  sendMessageCache({ worldID: worldID })
   // dispatch() is an undocumented feature, used to force sending events on same page
   chrome.runtime.onMessage.dispatch({ worldIDChanged: newWorldID })
   if (debug) {
@@ -98,7 +101,7 @@ function sendWorldsWithDataSize (worlds) {
   for (let i = 0; i < worlds.length; i++) {
     (function (world) {
       let storages = usedDataStorages.map(function (s) { return world + '-' + s })
-      chrome.storage.sync.getBytesInUse(storages, function (result) {
+      chrome.storage.local.getBytesInUse(storages, function (result) {
         worldsSize[world] = result
         if (Object.keys(worldsSize).length === worlds.length) {
           sendMessageCache({ worlds: worldsSize })
@@ -154,6 +157,20 @@ function localGet (keys, callback) {
   })
 }
 
+function localRemove (key) {
+  chrome.storage.local.get(null, function (results) {
+    for (let entry in results) {
+      if (entry.endsWith('-' + key)) {
+        chrome.storage.local.remove(entry, function () {
+          if (debug) {
+            console.log(`Removed ${entry} from storage`)
+          }
+        })
+      }
+    }
+  })
+}
+
 function cacheAction (request) {
   for (worldID in request) {
     if (worldID === 'data') {
@@ -162,7 +179,7 @@ function cacheAction (request) {
     switch (request[worldID]) {
       case 'clean':
         (function (worldID) {
-          chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
+          chrome.storage.local.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
             let removedItems = 0
             let timeOld = Date.now() - 3 * 7 * 24 * 3600 * 1000
             for (let i = 0; i < usedDataStorages.length; i++) {
@@ -180,7 +197,7 @@ function cacheAction (request) {
               data[storageName] = ds
             }
 
-            chrome.storage.sync.set(data, function (result) {
+            chrome.storage.local.set(data, function (result) {
               if (chrome.runtime.lastError) {
                 console.error(chrome.runtime.lastError.message)
               }
@@ -194,7 +211,7 @@ function cacheAction (request) {
         })(worldID)
         break
       case 'delete':
-        chrome.storage.sync.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (result) {
+        chrome.storage.local.remove(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (result) {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError.message)
           }
@@ -203,7 +220,7 @@ function cacheAction (request) {
         break
       case 'import':
         (function (worldID) {
-          chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
+          chrome.storage.local.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
             for (let i = 0; i < usedDataStorages.length; i++) {
               let storageName = worldID + '-' + usedDataStorages[i]
               if (request.data[storageName]) {
@@ -215,7 +232,7 @@ function cacheAction (request) {
               }
             }
 
-            chrome.storage.sync.set(data, function (result) {
+            chrome.storage.local.set(data, function (result) {
               if (chrome.runtime.lastError) {
                 console.error(chrome.runtime.lastError.message)
               }
@@ -229,7 +246,7 @@ function cacheAction (request) {
         })(worldID)
         break
       case 'export':
-        chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (result) {
+        chrome.storage.local.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (result) {
           chrome.runtime.sendMessage({ cacheData: { worldID: worldID, data: result } })
         })
         break

@@ -42,6 +42,8 @@ global.trace = false
 includeJavascript('background/consts.js')
 includeJavascript('background/storage.js')
 includeJavascript('background/utils.js')
+includeJavascript('background/resource.js')
 includeJavascript('background/startup.js')
 includeJavascript('background/great_buildings.js')
 includeJavascript('background/city_map.js')
+includeJavascript('background/static_data.js')

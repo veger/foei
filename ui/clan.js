@@ -15,6 +15,6 @@ function addClanArmyRow (index, army) {
   if (unitDetails.length === 0) {
     unitDetails = ['???']
   }
-  let row = '<tr><td>' + index + '</td><td>' + army.hp + '</td><td>' + unitDetails.join(', ') + '</td></tr>'
+  let row = '<tr><td>' + index + '</td><td>' + army.hp + '</td><td>' + unitDetails.join('') + '</td></tr>'
   return row
 }

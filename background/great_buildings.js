@@ -213,42 +213,52 @@ const greatBuilding = {
       return resultCallback({ player: '', changes: [] })
     }
     let playerId = data[0].player.player_id
-    syncGet({ 'playerGBs': {} }, function (result) {
+    //syncGet({ 'playerGBs': {}, 'playerInfo': {} }, function (result) {
+    localGet({ 'playerGBs': {}, 'playerInfo': {} }, function (result) {
       let playerGB = (result.playerGBs[playerId]) || {}
+      let playerInfo = (result.playerInfo[playerId]) || {}
       let changes = []
-      let now = Date.now() / 1000
-      for (let i = 0; i < data.length; i++) {
-        if (playerGB[data[i].city_entity_id] === undefined || playerGB[data[i].city_entity_id].last_spent !== data[i].last_spent || data[i].last_spent + 2 * 24 * 3600 > now) {
-          changes.push({
-            name: data[i].name,
-            last_spent: data[i].last_spent,
-            completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
-          })
-        }
-      }
-
-      if (changes.length === 0) {
-        changes = [{
-          name: 'last change',
-          last_spent: data[0].last_spent
-        }]
-      }
-
       let newPlayerGB = {
-        lastAccess: Date.now()
+        lastAccess: Math.floor(Date.now() / 1000)
       }
+
+      if (playerGB.lastAccess > newPlayerGB.lastAccess) {
+        // Remove in a few releases: convert existing data from milliseconds to seconds
+        playerGB.lastAccess = playerGB.lastAccess / 1000
+      }
+
       for (let i = 0; i < data.length; i++) {
-        let GBentry = playerGB[data[i].city_entity_id] || {}
-        GBentry.last_spent = data[i].last_spent
+        let GBentry = playerGB[data[i].city_entity_id] || {
+          // New GB, so use current values to prevent it being 'just changed'
+          level: data[i].level,
+          current_process: data[i].current_progress,
+          lastChange: playerGB.lastAccess
+        }
+
+        let changeData = {
+          name: data[i].name,
+          lastChange: GBentry.lastChange,
+          completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
+        }
+        // Check for changes
+        if (GBentry.level !== data[i].level || GBentry.current_progress !== data[i].current_progress) {
+          // GB changed since last time
+          console.log('changed', JSON.stringify(GBentry), data[i])
+          changeData.lastChange = playerGB.lastAccess
+          GBentry.lastChange = playerGB.lastAccess
+        }
+        changes.push(changeData)
+
+        // Update entry
         GBentry.level = data[i].level
         GBentry.current_progress = data[i].current_progress
-
         newPlayerGB[data[i].city_entity_id] = GBentry
       }
       result.playerGBs[playerId] = newPlayerGB
-      syncSet({ 'playerGBs': result.playerGBs })
+      //syncSet({ 'playerGBs': result.playerGBs })
+      localSet({ 'playerGBs': result.playerGBs })
 
-      resultCallback({ player: data[0].player.name, changes: changes })
+      resultCallback({ player: { name: data[0].player.name, info: playerInfo }, changes: changes })
     })
   },
   storeBuildingInfo: function (requestId, ownerId, requiredFP) {
@@ -270,7 +280,8 @@ const greatBuilding = {
   setArcBonus: function (bonus) {
     bonus = fixFloat(bonus / 100)
     greatBuilding.arcBonus = bonus
-    syncSet({ 'arcBonus': bonus })
+    //syncSet({ 'arcBonus': bonus })
+    localSet({ 'arcBonus': bonus })
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus)
     }

@@ -1,14 +1,26 @@
 'use strict'
 
 let currentGBRewards = { rewards: [] }
+let resources = {}
+let staticData = {}
+let worldID = '<unknown>'
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.version) {
       checkVersion(request.version)
     }
+    if (request.worldID) {
+      worldID = request.worldID
+    }
+    if (request.staticData) {
+      staticData = request.staticData
+    }
     if (request.notifications) {
       updateNotifications(request.notifications)
+    }
+    if (request.resources) {
+      resources = request.resources
     }
     if (request.worlds) {
       updateSettingsWorlds(request.worlds)
@@ -80,6 +92,20 @@ function updateNotifications (notifications) {
   $('#notifications').html(html)
 }
 
+const worldRegex = RegExp(/([a-z]*)/)
+function getStaticData (type) {
+  const lang = worldRegex.exec(worldID)[0]
+  if (!(staticData[lang] && staticData[lang][type])) {
+    return {}
+  }
+
+  const hash = staticData[lang][type].worldHashes[worldID]
+  if (hash && staticData[lang][type].hashes[hash]) {
+    return staticData[lang][type].hashes[hash].data
+  }
+  return {}
+}
+
 function addTab (barParent, bodyParent, id, title, body) {
   let active = $('#' + barParent + ' li').length === 0
   let barHTML = '<li class="nav-item"><a class="nav-link' + (active ? ' active show' : '') + '" id="' + id + '-tab" data-toggle="tab" href="#' + id + '" role="tab" aria-controls="' + id + '" aria-selected="false">' + title + '</a></li>'
@@ -94,4 +120,8 @@ $('#boost-factor').change(function () {
 })
 $('#boost-factor').on('input', function () {
   updateGreatBuildingBoostInfo(currentGBRewards)
+})
+
+$('body').tooltip({
+  selector: '[data-toggle="tooltip"]'
 })

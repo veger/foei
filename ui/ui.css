@@ -8,4 +8,29 @@
     transform: scale(7.5);
     top: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+#army-info .row {
+    line-height: 33px;
+}
+
+#all-battles {
+    margin-left: 0.75rem
+}
+
+#show-all-battles {
+    margin: 2px 0;
+}
+
+.plunder-raw-resource {
+    padding-right: 10px;
+}
+
+.unit-portrait {
+    margin-right: 1px;
+}
+
+.unit-portrait:hover {
+    top: 95px;
 }

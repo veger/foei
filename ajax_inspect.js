@@ -65,10 +65,20 @@
         }
       }
       if (jsonRequest || jsonResponse) {
-        let payload = { 'jsonRequest': jsonRequest, 'jsonResponse': jsonResponse }
+        let payload = { jsonRequest: jsonRequest, jsonResponse: jsonResponse, metadata: {} }
         if (this._url.includes('forgeofempires.com')) {
           let urlObj = new URL(this._url)
-          payload.hostname = urlObj.hostname
+          let match = RegExp('^[^\\.]*').exec(urlObj.hostname)
+          payload.metadata.type = 'game'
+          payload.metadata.world = match[0]
+        } else if (this._url.includes('metadata')) {
+          let match = RegExp('https://foe([^\\.]*).innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(this._url)
+          if (match !== null) {
+            payload.metadata.type = 'meta'
+            payload.metadata.lang = match[1]
+            payload.metadata.id = match[2]
+            payload.metadata.hash = match[3]
+          }
         }
 
         chrome.runtime.sendMessage(extensionID, payload)
