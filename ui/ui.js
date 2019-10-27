@@ -28,8 +28,8 @@ chrome.extension.onMessage.addListener(
     if (request.revenue) {
       updatePlunder(request.revenue)
     }
-    if (request.rewards) {
-      updateRewards(request.rewards)
+    if (request.incidents) {
+      updateIncidents(request.incidents)
     }
     if (request.battleStats) {
       updateBattleStats(request.battleStats)

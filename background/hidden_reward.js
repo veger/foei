@@ -25,7 +25,7 @@ const hiddenReward = {
         if (debug) {
           console.log('Hidden rewards', parsedRewards)
         }
-        sendMessageCache({ 'rewards': parsedRewards })
+        sendMessageCache({ 'incidents': parsedRewards })
         break
       default:
         if (trace || debug) {

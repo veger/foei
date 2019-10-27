@@ -1,37 +1,37 @@
 let rewardUpdateInterval
 
-function updateRewards (rewards) {
+function updateIncidents (incidents) {
   clearInterval(rewardUpdateInterval)
   let start = new Date().getTime()
 
-  if (rewards.length > 0) {
+  if (incidents.length > 0) {
     rewardUpdateInterval = setInterval(function () {
       let now = new Date().getTime()
-      updateRewardsDetails((now - start) / 1000, rewards)
+      updateIncidentsDetails((now - start) / 1000, incidents)
     }, 500)
   }
 }
 
-function updateRewardsDetails (timePassed, rewards) {
-  let rewardsRows = ''
+function updateIncidentsDetails (timePassed, incidents) {
+  let incidentsRows = ''
   let hasActiveUncommon = false
   let hasActive = false
   let hasInactive = false
-  for (let i = 0; i < rewards.length; i++) {
-    rewardsRows += addRewardRow(timePassed, rewards[i])
-    if (rewards[i].startTime - timePassed < 1 && rewards[i].expireTime - timePassed > 0) {
+  for (let i = 0; i < incidents.length; i++) {
+    incidentsRows += addRewardRow(timePassed, incidents[i])
+    if (incidents[i].startTime - timePassed < 1 && incidents[i].expireTime - timePassed > 0) {
       hasActive = true
-      hasActiveUncommon |= isUncommon(rewards[i])
+      hasActiveUncommon |= isUncommon(incidents[i])
     } else {
       hasInactive = true
     }
   }
-  if (rewardsRows === '') {
-    rewardsRows = '<td colspan="4">No rewards available</td>'
+  if (incidentsRows === '') {
+    incidentsRows = '<td colspan="4">No incidents available</td>'
   }
-  $('#rewards-body').html(rewardsRows)
+  $('#incidents-body').html(incidentsRows)
 
-  updateRewardsTab(hasActive, hasActiveUncommon)
+  updateIncidentsTab(hasActive, hasActiveUncommon)
 
   if (!hasInactive && !hasActive) {
     // Nothing to update anymore, so stop timer
@@ -40,8 +40,8 @@ function updateRewardsDetails (timePassed, rewards) {
   }
 }
 
-function updateRewardsTab (active, uncommon) {
-  $('#rewards-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Rewards')
+function updateIncidentsTab (active, uncommon) {
+  $('#incidents-tab').html((active ? '<i style="color: ' + (uncommon ? 'green' : 'orange') + '" class="fas fa-exclamation-triangle"></i> ' : '') + 'Incidents')
 }
 
 function addRewardRow (timePassed, reward) {
