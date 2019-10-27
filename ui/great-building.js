@@ -24,12 +24,44 @@ function updateGreatBuildingBoostInfo (fpAnalysis) {
   let boostFactor = $('#boost-factor').val()
   let ggRows = ''
   let boostRush = ''
+  let prevBoostInvestment = 0
+
+  // Calculate totalFP using the free + investments (that matter), in order to ignore the investments that do not influence (self, not enough for boost, rank without reward)
+  let totalFP = fpAnalysis.freeFP
+  let prevRanked = true
   for (let i = 0; i < fpAnalysis.analysis.length; i++) {
-    if (fpAnalysis.analysis[i].reward !== undefined) {
-      let reward = fpAnalysis.analysis[i].reward
-      let required = Math.ceil(reward.fp * boostFactor)
-      let nextInvestment = (i + 1 < fpAnalysis.analysis.length) ? fpAnalysis.analysis[i + 1].invested || 0 : 0
-      ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, fpAnalysis.analysis[i], fpAnalysis.totalFP, fpAnalysis.freeFP, nextInvestment)
+    const reward = (fpAnalysis.analysis[i].reward || { fp: 0 })
+    const required = Math.ceil(reward.fp * boostFactor)
+    const invested = (fpAnalysis.analysis[i].invested || 0)
+    if (prevRanked && invested >= required) {
+      totalFP += invested
+    }
+    prevRanked = fpAnalysis.analysis[i].reward !== undefined
+  }
+
+  for (let i = 0; i < fpAnalysis.analysis.length; i++) {
+    const analysis = fpAnalysis.analysis[i]
+    if (analysis.reward !== undefined) {
+      const reward = analysis.reward
+      const required = Math.ceil(reward.fp * boostFactor)
+      const nextInvestment = (i + 1 < fpAnalysis.analysis.length) ? fpAnalysis.analysis[i + 1].invested || 0 : 0
+
+      let fillForSafeBoost = -1
+      if (analysis.invested === undefined || analysis.invested < required) {
+        fillForSafeBoost = totalFP - prevBoostInvestment - required * 2
+      }
+      let fillForSafeCurrent = ''
+      if (analysis.invested) {
+        fillForSafeCurrent = fpAnalysis.freeFP - analysis.invested + nextInvestment
+      }
+
+      const notInvestedEnough = analysis.invested > 0 && analysis.invested < required
+
+      ggRows += addGreatBuildingBoostRow(i + 1, boostFactor, fpAnalysis.analysis[i], notInvestedEnough, fillForSafeBoost, fillForSafeCurrent)
+      const invested = (analysis.invested || 0)
+      if (invested >= required) {
+        prevBoostInvestment += invested
+      }
       if (reward.fp !== undefined) {
         boostRush += 'p' + (i + 1) + ' ' + required + ', '
       }
@@ -96,20 +128,30 @@ function addGreatBuildingAnalysisRow (spot, analysis) {
   return row
 }
 
-function addGreatBuildingBoostRow (spot, boostFactor, analysis, totalFP, freeFP, nextInvestment) {
+function renderRequiredPositive (value) {
+  if (value <= 0) {
+    return '<i class="text-success fas fa-check"></i>'
+  }
+
+  return `${iconImage('strategy_points')} ${value}`
+}
+
+function addGreatBuildingBoostRow (spot, boostFactor, analysis, notInvestedEnough, fillForSafeBoost, fillForSafeCurrent) {
   if (analysis.reward.fp === undefined) {
     return ''
   }
 
   let required = Math.ceil(analysis.reward.fp * boostFactor)
-  let fillForSafe = totalFP - required * 2
-  let requiredToMakeSafe = freeFP + nextInvestment - required
-  let unsafe = analysis.invested >= required && nextInvestment + freeFP > analysis.invested && requiredToMakeSafe > 0
-  let notInvestedEnough = analysis.invested > 0 && analysis.invested < required
 
-  let row = '<tr' + (unsafe ? ' class="table-danger"' : (notInvestedEnough ? ' class="table-warning"' : '')) + '>'
-  row += '<td>' + spot + '</td>'
-  row += '<td>' + iconImage('strategy_points') + ' ' + required + (notInvestedEnough ? ` (${analysis.invested})` : '') + '</td><td>' + iconImage('strategy_points') + ' ' + fillForSafe + (unsafe ? ` (${requiredToMakeSafe})` : '') + '</td>'
+  let row = `<tr ${notInvestedEnough ? ' class="table-warning"' : ''}>`
+  row += `<td>${spot}</td>`
+  row += `<td>${iconImage('strategy_points')} ${required}${notInvestedEnough ? ` (${analysis.invested})` : ''}</td>`
+  row += `<td>${renderRequiredPositive(fillForSafeBoost)}</td>`
+  if (fillForSafeCurrent !== '') {
+    row += `<td>${renderRequiredPositive(fillForSafeCurrent)}</td>`
+  } else {
+    row += '<td></td>'
+  }
   row += '<td>'
   if (analysis.reward.blueprints) {
     row += iconImage('blueprint') + ' ' + analysis.reward.blueprints
