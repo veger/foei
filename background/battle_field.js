@@ -166,9 +166,9 @@ const battleField = {
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied, isAutoBattle) {
     syncGet({ 'playerArmies': {} }, function (result) {
       let playerArmies = result.playerArmies
-      let armyDetails = playerArmies[battleField.lastPlayerAttacked] || {}
+      let armyDetails = playerArmies[battleField.lastPlayerAttacked] || { battles: { details: [] } }
 
-      let details = armyDetails.battles.details.pop()
+      let details = armyDetails.battles.details.pop() || {}
       details.lostHp = lostHP
       if (Object.keys(unitsDied).length > 0) {
         details.unitsDied = unitsDied
