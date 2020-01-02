@@ -7,12 +7,6 @@ const battleField = {
       console.log('BattlefieldService.' + method, data)
     }
     switch (method) {
-      case 'autoFinish': // old/depreciated message
-        battleField.processStartBattle(data, function () {
-          battleField.processBattleMove(data.state, true)
-        })
-        break
-      case 'startPvP': // old/depreciated message
       case 'startByBattleType':
       case 'continueBattle':
         battleField.processStartBattle(data, function () {
