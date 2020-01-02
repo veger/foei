@@ -68,7 +68,6 @@ function copyProductResources (result) {
   if (result.current_product && result.current_product.clan_power) {
     productResources['clan_power'] = result.current_product.clan_power
   }
-  console.log(productResources)
   if (Object.keys(productResources.resources).length === 0) {
     delete productResources.resources
   }
