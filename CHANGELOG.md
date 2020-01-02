@@ -2,6 +2,7 @@
 
 * Improve boost overview (now shows how much sp need to get invested to make a place boostable and safe)
 * Renamed 'rewards' to 'incidents'
+* Prevent errors about undefined objects ([#22](https://github.com/veger/foei/issues/22))
 
 # 0.6.0
 * Include advanced tactics in calculated attack and defense bonus
