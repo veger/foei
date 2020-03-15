@@ -5,8 +5,8 @@ function updateBattleStats (battleStats) {
   let battleStatsHTML = ''
 
   if (battleStats.defendUnits) {
-    let defendArmies = []
-    for (let [unitID, amount] of Object.entries(battleStats.defendUnits)) {
+    const defendArmies = []
+    for (const [unitID, amount] of Object.entries(battleStats.defendUnits)) {
       if (unitData[unitID]) {
         const unitName = unitData[unitID].name
         for (let i = 0; i < amount; i++) {
@@ -30,7 +30,7 @@ function updateBattleStats (battleStats) {
     battleStatsHTML += '</div></div>'
 
     if (battleStats.battles.details.length > 0) {
-      let lastBattle = battleStats.battles.details[battleStats.battles.details.length - 1]
+      const lastBattle = battleStats.battles.details[battleStats.battles.details.length - 1]
       battleStatsHTML += battleReport(lastBattle, true)
 
       if (battleStats.battles.details.length > 1) {
@@ -53,7 +53,7 @@ function updateBattleStats (battleStats) {
 }
 
 function battleReport (battle, showLabel) {
-  let attackUnits = listUnits(battle.attackUnits)
+  const attackUnits = listUnits(battle.attackUnits)
   let reportHTML = '<div class="row">'
   if (showLabel) {
     reportHTML += '<div class="col-2">Last battle:</div>'
@@ -76,7 +76,7 @@ function battleReport (battle, showLabel) {
   if (battle.lostHp) {
     reportHTML += ' (HP lost: ' + battle.lostHp
     if (battle.unitsDied !== undefined) {
-      let unitsDied = listUnits(battle.unitsDied)
+      const unitsDied = listUnits(battle.unitsDied)
       reportHTML += ', dead: ' + unitsDied.join('')
     }
     reportHTML += ')'
@@ -87,7 +87,7 @@ function battleReport (battle, showLabel) {
 
 function listUnits (unitMap) {
   const unitData = getStaticData('unit_types')
-  let units = []
+  const units = []
   Object.keys(unitMap).sort().forEach((unitID) => {
     const unitName = (unitData[unitID] || { name: unitID }).name
     const amount = unitMap[unitID]

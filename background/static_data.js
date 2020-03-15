@@ -10,9 +10,9 @@ const staticData = {
     }
     switch (method) {
       case 'getMetadata':
-        for (let index in data) {
+        for (const index in data) {
           if (data[index].identifier === 'unit_types' || data[index].identifier === 'city_entities') {
-            let match = RegExp('https://foe[^\\.]*.innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(data[index].url)
+            const match = RegExp('https://foe[^\\.]*.innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(data[index].url)
             if (match === null) {
               console.log(`Could not find id and hash from url ${data[index].url}`)
             } else {
@@ -41,15 +41,15 @@ const staticData = {
     }
 
     this._data[lang][type].worldHashes[worldId] = hash
-    let index = this._data[lang][type].hashes[hash].worlds.indexOf(worldId)
+    const index = this._data[lang][type].hashes[hash].worlds.indexOf(worldId)
     if (index > -1) {
       // Already registered, nothing to do
       return
     }
 
     // Remove old hash
-    for (let [hashIndex, hash] of Object.entries(this._data[lang][type].hashes)) {
-      let index = hash.worlds.indexOf(worldId)
+    for (const [hashIndex, hash] of Object.entries(this._data[lang][type].hashes)) {
+      const index = hash.worlds.indexOf(worldId)
       if (index > -1) {
         hash.worlds.splice(index, 1)
         if (hash.worlds.length === 0) {
@@ -65,13 +65,13 @@ const staticData = {
     // Store world in hash
     this._data[lang][type].hashes[hash].worlds.push(worldId)
 
-    sendMessageCache({ 'staticData': this._data })
+    sendMessageCache({ staticData: this._data })
     localSet({ _metadata: this._data })
   },
   setData: function (lang, type, hash, dataFunc) {
     if (this._data[lang] && this._data[lang][type] && this._data[lang][type].hashes[hash] && this._data[lang][type].hashes[hash].data.length === 0) {
       this._data[lang][type].hashes[hash].data = dataFunc()
-      sendMessageCache({ 'staticData': this._data })
+      sendMessageCache({ staticData: this._data })
       localSet({ _metadata: this._data })
     }
   },
@@ -92,6 +92,6 @@ const staticData = {
 localGet('_metadata', function (result) {
   if (result._metadata) {
     staticData._data = result._metadata
-    sendMessageCache({ 'staticData': staticData._data })
+    sendMessageCache({ staticData: staticData._data })
   }
 })

@@ -1,7 +1,7 @@
 'use strict'
 
 function updateSettingsWorlds (worlds) {
-  for (let worldID in worlds) {
+  for (const worldID in worlds) {
     let bodyHTML = '<div class="card m-1"><div class="card-body"><p class="card-title">Using ' + (worlds[worldID] / 1024).toFixed(2) + ' kB storage (out of ' + (chrome.storage.sync.QUOTA_BYTES / 1024) + ' kB)</p><p class="card-text">'
     bodyHTML += ' <button id="' + worldID + '-clean" class="btn btn-sm btn-warning" type="button">Clean</button>'
     bodyHTML += ' <button class="btn btn-sm btn-danger" type="button" data-toggle="collapse" data-target="#' + worldID + '-collapse-delete" aria-expanded="false" aria-controls="' + worldID + '-collapse-delete">Delete...</button>'
@@ -18,15 +18,15 @@ function updateSettingsWorlds (worlds) {
 
     (function (worldID) {
       $('#' + worldID + '-clean').click(function () {
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'clean' } })
+        chrome.extension.sendMessage({ cache: { [worldID]: 'clean' } })
       })
       $('#' + worldID + '-delete').click(function () {
         $('#' + worldID + '-collapse-delete').collapse('hide')
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'delete' } })
+        chrome.extension.sendMessage({ cache: { [worldID]: 'delete' } })
       })
 
       $('#' + worldID + '-export').click(function () {
-        chrome.extension.sendMessage({ 'cache': { [worldID]: 'export' } })
+        chrome.extension.sendMessage({ cache: { [worldID]: 'export' } })
       })
 
       $('#' + worldID + '-import').change(function (e) {
@@ -40,7 +40,7 @@ function importFile (e, worldID) {
   if (!e.target.files[0]) {
     return
   }
-  let reader = new FileReader()
+  const reader = new FileReader()
   reader.onload = function (e) {
     let data = e.target.result
     try {
@@ -50,7 +50,7 @@ function importFile (e, worldID) {
       alert("Couldn't parse JSON: " + e)
     }
     console.log(data)
-    chrome.extension.sendMessage({ 'cache': { [worldID]: 'import', data: data } })
+    chrome.extension.sendMessage({ cache: { [worldID]: 'import', data: data } })
   }
   reader.readAsText(e.target.files[0])
 }

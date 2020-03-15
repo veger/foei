@@ -11,13 +11,13 @@ const greatBuilding = {
     }
     switch (method) {
       case 'getConstruction':
-      case 'contributeForgePoints':
+      case 'contributeForgePoints': {
         if (greatBuilding.requestId !== id) {
           console.error('Wrong id ' + id + ', expected ' + greatBuilding.requestId)
           return
         }
 
-        let gbFpAnalysis = greatBuilding.performAnalysis(method === 'getConstruction' ? data.rankings : data)
+        const gbFpAnalysis = greatBuilding.performAnalysis(method === 'getConstruction' ? data.rankings : data)
 
         if (debug) {
           console.log(gbFpAnalysis)
@@ -25,6 +25,7 @@ const greatBuilding = {
 
         sendMessageCache({ gbFpAnalysis: gbFpAnalysis })
         break
+      }
       case 'getOtherPlayerOverview':
         greatBuilding.checkGBChanges(data, function (changes) {
           if (debug) {
@@ -49,9 +50,9 @@ const greatBuilding = {
 
     // Remove player (self) from rankings as this messes the calculations
     // (it is an investment that is already done on behalf of the player)
-    let rankings = []
+    const rankings = []
     for (let i = 0; i < dataRankings.length; i++) {
-      let ranking = Object.assign({}, dataRankings[i])
+      const ranking = Object.assign({}, dataRankings[i])
       rankings.push(ranking)
 
       const forgePoints = ranking.forge_points
@@ -80,7 +81,7 @@ const greatBuilding = {
       rankings[rankings.length - 1].forge_points = undefined
       rankings[rankings.length - 1].player = {}
     }
-    let freeFP = (greatBuilding.requiredFP - investedFP)
+    const freeFP = (greatBuilding.requiredFP - investedFP)
 
     if (debug) {
       console.log('free FP (excluding self): ' + freeFP)
@@ -88,14 +89,14 @@ const greatBuilding = {
       console.log('owner (#' + (ownerIndex + 1) + '): ' + ownerFP)
     }
 
-    let fpAnalysis = []
+    const fpAnalysis = []
     // Check if owner is self -> skip as it/nothing makes sense (anymore)
     if (greatBuilding.ownerId !== startup.playerId) {
       let i = -1
       while (i < rankings.length - 1) {
         i++
-        let ranking = rankings[i]
-        let rank = ranking.rank
+        const ranking = rankings[i]
+        const rank = ranking.rank
 
         if (ranking.reward === undefined) {
           // Nothing to calculate
@@ -143,7 +144,7 @@ const greatBuilding = {
           continue
         }
 
-        let profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP))
+        const profit = Math.round(fixFloat((ranking.reward.strategy_point_amount || 0) * (1 + greatBuilding.arcBonus) - bestSpotFP))
 
         // Used for both Boost and GB information
         fpAnalysis.push({
@@ -162,7 +163,7 @@ const greatBuilding = {
     } else {
       // Just copy rewards for Boost information
       for (let i = 0; i < rankings.length; i++) {
-        let ranking = rankings[i]
+        const ranking = rankings[i]
         if (ranking.player.player_id === greatBuilding.ownerId) {
           // Skip owner (doesn't have reward)
           continue
@@ -212,12 +213,12 @@ const greatBuilding = {
       // Nothing to do
       return resultCallback({ player: '', changes: [] })
     }
-    let playerId = data[0].player.player_id
-    syncGet({ 'playerGBs': {}, 'playerInfo': {} }, function (result) {
-      let playerGB = (result.playerGBs[playerId]) || {}
-      let playerInfo = (result.playerInfo[playerId]) || {}
-      let changes = []
-      let newPlayerGB = {
+    const playerId = data[0].player.player_id
+    syncGet({ playerGBs: {}, playerInfo: {} }, function (result) {
+      const playerGB = (result.playerGBs[playerId]) || {}
+      const playerInfo = (result.playerInfo[playerId]) || {}
+      const changes = []
+      const newPlayerGB = {
         lastAccess: Math.floor(Date.now() / 1000)
       }
 
@@ -227,14 +228,14 @@ const greatBuilding = {
       }
 
       for (let i = 0; i < data.length; i++) {
-        let GBentry = playerGB[data[i].city_entity_id] || {
+        const GBentry = playerGB[data[i].city_entity_id] || {
           // New GB, so use current values to prevent it being 'just changed'
           level: data[i].level,
           current_process: data[i].current_progress,
           lastChange: playerGB.lastAccess
         }
 
-        let changeData = {
+        const changeData = {
           name: data[i].name,
           lastChange: GBentry.lastChange,
           completePercentage: parseFloat((data[i].current_progress || 0) / data[i].max_progress * 100).toPrecision(3)
@@ -254,7 +255,7 @@ const greatBuilding = {
         newPlayerGB[data[i].city_entity_id] = GBentry
       }
       result.playerGBs[playerId] = newPlayerGB
-      syncSet({ 'playerGBs': result.playerGBs })
+      syncSet({ playerGBs: result.playerGBs })
 
       resultCallback({ player: { name: data[0].player.name, info: playerInfo }, changes: changes })
     })
@@ -278,7 +279,7 @@ const greatBuilding = {
   setArcBonus: function (bonus) {
     bonus = fixFloat(bonus / 100)
     greatBuilding.arcBonus = bonus
-    syncSet({ 'arcBonus': bonus })
+    syncSet({ arcBonus: bonus })
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus)
     }
@@ -286,7 +287,7 @@ const greatBuilding = {
 }
 
 listenToWorldIDChanged(function () {
-  syncGet({ 'arcBonus': 0 }, function (result) {
+  syncGet({ arcBonus: 0 }, function (result) {
     greatBuilding.arcBonus = parseFloat(result.arcBonus)
     if (debug) {
       console.log('arc bonus: ', greatBuilding.arcBonus)

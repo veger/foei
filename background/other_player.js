@@ -7,8 +7,8 @@ const otherPlayer = {
       console.log('OtherPlayerService.' + method, data)
     }
     switch (method) {
-      case 'visitPlayer':
-        let results = otherPlayer.processEntities(data.city_map.entities)
+      case 'visitPlayer': {
+        const results = otherPlayer.processEntities(data.city_map.entities)
         if (debug) {
           console.log('rewards', results)
         }
@@ -21,9 +21,9 @@ const otherPlayer = {
         let clanPowerMax = { value: 0 }
         let resources = []
         for (let i = 0; i < results.length; i++) {
-          let result = results[i]
+          const result = results[i]
           if (result.product !== undefined && result.product.resources !== undefined && result.type !== 'random_production') {
-            let resourcesValue = consts.valueResources(result.product.resources)
+            const resourcesValue = consts.valueResources(result.product.resources)
             if (resourcesValue > 0) {
               resources.push({
                 amount: consts.amountResources(result.product.resources),
@@ -76,7 +76,7 @@ const otherPlayer = {
           console.log('clan power', clanPowerMax)
         }
         sendMessageCache({
-          'revenue': {
+          revenue: {
             spMax: spMax,
             resources: resources,
             moneyMax: moneyMax,
@@ -93,11 +93,12 @@ const otherPlayer = {
         // Store additional player info (e.g. to reduce risk in GB)
         otherPlayer.setPlayerActive(data.other_player.player_id, data.other_player.is_active === true)
         break
+      }
       case 'getOtherPlayerVO':
         otherPlayer.setPlayerActive(data.player_id, data.is_active === true)
         break
-      case 'getCityProtections':
-        let protectedPlayers = []
+      case 'getCityProtections': {
+        const protectedPlayers = []
         for (let i = 0; i < data.length; i++) {
           protectedPlayers.push(data[i].playerId)
         }
@@ -106,6 +107,7 @@ const otherPlayer = {
           console.log(protectedPlayers.length + ' protected player(s)')
         }
         break
+      }
       default:
         if (trace || debug) {
           console.log('OtherPlayerService.' + method + ' is not used')
@@ -113,7 +115,7 @@ const otherPlayer = {
     }
   },
   processEntities: function (entities) {
-    let result = []
+    const result = []
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i]
       try {
@@ -128,7 +130,7 @@ const otherPlayer = {
                entity.state.__class__ === 'ProductionFinishedState' &&
                 !entity.cityentity_id.match(/R_MultiAge_SummerBonus19[a-h]/) // The Crow's Nest cannot be plundered...
             ) {
-              let era = consts.getEra(entity.cityentity_id.split('_')[1])
+              const era = consts.getEra(entity.cityentity_id.split('_')[1])
               result.push({
                 era: era,
                 id: entity.cityentity_id,
@@ -155,24 +157,24 @@ const otherPlayer = {
     }
 
     // Compare resources value
-    let newResourcesValue = consts.valueResources(newRevenue)
-    let currentResourcesValue = consts.valueResources(currentRevenue)
+    const newResourcesValue = consts.valueResources(newRevenue)
+    const currentResourcesValue = consts.valueResources(currentRevenue)
     if (newResourcesValue < currentResourcesValue) {
       return false
     }
 
     // Compare Money and Supplies
-    let newMSValue = (newRevenue.money || 0) + (newRevenue.supplies || 0)
-    let currentMSValue = currentRevenue.all ? (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0) : 0
+    const newMSValue = (newRevenue.money || 0) + (newRevenue.supplies || 0)
+    const currentMSValue = currentRevenue.all ? (currentRevenue.all.money || 0) + (currentRevenue.all.supplies || 0) : 0
 
     return newMSValue > currentMSValue
   },
   sendPlayerProtected: function (playerId) {
-    chrome.runtime.sendMessage({ 'playerProtected': otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId) })
+    chrome.runtime.sendMessage({ playerProtected: otherPlayer.protectedPlayers[worldID] !== undefined && otherPlayer.protectedPlayers[worldID].includes(playerId) })
   },
   setPlayerActive: function (playerId, active) {
-    syncGet({ 'playerInfo': {} }, function (result) {
-      let playerInfo = result.playerInfo
+    syncGet({ playerInfo: {} }, function (result) {
+      const playerInfo = result.playerInfo
       if (playerInfo[playerId] === undefined) {
         playerInfo[playerId] = {}
       }
@@ -183,7 +185,7 @@ const otherPlayer = {
 
       // always refresh date
       playerInfo[playerId].lastUpdate = Date.now() / 1000
-      syncSet({ 'playerInfo': playerInfo })
+      syncSet({ playerInfo: playerInfo })
     })
   }
 }

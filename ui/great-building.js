@@ -7,7 +7,7 @@ function updateGreatBuildingAnalysis (fpAnalysis, selfOwner) {
   } else {
     let hasAdvice = false
     for (let i = 0; i < fpAnalysis.length; i++) {
-      let analysis = fpAnalysis[i]
+      const analysis = fpAnalysis[i]
       if (analysis.spotSafe !== undefined && analysis.spotSafe !== false) {
         ggRows += addGreatBuildingAnalysisRow(i + 1, fpAnalysis[i])
         hasAdvice = true
@@ -21,7 +21,7 @@ function updateGreatBuildingAnalysis (fpAnalysis, selfOwner) {
 }
 
 function updateGreatBuildingBoostInfo (fpAnalysis) {
-  let boostFactor = $('#boost-factor').val()
+  const boostFactor = $('#boost-factor').val()
   let ggRows = ''
   let boostRush = ''
   let prevBoostInvestment = 0
@@ -141,7 +141,7 @@ function addGreatBuildingBoostRow (spot, boostFactor, analysis, notInvestedEnoug
     return ''
   }
 
-  let required = Math.ceil(analysis.reward.fp * boostFactor)
+  const required = Math.ceil(analysis.reward.fp * boostFactor)
 
   let row = `<tr ${notInvestedEnough ? ' class="table-warning"' : ''}>`
   row += `<td>${spot}</td>`

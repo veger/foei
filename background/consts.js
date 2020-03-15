@@ -26,11 +26,11 @@ const consts = {
   },
 
   getResourcesEra: function (resourceName) {
-    if (!consts.resources.hasOwnProperty(resourceName)) {
+    if (!Object.prototype.hasOwnProperty.call(consts.resources, resourceName)) {
       sendNotification('missingResource', 'error', resourceName + ' is missing in resources')
       return 1
     }
-    let resourceAge = consts.resources[resourceName].era
+    const resourceAge = consts.resources[resourceName].era
     return consts.getEra(resourceAge)
   },
 
@@ -46,9 +46,9 @@ const consts = {
 
   valueResources: function (resourcesArray) {
     let amount = 0
-    for (let resourceName in resourcesArray) {
+    for (const resourceName in resourcesArray) {
       console.log(resourceName)
-      if (resourceName !== 'medals' && resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
+      if (resourceName !== 'medals' && Object.prototype.hasOwnProperty.call(resourcesArray, resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
         amount += resourcesArray[resourceName] * Math.pow(2, consts.getResourcesEra(resourceName) - 1)
       }
     }
@@ -57,8 +57,8 @@ const consts = {
 
   amountResources: function (resourcesArray) {
     let amount = 0
-    for (let resourceName in resourcesArray) {
-      if (resourcesArray.hasOwnProperty(resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
+    for (const resourceName in resourcesArray) {
+      if (Object.prototype.hasOwnProperty.call(resourcesArray, resourceName) && consts.resources[resourceName] !== undefined && consts.resources[resourceName].era !== 'NoAge') {
         amount += resourcesArray[resourceName]
       }
     }

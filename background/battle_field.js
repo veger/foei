@@ -29,11 +29,11 @@ const battleField = {
 
   processStartBattle: function (data, callback) {
     if (data.battleType.type !== 'pvp') {
-      // We only care about attacking neighbours
+      // We only care about attacking neighbors
       return
     }
 
-    let armies = battleField.getArmies(data.state.unitsOrder)
+    const armies = battleField.getArmies(data.state.unitsOrder)
 
     let enemyUnit = 0
     for (; enemyUnit < data.state.unitsOrder.length; enemyUnit++) {
@@ -42,7 +42,7 @@ const battleField = {
         break
       }
     }
-    let bonuses = battleField.getBonuses(data.state.unitsOrder[enemyUnit].bonuses)
+    const bonuses = battleField.getBonuses(data.state.unitsOrder[enemyUnit].bonuses)
 
     battleField.storeBattleDetails(data.defenderPlayerId, armies[1], armies[3], bonuses.join(' / '), callback)
 
@@ -50,8 +50,8 @@ const battleField = {
       console.log('attacker', armies[1])
       console.log('defender', armies[2])
 
-      let summary = []
-      for (let [unitType, amount] of Object.entries(armies[3])) {
+      const summary = []
+      for (const [unitType, amount] of Object.entries(armies[3])) {
         summary.push((amount > 1 ? amount + ' ' : '') + unitType)
       }
 
@@ -69,12 +69,12 @@ const battleField = {
       return
     }
 
-    let battleWon = data.ranking_data.winner === 1
-    let unitsDied = {}
+    const battleWon = data.ranking_data.winner === 1
+    const unitsDied = {}
 
     let lostHP = 0
     for (let i = 0; i < data.unitsOrder.length; i++) {
-      let unitInfo = data.unitsOrder[i]
+      const unitInfo = data.unitsOrder[i]
       if (unitInfo.teamFlag === 1) {
         if (unitInfo.currentHitpoints === undefined || unitInfo.currentHitpoints === 0) {
           // Unit died
@@ -92,17 +92,17 @@ const battleField = {
   },
 
   getArmies: function (armiesData) {
-    let armies = {
+    const armies = {
       1: {},
       2: {}
     }
     for (let i = 0; i < armiesData.length; i++) {
-      let unit = armiesData[i]
+      const unit = armiesData[i]
       armies[unit.teamFlag][unit.unitTypeId] = (armies[unit.teamFlag][unit.unitTypeId] | 0) + 1
     }
 
-    let summary = {}
-    for (let [unitId, amount] of Object.entries(armies[2])) {
+    const summary = {}
+    for (const [unitId, amount] of Object.entries(armies[2])) {
       summary[unitId] = (summary[unitId] | 0) + amount
     }
     armies[3] = summary
@@ -111,19 +111,19 @@ const battleField = {
   },
 
   getBonuses: function (bonuses) {
-    let bonusesMap = {}
+    const bonusesMap = {}
     for (let i = 0; i < bonuses.length; i++) {
       if (bonuses[i].value) {
-        let type = bonuses[i].type
+        const type = bonuses[i].type
         bonusesMap[type] = (bonusesMap[type] | 0) + bonuses[i].value
       }
     }
-    let atkDef = []
-    let def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
+    const atkDef = []
+    const def = (bonusesMap.defense_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
     if (def > 0) {
       atkDef.push(`${def}% def`)
     }
-    let atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
+    const atk = (bonusesMap.attack_boost | 0) + (bonusesMap.fierce_resistance | 0) + (bonusesMap.advanced_tactics | 0)
     console.log('bonusesMap', bonusesMap, def, atk)
     if (atk > 0) {
       atkDef.push(`${atk}% atk`)
@@ -135,9 +135,9 @@ const battleField = {
   storeBattleDetails: function (playerId, attackUnits, defendUnits, defendBonus, callback) {
     battleField.lastPlayerAttacked = playerId
 
-    syncGet({ 'playerArmies': {} }, function (result) {
-      let playerArmies = result.playerArmies
-      let armyDetails = playerArmies[playerId] || {}
+    syncGet({ playerArmies: {} }, function (result) {
+      const playerArmies = result.playerArmies
+      const armyDetails = playerArmies[playerId] || {}
 
       if (armyDetails.battles === undefined || !mapEqual(armyDetails.defendUnits, defendUnits)) {
         // (re)set details of previous battles
@@ -151,18 +151,18 @@ const battleField = {
 
       armyDetails.lastAccess = Date.now()
       playerArmies[playerId] = armyDetails
-      syncSet({ 'playerArmies': playerArmies }, callback)
+      syncSet({ playerArmies: playerArmies }, callback)
 
       sendPlayerArmies(playerId)
     })
   },
 
   storeBattleResults: function (battleWon, surrendered, lostHP, unitsDied, isAutoBattle) {
-    syncGet({ 'playerArmies': {} }, function (result) {
-      let playerArmies = result.playerArmies
-      let armyDetails = playerArmies[battleField.lastPlayerAttacked] || { battles: { details: [] } }
+    syncGet({ playerArmies: {} }, function (result) {
+      const playerArmies = result.playerArmies
+      const armyDetails = playerArmies[battleField.lastPlayerAttacked] || { battles: { details: [] } }
 
-      let details = armyDetails.battles.details.pop() || {}
+      const details = armyDetails.battles.details.pop() || {}
       details.lostHp = lostHP
       if (Object.keys(unitsDied).length > 0) {
         details.unitsDied = unitsDied
@@ -177,7 +177,7 @@ const battleField = {
 
       armyDetails.lastAccess = Date.now()
       playerArmies[battleField.lastPlayerAttacked] = armyDetails
-      syncSet({ 'playerArmies': playerArmies })
+      syncSet({ playerArmies: playerArmies })
 
       sendPlayerArmies(battleField.lastPlayerAttacked)
 

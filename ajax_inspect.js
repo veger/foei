@@ -1,14 +1,14 @@
 'use strict'
 
 ;(function () {
-  let match = RegExp('extension:\\/\\/([^\\/]*)').exec(document.currentScript.src)
-  let extensionID = match[1]
+  const match = RegExp('extension:\\/\\/([^\\/]*)').exec(document.currentScript.src)
+  const extensionID = match[1]
 
-  let XHR = XMLHttpRequest.prototype
+  const XHR = XMLHttpRequest.prototype
 
   // Remember references to original methods
-  let _open = XHR.open
-  let _send = XHR.send
+  const _open = XHR.open
+  const _send = XHR.send
 
   // Collect data
   XHR.open = function (method, url) {
@@ -65,14 +65,14 @@
         }
       }
       if (jsonRequest || jsonResponse) {
-        let payload = { jsonRequest: jsonRequest, jsonResponse: jsonResponse, metadata: {} }
+        const payload = { jsonRequest: jsonRequest, jsonResponse: jsonResponse, metadata: {} }
         if (this._url.includes('forgeofempires.com')) {
-          let urlObj = new URL(this._url)
-          let match = RegExp('^[^\\.]*').exec(urlObj.hostname)
+          const urlObj = new URL(this._url)
+          const match = RegExp('^[^\\.]*').exec(urlObj.hostname)
           payload.metadata.type = 'game'
           payload.metadata.world = match[0]
         } else if (this._url.includes('metadata')) {
-          let match = RegExp('https://foe([^\\.]*).innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(this._url)
+          const match = RegExp('https://foe([^\\.]*).innogamescdn.com/start/metadata\\?id=([^-]*)-(.*)').exec(this._url)
           if (match !== null) {
             payload.metadata.type = 'meta'
             payload.metadata.lang = match[1]

@@ -7,14 +7,14 @@ const resource = {
       console.log('ResourceService.' + method, data)
     }
     switch (method) {
-      case 'getPlayerResources':
+      case 'getPlayerResources': {
         resource.get(function (resources) {
           if (resources === undefined) {
             // There are really no resources yet... We'll come back later
             return
           }
-          let worldResources = {}
-          for (let resource of Object.getOwnPropertyNames(resources)) {
+          const worldResources = {}
+          for (const resource of Object.getOwnPropertyNames(resources)) {
             if (data.resources[resource] > 0) {
               worldResources[resource] = data.resources[resource]
             }
@@ -25,8 +25,9 @@ const resource = {
           resource.resources[worldID] = worldResources
         })
         break
-      case 'getResourceDefinitions':
-        let resources = {}
+      }
+      case 'getResourceDefinitions': {
+        const resources = {}
         for (let i = 0; i < data.length; i++) {
           resources[data[i].id] = {
             era: data[i].era,
@@ -35,6 +36,7 @@ const resource = {
         }
         resource.set(resources)
         break
+      }
       default:
         if (trace || debug) {
           console.log('ResourceService.' + method + ' is not used')
@@ -47,7 +49,7 @@ const resource = {
         console.log(Object.keys(resources).length + ' resources registered')
       }
 
-      localSet({ 'resources': resources })
+      localSet({ resources: resources })
       consts.resources = resources
       sendNotification('resources', '', '')
       sendMessageCache({ resources: resources })
@@ -59,7 +61,7 @@ const resource = {
     }
 
     // Handle resources not being available yet (eg during startup)
-    localGet({ 'resources': {} }, function (result) {
+    localGet({ resources: {} }, function (result) {
       resource.set(result.resources)
       cb(result.resources)
     })

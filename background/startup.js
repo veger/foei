@@ -24,13 +24,13 @@ const startup = {
     if (debug) {
       console.log('playerId', playerId)
     }
-    localSet({ 'playerId': playerId })
+    localSet({ playerId: playerId })
     startup.playerId = playerId
   },
   checkRelease: function () {
     return fetch('https://api.github.com/repos/veger/foei/releases/latest', {
       headers: {
-        'Accept': 'application/vnd.github.v3+json'
+        Accept: 'application/vnd.github.v3+json'
       }
     })
       .then(
@@ -45,7 +45,7 @@ const startup = {
             if (latestVersion[0] === 'v') {
               latestVersion = latestVersion.substring(1)
             }
-            let ownVersion = chrome.runtime.getManifest().version
+            const ownVersion = chrome.runtime.getManifest().version
             if (debug) {
               console.log(`Own version '${ownVersion}', latest version '${latestVersion}'`)
             }
@@ -60,7 +60,7 @@ const startup = {
 }
 
 listenToWorldIDChanged(function () {
-  localGet({ 'resources': false, playerId: false }, function (result) {
+  localGet({ resources: false, playerId: false }, function (result) {
     if (!result.resources || Object.keys(result.resources).length === 0) {
       sendNotification('resources', 'error', 'Resources not available, restart/refresh game')
     } else {

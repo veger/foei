@@ -1,9 +1,9 @@
 'use strict'
 
 function humanReadableTime (seconds) {
-  let hours = Math.floor(seconds / 3600)
+  const hours = Math.floor(seconds / 3600)
   seconds -= hours * 3600
-  let minutes = '0' + Math.floor(seconds / 60)
+  const minutes = '0' + Math.floor(seconds / 60)
   seconds -= minutes * 60
   seconds = '0' + Math.floor(seconds)
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
@@ -16,16 +16,16 @@ function sortByKey (property) {
     property = property.substr(1)
   }
   return function (a, b) {
-    let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
     return result * sortOrder
   }
 }
 
 function sortByKeyMultiple () {
   // Save arguments as inner function will have its own
-  let props = arguments
+  const props = arguments
   return function (a, b) {
-    let i = 0; let result = 0; let numberOfProperties = props.length
+    let i = 0; let result = 0; const numberOfProperties = props.length
     while (result === 0 && i < numberOfProperties) {
       result = sortByKey(props[i])(a, b)
       i++
@@ -35,12 +35,12 @@ function sortByKeyMultiple () {
 }
 
 function mapEqual (map1, map2, reversedOrder) {
-  for (let propName in map1) {
-    if (!map1.hasOwnProperty(propName)) {
+  for (const propName in map1) {
+    if (!Object.prototype.hasOwnProperty.call(map1, propName)) {
       continue
     }
 
-    if (!map2.hasOwnProperty(propName)) {
+    if (!Object.prototype.hasOwnProperty.call(map2, propName)) {
       return false
     }
     if (map1[propName] !== map2[propName]) {
@@ -52,11 +52,11 @@ function mapEqual (map1, map2, reversedOrder) {
 }
 
 function copyProductResources (result) {
-  let productResources = { resources: {} }
+  const productResources = { resources: {} }
 
   if (result.product !== undefined && result.product.resources !== undefined) {
-    for (let resource in result.product.resources) {
-      if (result.product.resources.hasOwnProperty(resource)) {
+    for (const resource in result.product.resources) {
+      if (Object.prototype.hasOwnProperty.call(result.product.resources, resource)) {
         if (consts.resources[resource] !== undefined && consts.resources[resource].era !== 'NoAge') {
           productResources.resources[resource] = result.product.resources[resource]
         } else {
@@ -66,7 +66,7 @@ function copyProductResources (result) {
     }
   }
   if (result.current_product && result.current_product.clan_power) {
-    productResources['clan_power'] = result.current_product.clan_power
+    productResources.clan_power = result.current_product.clan_power
   }
   if (Object.keys(productResources.resources).length === 0) {
     delete productResources.resources
@@ -87,7 +87,7 @@ function sendMessageCache (msg) {
 }
 
 function sendNotification (id, type, message) {
-  let notifications = msgCache.notifications || {}
+  const notifications = msgCache.notifications || {}
   if (message === '') {
     // Clear message
     delete notifications[id]
@@ -116,11 +116,11 @@ function sendNotification (id, type, message) {
 }
 
 function sendPlayerArmies (playerId) {
-  syncGet({ 'playerArmies': {} }, function (result) {
-    let playerArmies = result.playerArmies
-    let armyDetails = playerArmies[playerId] || {}
+  syncGet({ playerArmies: {} }, function (result) {
+    const playerArmies = result.playerArmies
+    const armyDetails = playerArmies[playerId] || {}
 
-    chrome.runtime.sendMessage({ 'battleStats': armyDetails })
+    chrome.runtime.sendMessage({ battleStats: armyDetails })
   })
 }
 

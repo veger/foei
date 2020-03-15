@@ -35,16 +35,16 @@ chrome.pageAction.onClicked.addListener(function () {
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
-    if (request.hasOwnProperty('debug')) {
+    if (Object.prototype.hasOwnProperty.call(request, 'debug')) {
       setDebug(request.debug)
     }
-    if (request.hasOwnProperty('trace')) {
+    if (Object.prototype.hasOwnProperty.call(request, 'trace')) {
       setTrace(request.trace)
     }
-    if (request.hasOwnProperty('resend_messages')) {
+    if (Object.prototype.hasOwnProperty.call(request, 'resend_messages')) {
       chrome.runtime.sendMessage(msgCache)
     }
-    if (request.hasOwnProperty('cache')) {
+    if (Object.prototype.hasOwnProperty.call(request, 'cache')) {
       cacheAction(request.cache)
     }
   })
@@ -112,8 +112,8 @@ chrome.runtime.onMessageExternal.addListener(
           switch (request.metadata.id) {
             case 'unit_types':
               staticData.setData(request.metadata.lang, 'unit_types', request.metadata.hash, function () {
-                let data = {}
-                for (let index in request.jsonResponse) {
+                const data = {}
+                for (const index in request.jsonResponse) {
                   const unitType = request.jsonResponse[index]
                   data[unitType.unitTypeId] = {
                     name: unitType.name,
@@ -125,8 +125,8 @@ chrome.runtime.onMessageExternal.addListener(
               break
             case 'city_entities':
               staticData.setData(request.metadata.lang, 'city_entities', request.metadata.hash, function () {
-                let data = {}
-                for (let index in request.jsonResponse) {
+                const data = {}
+                for (const index in request.jsonResponse) {
                   const entityType = request.jsonResponse[index]
                   data[entityType.id] = {
                     name: entityType.name,

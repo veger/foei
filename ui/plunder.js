@@ -78,9 +78,9 @@ function addPlunderRow (resource, revenue) {
 }
 
 function processRawResourcesPlunderData (raw) {
-  let list = []
-  for (let resourceName in raw) {
-    if (raw.hasOwnProperty(resourceName)) {
+  const list = []
+  for (const resourceName in raw) {
+    if (Object.prototype.hasOwnProperty.call(raw, resourceName)) {
       list.push((raw[resourceName] === 1 ? '' : raw[resourceName] + ' ') + '<img src="https://foeen.innogamescdn.com/assets/shared/icons/' + resourceName + '.png" class="plunder-raw-resource" data-toggle="tooltip" data-placement="top" title="' + l10nResource(resourceName) + '">')
     }
   }
@@ -112,7 +112,7 @@ function l10n (key) {
 }
 
 function l10nResource (key) {
-  let value = resources[key]
+  const value = resources[key]
   return (value || { name: key }).name
 }
 

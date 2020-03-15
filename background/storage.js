@@ -1,7 +1,7 @@
 'use strict'
 
-let createRingBuffer = function (length) {
-  let pointer = 0; let buffer = []
+const createRingBuffer = function (length) {
+  let pointer = 0; const buffer = []
 
   return {
     get: function (key) { return buffer[key] },
@@ -44,7 +44,7 @@ function setWorldID (newWorldID) {
 function listenToWorldIDChanged (callback) {
   chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-      if (request.hasOwnProperty('worldIDChanged')) {
+      if (Object.prototype.hasOwnProperty.call(request, 'worldIDChanged')) {
         callback(request.worldIDChanged)
       }
     })
@@ -70,7 +70,7 @@ function toWorldKeys (keys) {
       }
       break
     case 'object':
-      for (let key in keys) {
+      for (const key in keys) {
         worldKeys[(isInternalKey(key) ? '' : worldID) + key] = keys[key]
       }
       break
@@ -82,10 +82,10 @@ function toWorldKeys (keys) {
 }
 
 function fromWorldResult (worldResult) {
-  let result = {}
+  const result = {}
   if (worldResult) {
-    for (let worldKey in worldResult) {
-      let key = isInternalKey(worldKey) ? worldKey : worldKey.substring(worldID.length)
+    for (const worldKey in worldResult) {
+      const key = isInternalKey(worldKey) ? worldKey : worldKey.substring(worldID.length)
       result[key] = worldResult[worldKey]
     }
   }
@@ -95,10 +95,10 @@ function fromWorldResult (worldResult) {
 
 const usedDataStorages = ['playerArmies', 'playerGBs']
 function sendWorldsWithDataSize (worlds) {
-  let worldsSize = {}
+  const worldsSize = {}
   for (let i = 0; i < worlds.length; i++) {
     (function (world) {
-      let storages = usedDataStorages.map(function (s) { return world + '-' + s })
+      const storages = usedDataStorages.map(function (s) { return world + '-' + s })
       chrome.storage.sync.getBytesInUse(storages, function (result) {
         worldsSize[world] = result
         if (Object.keys(worldsSize).length === worlds.length) {
@@ -114,8 +114,8 @@ function isInternalKey (key) {
 }
 
 function syncSet (items, callback) {
-  let worldItems = {}
-  for (let item in items) {
+  const worldItems = {}
+  for (const item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item]
   }
   chrome.storage.sync.set(worldItems, function (result) {
@@ -135,8 +135,8 @@ function syncGet (keys, callback) {
 }
 
 function localSet (items, callback) {
-  let worldItems = {}
-  for (let item in items) {
+  const worldItems = {}
+  for (const item in items) {
     worldItems[(isInternalKey(item) ? '' : worldID) + item] = items[item]
   }
   chrome.storage.local.set(worldItems, function (result) {
@@ -157,7 +157,7 @@ function localGet (keys, callback) {
 
 function localRemove (key) {
   chrome.storage.local.get(null, function (results) {
-    for (let entry in results) {
+    for (const entry in results) {
       if (entry.endsWith('-' + key)) {
         chrome.storage.local.remove(entry, function () {
           if (debug) {
@@ -179,14 +179,14 @@ function cacheAction (request) {
         (function (worldID) {
           chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
             let removedItems = 0
-            let timeOld = Date.now() - 3 * 7 * 24 * 3600 * 1000
+            const timeOld = Date.now() - 3 * 7 * 24 * 3600 * 1000
             for (let i = 0; i < usedDataStorages.length; i++) {
-              let storageName = worldID + '-' + usedDataStorages[i]
-              let ds = data[storageName]
+              const storageName = worldID + '-' + usedDataStorages[i]
+              const ds = data[storageName]
               if (ds === undefined) {
                 continue
               }
-              for (let key in ds) {
+              for (const key in ds) {
                 if (ds[key].lastAccess === undefined || ds[key].lastAccess < timeOld) {
                   delete ds[key]
                   removedItems++
@@ -220,12 +220,12 @@ function cacheAction (request) {
         (function (worldID) {
           chrome.storage.sync.get(usedDataStorages.map(function (ds) { return worldID + '-' + ds }), function (data) {
             for (let i = 0; i < usedDataStorages.length; i++) {
-              let storageName = worldID + '-' + usedDataStorages[i]
+              const storageName = worldID + '-' + usedDataStorages[i]
               if (request.data[storageName]) {
                 if (trace) {
                   console.log(storageName, request.data[storageName])
                 }
-                let ds = { ...data[storageName], ...request.data[storageName] }
+                const ds = { ...data[storageName], ...request.data[storageName] }
                 data[storageName] = ds
               }
             }
