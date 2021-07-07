@@ -34,3 +34,46 @@
 .unit-portrait:hover {
     top: 95px;
 }
+
+.nav-button {
+    display: block;
+    padding: .5rem;
+    text-decoration: none;
+    margin: 5px;
+    color: #007bff;
+    background-color: rgb(226, 226, 226);
+    border: 1px solid transparent;
+    border-radius: .5rem;
+}
+
+.nav-button:hover {
+    text-decoration: none;
+    background-color: transparent;
+    border-color: rgb(226, 226, 226);
+}
+
+.nav-button.active {
+    background-color: transparent;
+    border-color: black;
+}
+
+.nav-button:focus {
+    outline: none;
+}
+
+.collapse, .collapsing {
+    display: inline-block;
+    padding: .5rem;
+    margin: 5px;
+    background-color: rgb(226, 226, 226);
+    border: 1px solid transparent;
+    border-radius: .5rem;
+}
+
+.card {
+    padding: .5rem;
+    margin: 5px;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: .5rem;
+}
